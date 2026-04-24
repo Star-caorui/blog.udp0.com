@@ -1,10 +1,11 @@
 {{ $slug := .Params.slug | default .File.ContentBaseName }}
-{{ $comments := index hugo.Data.comments $slug }}
+{{ $commentsData := site.Data.comments | default dict }}
+{{ $comments := index $commentsData $slug }}
 {{ if $comments }}
   <section class="comments">
     <h2>Comments</h2>
     <div class="comment-list">
-      {{ range collections.Reverse $comments }}
+      {{ range sort $comments "date" "desc" }}
         <article class="comment-item">
           <header class="comment-meta">
             {{ if .url }}
