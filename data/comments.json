@@ -1,0 +1,345 @@
+{
+  "hello-typecho": [
+    {
+      "id": 1,
+      "date": "2020-04-11T18:07:58+08:00",
+      "author": "Typecho",
+      "url": "http://typecho.org",
+      "text": "欢迎加入 Typecho 大家族",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "about": [
+    {
+      "id": 41,
+      "date": "2020-08-06T15:38:14+08:00",
+      "author": "明石",
+      "url": "",
+      "text": "路过留名哈哈哈，加油吧( •̀ ω •́ )✧",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 93,
+      "date": "2022-01-27T13:49:36+08:00",
+      "author": "Kiah",
+      "url": "https://jiakaiyang.github.io",
+      "text": "妙呀。",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 112,
+      "date": "2025-05-04T19:51:22+08:00",
+      "author": "Pinpe",
+      "url": "https://pinpe.top",
+      "text": "嗯？同样是大专生，同样是网络技术专业，太巧了🤔",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "messages": [
+    {
+      "id": 56,
+      "date": "2020-10-08T20:34:48+08:00",
+      "author": "蓝鲸落",
+      "url": "https://blog.whalefall.online",
+      "text": "咕咕咕",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 61,
+      "date": "2021-01-11T23:43:40+08:00",
+      "author": "Gaein nidb",
+      "url": "https://blog.gaein.cn",
+      "text": "未满18周岁不能备案嘛？我记得是16来着，但是河北管局不会看，我15岁那年备案就下来了（逃）",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 62,
+      "date": "2021-01-16T12:49:18+08:00",
+      "author": "small_xu038",
+      "url": "",
+      "text": "留下脚印#(滑稽)",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 63,
+      "date": "2021-01-18T16:39:27+08:00",
+      "author": "Star_caorui",
+      "url": "/",
+      "text": "内蒙管局限制满18...我明年就能去备案了（开心）",
+      "parent": 61,
+      "reply_to": "Gaein nidb"
+    },
+    {
+      "id": 64,
+      "date": "2021-01-18T16:48:38+08:00",
+      "author": "Star_caorui",
+      "url": "/",
+      "text": "评论回复有邮件提示的哦!",
+      "parent": 62,
+      "reply_to": "small_xu038"
+    },
+    {
+      "id": 70,
+      "date": "2021-01-20T23:11:48+08:00",
+      "author": "Gaein nidb",
+      "url": "https://blog.gaein.cn",
+      "text": "阿巴阿巴在河北规定16的情况下我15岁备案过了（",
+      "parent": 63,
+      "reply_to": "Star_caorui"
+    },
+    {
+      "id": 71,
+      "date": "2021-01-20T23:15:23+08:00",
+      "author": "Star_caorui",
+      "url": "/",
+      "text": "酸了，呜呜",
+      "parent": 70,
+      "reply_to": "Gaein nidb"
+    },
+    {
+      "id": 73,
+      "date": "2021-01-29T22:10:18+08:00",
+      "author": "Star_caorui",
+      "url": "/",
+      "text": "本站已更新邮件回复地址！",
+      "parent": 62,
+      "reply_to": "small_xu038"
+    },
+    {
+      "id": 86,
+      "date": "2021-03-24T21:31:03+08:00",
+      "author": "PluginsKers",
+      "url": "https://www.52craft.cc",
+      "text": "催更催更，快写快写。",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 87,
+      "date": "2021-05-16T16:09:20+08:00",
+      "author": "采唐",
+      "url": "https://caitang.online",
+      "text": "滴滴",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 116,
+      "date": "2026-04-04T21:09:56+08:00",
+      "author": "zhizhizhiwang",
+      "url": "",
+      "text": "继承了你在aur上提交的两个mcsm包 |´・ω・) ノ",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "typecho-change-gra": [
+    {
+      "id": 88,
+      "date": "2021-09-29T23:31:35+08:00",
+      "author": "竹林里有冰",
+      "url": "https://blog.zhullyb.top",
+      "text": "催更啦催更啦",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 89,
+      "date": "2021-09-30T21:08:06+08:00",
+      "author": "Star_caorui",
+      "url": "/",
+      "text": "在水了，在水了（划掉\n\n最近有考虑再水一篇文章了（不是",
+      "parent": 88,
+      "reply_to": "竹林里有冰"
+    }
+  ],
+  "how-to-secure-boot-arch": [
+    {
+      "id": 90,
+      "date": "2021-10-17T22:29:54+08:00",
+      "author": "竹林里有冰",
+      "url": "https://blog.zhullyb.top",
+      "text": "失踪了大半年总算想起来更博了",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 91,
+      "date": "2021-10-17T22:33:07+08:00",
+      "author": "Star_caorui",
+      "url": "/",
+      "text": "失踪人口回归计划.jpg",
+      "parent": 90,
+      "reply_to": "竹林里有冰"
+    },
+    {
+      "id": 96,
+      "date": "2022-01-30T12:02:16+08:00",
+      "author": "Micraow",
+      "url": "",
+      "text": "用grub引导的机子，要用以下命令重新安装grub\n\n/usr/share/grub/sbat.csv在启用模块的情况下重新安装 GRUB TPM并签名：\n\n# grub-install --target=x86_64-efi --efi-directory=esp --modules=\"tpm\" --sbat /usr/share/grub/sbat.csv\n# sbsign --key MOK.key --cert MOK.crt --output esp/EFI/GRUB/grubx64.efi esp /EFI/GRUB/grubx64.efi\n# cp esp/GRUB/grubx64.efi esp/boot/grubx64.efi\n\nesp是引导器分区，通常是/boot",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 97,
+      "date": "2022-01-30T12:02:47+08:00",
+      "author": "Micraow",
+      "url": "",
+      "text": "参考archwiki:\n\nhttps://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot",
+      "parent": 96,
+      "reply_to": "Micraow"
+    }
+  ],
+  "self-criticism-about-nixos": [
+    {
+      "id": 92,
+      "date": "2022-01-19T16:20:27+08:00",
+      "author": "竹林里有冰",
+      "url": "https://blog.zhullyb.top/",
+      "text": "![](https://s2.loli.net/2022/01/19/dubIBz7jLPQi8Wy.png)",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 98,
+      "date": "2022-01-31T22:32:26+08:00",
+      "author": "Alexhhh",
+      "url": "https://alexhhh.moe",
+      "text": "啊 这",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 109,
+      "date": "2022-08-22T18:30:21+08:00",
+      "author": "puzzle9",
+      "url": "https://puzzle9.github.io/",
+      "text": "啊 这",
+      "parent": 92,
+      "reply_to": "竹林里有冰"
+    }
+  ],
+  "windows-common-software-recommendations": [
+    {
+      "id": 94,
+      "date": "2022-01-30T11:53:57+08:00",
+      "author": "Micraow",
+      "url": "",
+      "text": "我觉得文本编辑器里，少说也要有vim，emacs，atom一席之地吧。\n对了，网盘我觉得onedrive或onedrive for business 挺好，onedrive for business 我自己用的，分国际版和世纪互联版。我的国际版有5T容量，实测100Mbps带宽，下载11MB/s，上传4MB/s，世纪互联貌似更快(服务器在国内)\n\n放个测试链接体验一下速度：\n\nhttps://share.pengbo.workers.dev/share/ISO/ubuntu-20.04.2.0-desktop-amd64.iso",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 95,
+      "date": "2022-01-30T11:55:06+08:00",
+      "author": "Micraow",
+      "url": "",
+      "text": "音乐是不是要有个Spotify",
+      "parent": 94,
+      "reply_to": "Micraow"
+    }
+  ],
+  "api": [
+    {
+      "id": 99,
+      "date": "2022-02-09T06:04:49+08:00",
+      "author": "すメン澄みわたる朝色",
+      "url": "http://blog.zhaose.cyou",
+      "text": "好耶，很有用的api们",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 105,
+      "date": "2022-04-01T00:55:58+08:00",
+      "author": "potuo",
+      "url": "",
+      "text": "好耶",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "gpg-agent-forward": [
+    {
+      "id": 104,
+      "date": "2022-02-10T02:23:59+08:00",
+      "author": "竹林里有冰",
+      "url": "https://blog.zhullyb.top/",
+      "text": "整挺好",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "esxi7-pit": [
+    {
+      "id": 107,
+      "date": "2022-07-10T16:11:35+08:00",
+      "author": "小沫",
+      "url": "",
+      "text": "主题啥时候出正式版",
+      "parent": 0,
+      "reply_to": ""
+    },
+    {
+      "id": 108,
+      "date": "2022-07-10T17:42:37+08:00",
+      "author": "Star_caorui",
+      "url": "/",
+      "text": "可能在这个月底之前吧qwq",
+      "parent": 107,
+      "reply_to": "小沫"
+    }
+  ],
+  "privacy": [
+    {
+      "id": 110,
+      "date": "2022-10-21T13:48:35+08:00",
+      "author": "Ayiya",
+      "url": "https://b0ae.cn",
+      "text": "刚好我抄走了兄弟",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "clean-arch": [
+    {
+      "id": 111,
+      "date": "2025-05-01T02:05:49+08:00",
+      "author": "puzzle9",
+      "url": "https://puzzle9.github.io/",
+      "text": "学到了",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "waf": [
+    {
+      "id": 114,
+      "date": "2025-08-15T15:19:15+08:00",
+      "author": "kaer",
+      "url": "",
+      "text": "感谢分享 waf 知识",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ],
+  "depression-psychological-loop": [
+    {
+      "id": 115,
+      "date": "2026-03-24T16:54:53+08:00",
+      "author": "罐头",
+      "url": "",
+      "text": "沙发(￣∇￣)",
+      "parent": 0,
+      "reply_to": ""
+    }
+  ]
+}

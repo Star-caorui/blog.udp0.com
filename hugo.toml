@@ -1,0 +1,73 @@
+baseURL = "https://blog.udp0.com/"
+languageCode = "zh-cn"
+title = "iNetech Blog"
+defaultContentLanguage = "zh-cn"
+enableRobotsTXT = true
+summaryLength = 28
+
+[pagination]
+pagerSize = 8
+
+[permalinks]
+posts = "/posts/:slugorcontentbasename/"
+
+[taxonomies]
+tag = "tags"
+
+[outputs]
+home = ["HTML", "RSS"]
+section = ["HTML", "RSS"]
+taxonomy = ["HTML"]
+term = ["HTML"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+    unsafe = true
+  [markup.highlight]
+  noClasses = true
+
+[params]
+author = "Star_caorui"
+description = "感时花溅泪，恨别鸟惊心。"
+since = 2020
+siteStartedAt = "2020-04-11T00:00:00+08:00"
+dateFormat = "2006-01-02"
+favicon = "https://src.inetech.fun/favicon.webp"
+footerHTML = """
+<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">蒙 ICP 备 2022000209 号-2</a><br>
+<a href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=蒙公网安备 15020202000279 号" target="_blank" rel="nofollow noopener">蒙公网安备 15020202000279号</a>
+"""
+footerPoweredBy = """
+Build with <a href="https://gohugo.io/" target="_blank" rel="nofollow noopener">Hugo</a>
+"""
+
+[[menus.main]]
+name = "首页"
+url = "/"
+weight = 10
+
+[[menus.main]]
+name = "服务"
+pageRef = "/service"
+weight = 20
+
+[[menus.main]]
+name = "留言"
+pageRef = "/messages"
+weight = 30
+
+[[menus.main]]
+name = "朋友"
+pageRef = "/links"
+weight = 40
+
+[[menus.main]]
+name = "关于我"
+pageRef = "/about"
+weight = 50
+
+[[menus.main]]
+name = "API"
+pageRef = "/api"
+weight = 60
