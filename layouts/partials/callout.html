@@ -1,0 +1,24 @@
+{{ $type := .type | default "note" }}
+{{ $title := .title }}
+{{ if not $title }}
+  {{ if eq $type "tip" }}
+    {{ $title = "Tip" }}
+  {{ else if eq $type "success" }}
+    {{ $title = "Success" }}
+  {{ else if eq $type "warn" }}
+    {{ $title = "Warning" }}
+  {{ else if eq $type "caution" }}
+    {{ $title = "Caution" }}
+  {{ else }}
+    {{ $title = "Note" }}
+  {{ end }}
+{{ end }}
+
+<aside class="callout callout-{{ $type }}">
+  <div class="callout-head">
+    <span class="callout-title">{{ $title }}</span>
+  </div>
+  <div class="callout-body">
+    {{ .content }}
+  </div>
+</aside>

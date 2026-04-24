@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <header class="page-header">
+    <p class="eyebrow">Page</p>
+    <h1>Posts</h1>
+  </header>
+
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  {{ if gt (len $posts) 0 }}
+    <section class="post-list home-post-list" aria-label="Recent posts">
+      {{ range $posts.ByDate.Reverse }}
+        {{ partial "post-line.html" . }}
+      {{ end }}
+    </section>
+  {{ else }}
+    <section class="empty-state">
+      <p>还没有文章。先运行 <code>hugo new posts/your-post.md</code>。</p>
+    </section>
+  {{ end }}
+{{ end }}

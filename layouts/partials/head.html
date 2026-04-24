@@ -1,0 +1,17 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>
+  {{ if .IsHome }}
+    {{ site.Title }}
+  {{ else }}
+    {{ .Title }} · {{ site.Title }}
+  {{ end }}
+</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ with site.Home.OutputFormats.Get `RSS` }}{{ .RelPermalink }}{{ end }}">
+{{ with site.Params.favicon }}
+  <link rel="icon" href="{{ . }}">
+{{ end }}
+<link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
+<script src="{{ "js/site.js" | relURL }}" defer></script>

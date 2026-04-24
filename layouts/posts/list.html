@@ -1,0 +1,10 @@
+{{ define "main" }}
+  <section class="page-header redirect-page">
+    <h1>{{ .Title }}</h1>
+    <p class="page-copy">
+      这个页面已经并入首页。
+      <a href="{{ "/" | relURL }}">返回文章列表</a>
+    </p>
+    <meta http-equiv="refresh" content="0; url={{ "/" | relURL }}">
+  </section>
+{{ end }}

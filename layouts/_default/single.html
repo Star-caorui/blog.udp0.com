@@ -1,0 +1,33 @@
+{{ define "main" }}
+  <article class="post">
+    <header class="post-header">
+      <p class="eyebrow">{{ .Section | default "Page" | humanize }}</p>
+      <h1>{{ .Title }}</h1>
+      <div class="meta-row">
+        <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format site.Params.dateFormat }}</time>
+        {{ with .ReadingTime }}
+          <span>{{ . }} min read</span>
+        {{ end }}
+      </div>
+      {{ with .Params.description }}
+        <p class="post-description">{{ . }}</p>
+      {{ end }}
+    </header>
+
+    <div class="content">
+      {{ .Content }}
+    </div>
+
+    {{ with .GetTerms "tags" }}
+      <footer class="post-footer">
+        <ul class="tag-list" aria-label="Tags">
+          {{ range . }}
+            <li><a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a></li>
+          {{ end }}
+        </ul>
+      </footer>
+    {{ end }}
+
+    {{ partial "comments.html" . }}
+  </article>
+{{ end }}

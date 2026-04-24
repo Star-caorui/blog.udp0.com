@@ -1,0 +1,15 @@
+<footer class="site-footer">
+  {{ with site.Params.footerPoweredBy }}
+    <p class="footer-powered">{{ . | safeHTML }}</p>
+  {{ end }}
+  {{ with site.Params.footerHTML }}
+    <div class="footer-meta">{{ . | safeHTML }}</div>
+  {{ end }}
+  <p class="footer-copy">Copyright © {{ site.Params.since }} {{ site.Params.author }}</p>
+  {{ with site.Params.siteStartedAt }}
+    <p
+      class="footer-runtime"
+      data-site-started-at="{{ . }}"
+    >记录已延续了</p>
+  {{ end }}
+</footer>

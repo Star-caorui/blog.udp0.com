@@ -1,0 +1,5 @@
+{{ partial "callout.html" (dict
+  "type" "warn"
+  "title" (.Get "title")
+  "content" (.Inner | .Page.RenderString)
+) }}

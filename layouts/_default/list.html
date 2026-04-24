@@ -1,0 +1,21 @@
+{{ define "main" }}
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}
+      <div class="page-copy">{{ . }}</div>
+    {{ end }}
+  </header>
+
+  {{ $pages := .Pages.ByDate.Reverse }}
+  {{ if gt (len $pages) 0 }}
+    {{ $paginator := .Paginate $pages }}
+    <section class="post-list">
+      {{ range $paginator.Pages }}
+        {{ partial "post-line.html" . }}
+      {{ end }}
+    </section>
+    {{ partial "pagination.html" . }}
+  {{ else }}
+    <p class="empty-state">这个列表还是空的。</p>
+  {{ end }}
+{{ end }}

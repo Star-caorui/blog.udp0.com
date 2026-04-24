@@ -1,0 +1,16 @@
+{{ define "main" }}
+  <header class="page-header">
+    <p class="eyebrow">Topics</p>
+    <h1>{{ .Title }}</h1>
+  </header>
+
+  {{ if gt (len .Pages) 0 }}
+    <div class="tag-list">
+      {{ range .Pages }}
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{ end }}
+    </div>
+  {{ else }}
+    <p class="empty-state">还没有标签。</p>
+  {{ end }}
+{{ end }}
