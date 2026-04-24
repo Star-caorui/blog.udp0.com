@@ -66,8 +66,3 @@ weight = 40
 name = "关于我"
 pageRef = "/about"
 weight = 50
-
-[[menus.main]]
-name = "API"
-pageRef = "/api"
-weight = 60
