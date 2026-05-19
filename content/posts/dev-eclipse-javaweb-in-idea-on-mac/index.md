@@ -39,14 +39,14 @@ brew install tomcat@8
 
 
 [1]: https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/
-[2]: images/step-01-import-existing-project.png
-[3]: images/step-02-import-from-eclipse.png
-[4]: images/step-03-detect-web-framework.png
-[5]: images/step-04-enable-web-facet.png
-[6]: images/step-05-add-tomcat-server.png
-[7]: images/step-06-select-tomcat-installation.png
-[8]: images/step-07-configure-tomcat-deployment.png
-[9]: images/step-08-edit-run-configuration.png
-[10]: images/step-09-choose-artifact-deployment.png
-[11]: images/step-10-add-project-dependencies.png
-[12]: images/step-11-dependencies-resolved.png
+[2]: images/step-01-import-existing-project.webp
+[3]: images/step-02-import-from-eclipse.webp
+[4]: images/step-03-detect-web-framework.webp
+[5]: images/step-04-enable-web-facet.webp
+[6]: images/step-05-add-tomcat-server.webp
+[7]: images/step-06-select-tomcat-installation.webp
+[8]: images/step-07-configure-tomcat-deployment.webp
+[9]: images/step-08-edit-run-configuration.webp
+[10]: images/step-09-choose-artifact-deployment.webp
+[11]: images/step-10-add-project-dependencies.webp
+[12]: images/step-11-dependencies-resolved.webp

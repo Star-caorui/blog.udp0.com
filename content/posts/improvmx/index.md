@@ -57,15 +57,15 @@ Outlook 可以自定义发件地址，不过需要先完成验证；前面添加
 
 
 [1]: https://app.improvmx.com
-[2]: images/step-01-open-signup.png
-[3]: images/step-02-create-free-alias.png
-[4]: images/step-03-fill-account-profile.png
-[5]: images/step-04-open-forwarding-setup.png
-[6]: images/step-05-add-improvmx-dns-records.png
-[7]: images/step-06-configure-dnspod-records.png
-[8]: images/step-07-forwarding-enabled.png
+[2]: images/step-01-open-signup.webp
+[3]: images/step-02-create-free-alias.webp
+[4]: images/step-03-fill-account-profile.webp
+[5]: images/step-04-open-forwarding-setup.webp
+[6]: images/step-05-add-improvmx-dns-records.webp
+[7]: images/step-06-configure-dnspod-records.webp
+[8]: images/step-07-forwarding-enabled.webp
 [9]: https://account.live.com/names/manage
-[10]: images/step-08-add-outlook-alias.png
-[11]: images/step-09-verify-outlook-alias.png
+[10]: images/step-08-add-outlook-alias.webp
+[11]: images/step-09-verify-outlook-alias.webp
 [12]: https://outlook.live.com/
-[13]: images/step-10-send-from-custom-address.png
+[13]: images/step-10-send-from-custom-address.webp
