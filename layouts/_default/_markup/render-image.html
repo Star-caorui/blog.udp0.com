@@ -1,4 +1,4 @@
-{{- $page := .PageInner | default .Page -}}
+{{- $page := .Page -}}
 {{- $destination := .Destination -}}
 {{- $isRemote := or (hasPrefix $destination "http://") (hasPrefix $destination "https://") -}}
 {{- $isAbsolute := hasPrefix $destination "/" -}}

@@ -1,5 +1,5 @@
 baseURL = "https://blog.udp0.com/"
-locale = "zh-cn"
+languageCode = "zh-cn"
 title = "iNetech Blog"
 defaultContentLanguage = "zh-cn"
 enableRobotsTXT = true
