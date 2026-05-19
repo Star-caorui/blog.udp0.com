@@ -1,5 +1,4 @@
-import { initComments } from "./features/comments.js";
-import { cacheCurrentPage, navigate, setupPjax } from "./features/pjax.js";
+import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
 
 (() => {
   let runtimeTimer = 0;
@@ -92,7 +91,6 @@ import { cacheCurrentPage, navigate, setupPjax } from "./features/pjax.js";
   const initPage = () => {
     enhanceTables(document);
     mountRuntimeCounter();
-    initComments(document);
   };
 
   setupPjax({

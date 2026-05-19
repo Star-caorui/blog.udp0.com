@@ -184,85 +184,177 @@ hr {
   min-height: 8rem;
 }
 
-.optimistic-shell .optimistic-content {
-  position: relative;
-  min-height: 12rem;
-  margin-top: 1.2rem;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, var(--surface-82), var(--surface-96));
-}
-
-.optimistic-shell .optimistic-content::before,
-.optimistic-shell .optimistic-content::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
-.optimistic-shell .optimistic-content::before {
-  background:
-    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 1.2rem / 92% 1.6rem no-repeat,
-    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 3.5rem / 86% 1.6rem no-repeat,
-    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 5.8rem / 90% 1.6rem no-repeat,
-    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 8.1rem / 78% 1.6rem no-repeat;
-}
-
-.optimistic-shell .optimistic-content::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    color-mix(in srgb, var(--accent) 16%, transparent) 45%,
-    transparent 100%
-  );
-  transform: translateX(-100%);
-  animation: skeleton-shimmer 1.15s ease-in-out infinite;
-}
-
 .main.is-loading {
-  min-height: 12rem;
+  --skeleton-base: #d9dde4;
+  --skeleton-glint: rgba(255, 255, 255, 0.9);
+  cursor: progress;
 }
 
-.main.is-loading::before,
-.main.is-loading::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-  border-radius: 18px;
-}
-
-.main.is-loading::before {
+.main.is-loading :is(
+  .eyebrow,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  dt,
+  dd,
+  time,
+  span,
+  a,
+  code,
+  th,
+  td
+) {
+  color: transparent !important;
+  text-shadow: none !important;
+  -webkit-text-fill-color: transparent;
   background:
-    linear-gradient(var(--surface-90) 1.35rem, transparent 0) 0 0 / 64% 2.3rem no-repeat,
-    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 0 3.5rem / 94% 1.7rem no-repeat,
-    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 0 6rem / 88% 1.7rem no-repeat,
-    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 0 8.5rem / 92% 1.7rem no-repeat,
-    linear-gradient(180deg, var(--surface-82), var(--surface-96));
-  box-shadow: inset 0 0 0 1px var(--line);
+    linear-gradient(
+      90deg,
+      var(--skeleton-base) 0%,
+      var(--skeleton-base) 38%,
+      var(--skeleton-glint) 50%,
+      var(--skeleton-base) 62%,
+      var(--skeleton-base) 100%
+    )
+    120% 50% / 240% 72% no-repeat !important;
+  border-radius: 999px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  text-decoration-color: transparent !important;
+  animation: skeleton-shimmer 1.25s ease-in-out infinite;
 }
 
-.main.is-loading::after {
-  z-index: 4;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    color-mix(in srgb, var(--accent) 14%, transparent) 45%,
-    transparent 100%
-  );
-  transform: translateX(-100%);
-  animation: skeleton-shimmer 1.15s ease-in-out infinite;
+.main.is-loading :is(.eyebrow, h1, h2, h3, h4, time, code) {
+  display: table;
+}
+
+.main.is-loading :is(a, span) {
+  border-radius: 0.35em;
+}
+
+.main.is-loading .post-line-title {
+  background: none !important;
+  display: block;
+  animation: none;
+}
+
+.main.is-loading .post-line-title a {
+  display: inline;
+  background-size: 240% 78% !important;
+}
+
+.main.is-loading :is(p, li, dd, th, td) {
+  background-size: 240% 68% !important;
+}
+
+.main.is-loading li::marker {
+  color: transparent;
+}
+
+.main.is-loading :is(pre, blockquote, .callout) {
+  color: transparent !important;
+  background:
+    linear-gradient(
+      90deg,
+      var(--skeleton-base) 0%,
+      var(--skeleton-base) 38%,
+      var(--skeleton-glint) 50%,
+      var(--skeleton-base) 62%,
+      var(--skeleton-base) 100%
+    )
+    120% 1rem / 240% 0.95rem repeat-y !important;
+  border-color: transparent !important;
+  animation: skeleton-shimmer 1.25s ease-in-out infinite;
+}
+
+.main.is-loading :is(pre, blockquote, .callout) * {
+  visibility: hidden;
+}
+
+.main.is-loading :is(.table-wrap, table) {
+  background: transparent !important;
+}
+
+.main.is-loading :is(img, iframe, video) {
+  background:
+    linear-gradient(
+      90deg,
+      var(--skeleton-base) 0%,
+      var(--skeleton-base) 38%,
+      var(--skeleton-glint) 50%,
+      var(--skeleton-base) 62%,
+      var(--skeleton-base) 100%
+    )
+    120% 0 / 240% 100% no-repeat !important;
+  border-radius: 12px;
+  opacity: 0.45;
+  filter: grayscale(1);
+  animation: skeleton-shimmer 1.25s ease-in-out infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .main.is-loading {
+    --skeleton-base: #3b4552;
+    --skeleton-glint: rgba(255, 255, 255, 0.22);
+  }
 }
 
 @keyframes skeleton-shimmer {
   from {
-    transform: translateX(-100%);
+    background-position: 120% 50%;
   }
 
   to {
-    transform: translateX(100%);
+    background-position: -120% 50%;
+  }
+}
+
+@keyframes skeleton-shimmer-y {
+  from {
+    background-position:
+      120% 1rem,
+      120% 1rem;
+  }
+
+  to {
+    background-position:
+      -120% 1rem,
+      -120% 1rem;
+  }
+}
+
+.main.is-loading :is(pre, blockquote, .callout) {
+  animation-name: skeleton-shimmer-y;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main.is-loading :is(
+    .eyebrow,
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    li,
+    dt,
+    dd,
+    time,
+    span,
+    a,
+    code,
+    th,
+    td,
+    pre,
+    blockquote,
+    .callout,
+    img,
+    iframe,
+    video
+  ) {
+    animation: none !important;
   }
 }
 
@@ -613,20 +705,6 @@ h2 {
 
 .comments h2 {
   margin-bottom: 1rem;
-}
-
-.comments-placeholder {
-  padding: 0.95rem 1rem;
-  color: var(--muted);
-  background:
-    linear-gradient(180deg, var(--surface-82), var(--surface-96)),
-    linear-gradient(90deg, var(--accent-05), transparent 72%);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
-
-.comments-placeholder p {
-  margin: 0;
 }
 
 .comment-item p {

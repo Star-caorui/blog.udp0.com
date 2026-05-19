@@ -4,13 +4,12 @@ title = "iNetech Blog"
 defaultContentLanguage = "zh-cn"
 enableRobotsTXT = true
 summaryLength = 28
-disableKinds = ["taxonomy", "term"]
+disableKinds = ["taxonomy", "term", "section"]
 [permalinks]
 posts = "/posts/:slugorcontentbasename/"
 
 [outputs]
 home = ["HTML", "RSS"]
-section = ["HTML", "RSS"]
 
 [markup]
   [markup.goldmark]

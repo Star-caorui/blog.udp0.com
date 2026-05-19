@@ -2,11 +2,8 @@
 {{ $commentsData := hugo.Data.comments | default dict }}
 {{ $comments := index $commentsData $slug }}
 {{ if $comments }}
-  <section class="comments comments-pending" data-comments-slug="{{ $slug }}">
+  <section class="comments">
     <h2>Comments</h2>
-    <div class="comments-placeholder" aria-live="polite">
-      <p>Comments will load when needed.</p>
-    </div>
-    <noscript>{{ partial "comments-list.html" (dict "comments" $comments) }}</noscript>
+    {{ partial "comments-list.html" (dict "comments" $comments) }}
   </section>
 {{ end }}

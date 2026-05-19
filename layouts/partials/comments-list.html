@@ -1,6 +1,6 @@
 {{ $comments := .comments | default slice }}
 <div class="comment-list">
-  {{ range $comments }}
+  {{ range sort $comments "date" "desc" }}
     <article class="comment-item">
       <header class="comment-meta">
         {{ if .url }}
