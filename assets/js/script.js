@@ -1,4 +1,48 @@
 (() => {
+  const main = document.querySelector(".main");
+
+  const isPrimaryClick = (event) =>
+    event.button === 0 &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey;
+
+  const shouldEnhanceLink = (link) => {
+    if (!link) return false;
+    if (link.target && link.target !== "_self") return false;
+    if (link.hasAttribute("download")) return false;
+    if (link.getAttribute("rel")?.includes("external")) return false;
+
+    const href = link.getAttribute("href");
+    if (!href || href.startsWith("#")) return false;
+
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin) return false;
+    if (url.pathname === window.location.pathname && url.search === window.location.search) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const markNavigating = () => {
+    document.body.classList.add("is-navigating");
+    main?.setAttribute("aria-busy", "true");
+  };
+
+  window.addEventListener("pageshow", () => {
+    document.body.classList.remove("is-navigating");
+    main?.removeAttribute("aria-busy");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!isPrimaryClick(event)) return;
+    const link = event.target instanceof Element ? event.target.closest("a") : null;
+    if (!shouldEnhanceLink(link)) return;
+    markNavigating();
+  });
+
   document.querySelectorAll(".content table").forEach((table) => {
     if (table.parentElement?.classList.contains("table-wrap")) return;
     const wrapper = document.createElement("div");
