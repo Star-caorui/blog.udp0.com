@@ -9,9 +9,15 @@
 {{- end -}}
 
 {{- if $resource -}}
-  {{- $fingerprinted := $resource | fingerprint -}}
+  {{- $hash := substr (sha256 $resource.Content) 0 8 -}}
+  {{- $dir := path.Dir $resource.Name -}}
+  {{- $name := path.BaseName $resource.Name -}}
+  {{- $ext := path.Ext $resource.Name -}}
+  {{- $pagePath := strings.TrimPrefix "/" $page.RelPermalink -}}
+  {{- $targetPath := path.Join $pagePath $dir (printf "%s.%s%s" $name $hash $ext) -}}
+  {{- $published := resources.FromString $targetPath $resource.Content -}}
   <img
-    src="{{ $fingerprinted.RelPermalink }}"
+    src="{{ $published.RelPermalink }}"
     alt="{{ .PlainText }}"
     width="{{ $resource.Width }}"
     height="{{ $resource.Height }}"

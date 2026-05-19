@@ -13,9 +13,17 @@
 {{ with site.Params.favicon }}
   <link rel="icon" href="{{ . }}">
 {{ end }}
-{{ with resources.Get "css/main.css" | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{ with resources.Get "css/style.css" | minify }}
+  {{ $hash := substr (sha256 .Content) 0 8 }}
+  {{ $targetPath := printf "css/style.%s.css" $hash }}
+  {{ with resources.Copy $targetPath . }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ end }}
 {{ end }}
-{{ with resources.Get "js/site.js" | minify | fingerprint }}
-  <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+{{ with resources.Get "js/script.js" | minify }}
+  {{ $hash := substr (sha256 .Content) 0 8 }}
+  {{ $targetPath := printf "js/script.%s.js" $hash }}
+  {{ with resources.Copy $targetPath . }}
+    <script src="{{ .RelPermalink }}" defer></script>
+  {{ end }}
 {{ end }}
