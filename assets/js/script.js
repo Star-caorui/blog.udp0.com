@@ -1,13 +1,17 @@
 (() => {
   const parser = new DOMParser();
   const pageCache = new Map();
+  const runtimeCacheName = "pjax-runtime-v2";
+  const runtimeCacheKindHeader = "x-pjax-cache-kind";
+  const runtimeCacheAtHeader = "x-pjax-cached-at";
+  const runtimeCacheTTLHeader = "x-pjax-cache-ttl";
   const pageCacheTTL = 10 * 60 * 1000;
   const commentsDataUrl = "/comments/index.json";
-  const commentsCacheKey = "pjax-comments-v1";
   const commentsCacheTTL = 10 * 60 * 1000;
   let commentsObserver = null;
   let commentsPromise = null;
   let commentsDataCache = null;
+  let runtimeCachePromise = null;
   let runtimeTimer = 0;
   let activeController = null;
   const siteTitle =
@@ -70,42 +74,92 @@
 
   const buildPageTitle = (title) => `${title} · ${siteTitle}`;
   const normalizeEyebrow = (value) => (value || "").trim().toUpperCase();
-  const readSessionJSON = (key) => {
+  const isFresh = (cachedAt, ttl) => cachedAt > 0 && ttl > 0 && Date.now() - cachedAt <= ttl;
+  const canUseRuntimeCache = () => typeof window.caches !== "undefined";
+  const getRuntimeCacheRequest = (urlString) => new Request(getCacheKey(urlString), { method: "GET" });
+
+  const openRuntimeCache = async () => {
+    if (!canUseRuntimeCache()) return null;
+    if (!runtimeCachePromise) {
+      runtimeCachePromise = window.caches.open(runtimeCacheName).catch(() => null);
+    }
+
+    return runtimeCachePromise;
+  };
+
+  const buildRuntimeCacheResponse = (payload, kind, ttl) =>
+    new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        [runtimeCacheKindHeader]: kind,
+        [runtimeCacheAtHeader]: String(Date.now()),
+        [runtimeCacheTTLHeader]: String(ttl),
+      },
+    });
+
+  const readRuntimeCacheMeta = (response) => ({
+    kind: response.headers.get(runtimeCacheKindHeader) || "",
+    cachedAt: Number(response.headers.get(runtimeCacheAtHeader) || 0),
+    ttl: Number(response.headers.get(runtimeCacheTTLHeader) || 0),
+  });
+
+  const getPersistentCacheEntry = async (urlString, expectedKind) => {
     try {
-      const raw = window.sessionStorage.getItem(key);
-      return raw ? JSON.parse(raw) : null;
+      const runtimeCache = await openRuntimeCache();
+      if (!runtimeCache) return null;
+
+      const request = getRuntimeCacheRequest(urlString);
+      const response = await runtimeCache.match(request);
+      if (!response) return null;
+
+      const meta = readRuntimeCacheMeta(response);
+      if (meta.kind !== expectedKind || !isFresh(meta.cachedAt, meta.ttl)) {
+        await runtimeCache.delete(request);
+        return null;
+      }
+
+      return {
+        payload: await response.json(),
+        cachedAt: meta.cachedAt,
+      };
     } catch {
       return null;
     }
   };
 
-  const writeSessionJSON = (key, value) => {
+  const putPersistentCacheEntry = async (urlString, payload, kind, ttl) => {
     try {
-      window.sessionStorage.setItem(key, JSON.stringify(value));
+      const runtimeCache = await openRuntimeCache();
+      if (!runtimeCache) return;
+
+      await runtimeCache.put(
+        getRuntimeCacheRequest(urlString),
+        buildRuntimeCacheResponse(payload, kind, ttl),
+      );
     } catch {
-      // Ignore storage availability errors.
+      // Ignore runtime cache write failures.
     }
   };
 
-  const hydrateCommentsCache = () => {
-    if (commentsDataCache) return commentsDataCache;
+  const getCommentsCache = () => {
+    if (!commentsDataCache) return null;
+    if (!isFresh(commentsDataCache.cachedAt, commentsCacheTTL)) {
+      commentsDataCache = null;
+      return null;
+    }
 
-    const cached = readSessionJSON(commentsCacheKey);
-    if (!cached) return null;
-    if (Date.now() - cached.cachedAt > commentsCacheTTL) return null;
-
-    commentsDataCache = cached;
     return commentsDataCache;
   };
 
-  const setCommentsCache = (data) => {
+  const setCommentsCache = (data, cachedAt = Date.now()) => {
     commentsDataCache = {
       data,
-      cachedAt: Date.now(),
+      cachedAt,
     };
-    writeSessionJSON(commentsCacheKey, commentsDataCache);
     return commentsDataCache;
   };
+
   const getCacheKey = (urlString) => {
     const url = new URL(urlString, window.location.href);
     return `${url.origin}${url.pathname}${url.search}`;
@@ -122,14 +176,19 @@
     };
   };
 
+  const setPageCache = (urlString, page, cachedAt = Date.now()) => {
+    pageCache.set(getCacheKey(urlString), {
+      ...page,
+      cachedAt,
+    });
+  };
+
   const cachePage = (urlString, pageDocument) => {
     const page = serializePage(pageDocument);
     if (!page) return;
 
-    pageCache.set(getCacheKey(urlString), {
-      ...page,
-      cachedAt: Date.now(),
-    });
+    setPageCache(urlString, page);
+    void putPersistentCacheEntry(urlString, page, "page", pageCacheTTL);
   };
 
   const getCachedPage = (urlString) => {
@@ -143,6 +202,17 @@
     }
 
     return entry;
+  };
+
+  const getPersistentPage = async (urlString) => {
+    const cached = await getPersistentCacheEntry(urlString, "page");
+    if (!cached?.payload) return null;
+
+    setPageCache(urlString, cached.payload, cached.cachedAt);
+    return {
+      ...cached.payload,
+      cachedAt: cached.cachedAt,
+    };
   };
 
   const materializeCachedDocument = (entry) => {
@@ -214,8 +284,17 @@
   };
 
   const fetchCommentsData = async () => {
-    const cached = hydrateCommentsCache();
+    const cached = getCommentsCache();
     if (cached) return cached.data;
+
+    const persistentCached = await getPersistentCacheEntry(commentsDataUrl, "comments");
+    if (persistentCached?.payload) {
+      console.info("[pjax] comments cache hit", {
+        url: commentsDataUrl,
+        source: "cache-storage",
+      });
+      return setCommentsCache(persistentCached.payload, persistentCached.cachedAt).data;
+    }
 
     if (commentsPromise) return commentsPromise;
 
@@ -227,9 +306,17 @@
     })
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
+        return {
+          text: await response.text(),
+          url: response.url || commentsDataUrl,
+        };
       })
-      .then((data) => setCommentsCache(data).data)
+      .then(({ text, url }) => {
+        const data = JSON.parse(text);
+        setCommentsCache(data);
+        void putPersistentCacheEntry(url, data, "comments", commentsCacheTTL);
+        return data;
+      })
       .finally(() => {
         commentsPromise = null;
       });
@@ -299,7 +386,7 @@
     const commentsSections = [...root.querySelectorAll("[data-comments-slug]")];
     if (commentsSections.length === 0) return;
 
-    const cached = hydrateCommentsCache();
+    const cached = getCommentsCache();
     if (cached?.data) {
       commentsSections.forEach((section) => {
         renderCommentsSection(section, cached.data[section.dataset.commentsSlug] || []);
@@ -543,7 +630,7 @@
 
     const cachedPage = getCachedPage(url);
     if (cachedPage) {
-      console.info("[pjax] cache hit", { url });
+      console.info("[pjax] cache hit", { url, source: "memory" });
       swapPage(materializeCachedDocument(cachedPage), url, historyMode, { url, meta: null });
       return;
     }
@@ -557,6 +644,15 @@
     const stopLoading = toggleLoading(true, context);
 
     try {
+      const persistentPage = await getPersistentPage(url);
+      if (activeController !== controller) return;
+
+      if (persistentPage) {
+        console.info("[pjax] cache hit", { url, source: "cache-storage" });
+        swapPage(materializeCachedDocument(persistentPage), url, historyMode, { url, meta: null });
+        return;
+      }
+
       const response = await window.fetch(url, {
         signal: controller.signal,
         credentials: "same-origin",
