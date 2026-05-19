@@ -27,12 +27,10 @@
 <a
   class="{{ if $isActive }}is-active{{ end }}"
   href="{{ $item.URL }}"
-  {{ partial "pjax-attrs.html" (dict
-    "kind" $pjaxKind
-    "title" $pjaxTitle
-    "pageTitle" $pjaxPageTitle
-    "eyebrow" $pjaxEyebrow
-    "date" $pjaxDate
-    "dateISO" $pjaxDateISO
-  ) }}
+  data-pjax-kind="{{ $pjaxKind }}"
+  data-pjax-title="{{ $pjaxTitle }}"
+  data-pjax-page-title="{{ $pjaxPageTitle }}"
+  data-pjax-eyebrow="{{ $pjaxEyebrow }}"
+  {{ with $pjaxDate }}data-pjax-date="{{ . }}"{{ end }}
+  {{ with $pjaxDateISO }}data-pjax-date-iso="{{ . }}"{{ end }}
 >{{ $item.Name }}</a>

@@ -75,6 +75,10 @@
 
   const buildPageTitle = (title) => `${title} · ${siteTitle}`;
   const normalizeEyebrow = (value) => (value || "").trim().toUpperCase();
+  const getDescriptionContent = (doc = document) =>
+    doc.querySelector('meta[name="description"]')?.getAttribute("content") || "";
+  const getCanonicalHref = (doc = document) =>
+    doc.querySelector('link[rel="canonical"]')?.getAttribute("href") || "";
   const getLogSlug = (urlString) => {
     const url = new URL(urlString, window.location.href);
     const segments = url.pathname.split("/").filter(Boolean);
@@ -568,7 +572,23 @@
       eyebrow: header.querySelector(".eyebrow")?.textContent?.trim() || "",
       title: header.querySelector("h1")?.textContent?.trim() || "",
       dateLabel: header.querySelector("time")?.textContent?.trim() || "",
+      description: getDescriptionContent(nextDocument),
+      canonical: getCanonicalHref(nextDocument),
     };
+  };
+
+  const syncHeadMeta = (nextDocument) => {
+    const nextDescription = getDescriptionContent(nextDocument);
+    const currentDescription = document.querySelector('meta[name="description"]');
+    if (currentDescription) {
+      currentDescription.setAttribute("content", nextDescription);
+    }
+
+    const nextCanonical = getCanonicalHref(nextDocument);
+    const currentCanonical = document.querySelector('link[rel="canonical"]');
+    if (currentCanonical) {
+      currentCanonical.setAttribute("href", nextCanonical);
+    }
   };
 
   const getHeaderMatch = (context, nextDocument) => {
@@ -631,6 +651,7 @@
     currentMain?.replaceWith(importedMain);
     document.documentElement.lang =
       nextDocument.documentElement.lang || document.documentElement.lang;
+    syncHeadMeta(nextDocument);
     updateNavState(url);
 
     if (historyMode === "push") {
