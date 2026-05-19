@@ -1,5 +1,5 @@
 {{- $payload := dict -}}
-{{- range $slug, $comments := site.Data.comments -}}
+{{- range $slug, $comments := hugo.Data.comments -}}
   {{- $items := slice -}}
   {{- range sort $comments "date" "desc" -}}
     {{- $items = $items | append (dict
