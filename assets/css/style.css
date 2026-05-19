@@ -36,10 +36,6 @@
   --sans: "Avenir Next", "Helvetica Neue", "PingFang SC", "Noto Sans SC", sans-serif;
 }
 
-@view-transition {
-  navigation: auto;
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
@@ -86,73 +82,6 @@ body {
   line-height: 1.8;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0 auto auto 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 42%, transparent));
-  transform: scaleX(0);
-  transform-origin: left;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 20;
-  transition: transform 220ms ease, opacity 180ms ease;
-}
-
-.page-shell {
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-body.is-navigating::before {
-  opacity: 1;
-  transform: scaleX(0.42);
-}
-
-body.is-navigating .page-shell {
-  opacity: 0.88;
-  transform: translateY(2px);
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 160ms;
-  animation-timing-function: ease;
-}
-
-::view-transition-old(root) {
-  animation-name: page-fade-out;
-}
-
-::view-transition-new(root) {
-  animation-name: page-fade-in;
-}
-
-@keyframes page-fade-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  to {
-    opacity: 0.92;
-    transform: translateY(3px);
-  }
-}
-
-@keyframes page-fade-in {
-  from {
-    opacity: 0.96;
-    transform: translateY(4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 a {
@@ -247,6 +176,57 @@ hr {
   width: min(42rem, calc(100% - clamp(1.9rem, 3vw, 2rem)));
   margin: 0 auto;
   padding: 1rem 0 4rem;
+}
+
+.main {
+  position: relative;
+  min-height: 8rem;
+}
+
+.main.is-loading {
+  min-height: 12rem;
+}
+
+.main.is-loading::before,
+.main.is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  border-radius: 18px;
+}
+
+.main.is-loading::before {
+  background:
+    linear-gradient(var(--surface-90) 1.35rem, transparent 0) 0 0 / 64% 2.3rem no-repeat,
+    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 0 3.5rem / 94% 1.7rem no-repeat,
+    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 0 6rem / 88% 1.7rem no-repeat,
+    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 0 8.5rem / 92% 1.7rem no-repeat,
+    linear-gradient(180deg, var(--surface-82), var(--surface-96));
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.main.is-loading::after {
+  z-index: 4;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 14%, transparent) 45%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: skeleton-shimmer 1.15s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .site-header {
