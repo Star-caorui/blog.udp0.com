@@ -1,6 +1,8 @@
 (() => {
   const parser = new DOMParser();
   const pageCache = new Map();
+  const cacheModeStorageKey = "pjax-cache-mode";
+  const cacheModes = ["hybrid", "storage-only"];
   const runtimeCacheName = "pjax-runtime-v2";
   const runtimeCacheKindHeader = "x-pjax-cache-kind";
   const runtimeCacheAtHeader = "x-pjax-cached-at";
@@ -14,6 +16,7 @@
   let runtimeCachePromise = null;
   let runtimeTimer = 0;
   let activeController = null;
+  let cacheMode = "hybrid";
   const siteTitle =
     document.title.includes(" · ") ? document.title.split(" · ").at(-1) : document.title;
 
@@ -74,9 +77,56 @@
 
   const buildPageTitle = (title) => `${title} · ${siteTitle}`;
   const normalizeEyebrow = (value) => (value || "").trim().toUpperCase();
+  const readSessionValue = (key) => {
+    try {
+      return window.sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  };
+
+  const writeSessionValue = (key, value) => {
+    try {
+      window.sessionStorage.setItem(key, value);
+    } catch {
+      // Ignore storage availability errors.
+    }
+  };
+
+  const shouldUseMemoryCache = () => cacheMode === "hybrid";
   const isFresh = (cachedAt, ttl) => cachedAt > 0 && ttl > 0 && Date.now() - cachedAt <= ttl;
   const canUseRuntimeCache = () => typeof window.caches !== "undefined";
   const getRuntimeCacheRequest = (urlString) => new Request(getCacheKey(urlString), { method: "GET" });
+  const clearMemoryCaches = () => {
+    pageCache.clear();
+    commentsDataCache = null;
+  };
+
+  const primeCurrentPageMemoryCache = () => {
+    if (!shouldUseMemoryCache()) return;
+
+    const page = serializePage(document);
+    if (!page) return;
+    setPageCache(window.location.href, page);
+  };
+
+  const setCacheMode = (nextMode) => {
+    if (!cacheModes.includes(nextMode)) {
+      throw new Error(`Unsupported cache mode: ${nextMode}`);
+    }
+
+    cacheMode = nextMode;
+    writeSessionValue(cacheModeStorageKey, nextMode);
+    clearMemoryCaches();
+    primeCurrentPageMemoryCache();
+    console.info("[pjax] cache mode", { mode: cacheMode });
+    return cacheMode;
+  };
+
+  const initCacheMode = () => {
+    const storedMode = readSessionValue(cacheModeStorageKey);
+    cacheMode = cacheModes.includes(storedMode) ? storedMode : "hybrid";
+  };
 
   const openRuntimeCache = async () => {
     if (!canUseRuntimeCache()) return null;
@@ -143,6 +193,7 @@
   };
 
   const getCommentsCache = () => {
+    if (!shouldUseMemoryCache()) return null;
     if (!commentsDataCache) return null;
     if (!isFresh(commentsDataCache.cachedAt, commentsCacheTTL)) {
       commentsDataCache = null;
@@ -153,6 +204,13 @@
   };
 
   const setCommentsCache = (data, cachedAt = Date.now()) => {
+    if (!shouldUseMemoryCache()) {
+      return {
+        data,
+        cachedAt,
+      };
+    }
+
     commentsDataCache = {
       data,
       cachedAt,
@@ -177,6 +235,7 @@
   };
 
   const setPageCache = (urlString, page, cachedAt = Date.now()) => {
+    if (!shouldUseMemoryCache()) return;
     pageCache.set(getCacheKey(urlString), {
       ...page,
       cachedAt,
@@ -192,6 +251,7 @@
   };
 
   const getCachedPage = (urlString) => {
+    if (!shouldUseMemoryCache()) return null;
     const cacheKey = getCacheKey(urlString);
     const entry = pageCache.get(cacheKey);
     if (!entry) return null;
@@ -208,7 +268,9 @@
     const cached = await getPersistentCacheEntry(urlString, "page");
     if (!cached?.payload) return null;
 
-    setPageCache(urlString, cached.payload, cached.cachedAt);
+    if (shouldUseMemoryCache()) {
+      setPageCache(urlString, cached.payload, cached.cachedAt);
+    }
     return {
       ...cached.payload,
       cachedAt: cached.cachedAt,
@@ -696,6 +758,20 @@
     navigate(window.location.href, "replace");
   });
 
+  initCacheMode();
+  window.__pjaxCacheMode = (nextMode) => {
+    if (!nextMode) {
+      return {
+        mode: cacheMode,
+        modes: cacheModes,
+      };
+    }
+
+    return {
+      mode: setCacheMode(nextMode),
+      modes: cacheModes,
+    };
+  };
   window.history.replaceState({ url: window.location.href }, "", window.location.href);
   cachePage(window.location.href, document);
   initPage();
