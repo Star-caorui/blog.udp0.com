@@ -57,15 +57,15 @@ Outlook 可以自定义发件地址，不过需要先完成验证；前面添加
 
 
 [1]: https://app.improvmx.com
-[2]: /uploads/2024/123022.png
-[3]: /uploads/2024/123030.png
-[4]: /uploads/2024/123074.png
-[5]: /uploads/2024/123079.png
-[6]: /uploads/2024/123016.png
-[7]: /uploads/2024/123001.png
-[8]: /uploads/2024/123048.png
+[2]: images/123022.png
+[3]: images/123030.png
+[4]: images/123074.png
+[5]: images/123079.png
+[6]: images/123016.png
+[7]: images/123001.png
+[8]: images/123048.png
 [9]: https://account.live.com/names/manage
-[10]: /uploads/2024/123053.png
-[11]: /uploads/2024/123039.png
+[10]: images/123053.png
+[11]: images/123039.png
 [12]: https://outlook.live.com/
-[13]: /uploads/2024/123065.png
+[13]: images/123065.png

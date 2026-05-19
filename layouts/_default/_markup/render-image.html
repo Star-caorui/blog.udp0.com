@@ -1,0 +1,30 @@
+{{- $page := .PageInner | default .Page -}}
+{{- $destination := .Destination -}}
+{{- $isRemote := or (hasPrefix $destination "http://") (hasPrefix $destination "https://") -}}
+{{- $isAbsolute := hasPrefix $destination "/" -}}
+{{- $resource := "" -}}
+
+{{- if not (or $isRemote $isAbsolute) -}}
+  {{- $resource = $page.Resources.GetMatch $destination -}}
+{{- end -}}
+
+{{- if $resource -}}
+  {{- $fingerprinted := $resource | fingerprint -}}
+  <img
+    src="{{ $fingerprinted.RelPermalink }}"
+    alt="{{ .PlainText }}"
+    width="{{ $resource.Width }}"
+    height="{{ $resource.Height }}"
+    loading="lazy"
+    decoding="async"
+    {{- with .Title }} title="{{ . }}"{{ end -}}
+  >
+{{- else -}}
+  <img
+    src="{{ $destination | safeURL }}"
+    alt="{{ .PlainText }}"
+    loading="lazy"
+    decoding="async"
+    {{- with .Title }} title="{{ . }}"{{ end -}}
+  >
+{{- end -}}

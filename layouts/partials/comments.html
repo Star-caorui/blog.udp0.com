@@ -1,5 +1,5 @@
 {{ $slug := .Params.slug | default .File.ContentBaseName }}
-{{ $commentsData := site.Data.comments | default dict }}
+{{ $commentsData := hugo.Data.comments | default dict }}
 {{ $comments := index $commentsData $slug }}
 {{ if $comments }}
   <section class="comments">

@@ -39,14 +39,14 @@ brew install tomcat@8
 
 
 [1]: https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/
-[2]: /uploads/2025/102912.png
-[3]: /uploads/2025/102931.png
-[4]: /uploads/2025/102942.png
-[5]: /uploads/2025/102928.png
-[6]: /uploads/2025/102970.png
-[7]: /uploads/2025/102956.png
-[8]: /uploads/2025/102933.png
-[9]: /uploads/2025/102999.png
-[10]: /uploads/2025/102908.png
-[11]: /uploads/2025/102907.png
-[12]: /uploads/2025/102919.png
+[2]: images/102912.png
+[3]: images/102931.png
+[4]: images/102942.png
+[5]: images/102928.png
+[6]: images/102970.png
+[7]: images/102956.png
+[8]: images/102933.png
+[9]: images/102999.png
+[10]: images/102908.png
+[11]: images/102907.png
+[12]: images/102919.png
