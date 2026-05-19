@@ -4,6 +4,7 @@ title = "iNetech Blog"
 defaultContentLanguage = "zh-cn"
 enableRobotsTXT = true
 summaryLength = 28
+disableKinds = ["taxonomy", "term"]
 
 [pagination]
 pagerSize = 8
