@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ .RelPermalink }}">
   {{ end }}
 {{ end }}
-{{ with resources.Get "js/script.js" | minify }}
+{{ with resources.Get "js/main.js" | js.Build (dict "targetPath" "js/script.js" "minify" true) }}
   {{ $hash := substr (sha256 .Content) 0 8 }}
   {{ $targetPath := printf "js/script.%s.js" $hash }}
   {{ with resources.Copy $targetPath . }}
