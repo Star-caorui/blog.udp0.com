@@ -77,6 +77,11 @@
 
   const buildPageTitle = (title) => `${title} · ${siteTitle}`;
   const normalizeEyebrow = (value) => (value || "").trim().toUpperCase();
+  const getLogSlug = (urlString) => {
+    const url = new URL(urlString, window.location.href);
+    const segments = url.pathname.split("/").filter(Boolean);
+    return segments.at(-1) || "home";
+  };
   const readSessionValue = (key) => {
     try {
       return window.sessionStorage.getItem(key);
@@ -625,11 +630,7 @@
     };
     match.all = match.pageTitle && match.eyebrow && match.title && match.dateLabel;
 
-    console.info("[pjax] optimistic header match", {
-      ...match,
-      optimistic: context.meta,
-      response: responseMeta,
-    });
+    console.info(`[pjax] ${getLogSlug(context.url)}: ${match.all ? "hit" : "miss"}`);
     return match;
   };
 
