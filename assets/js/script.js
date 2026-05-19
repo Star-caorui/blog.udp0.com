@@ -2,6 +2,12 @@
   const parser = new DOMParser();
   const pageCache = new Map();
   const pageCacheTTL = 10 * 60 * 1000;
+  const commentsDataUrl = "/comments/index.json";
+  const commentsCacheKey = "pjax-comments-v1";
+  const commentsCacheTTL = 10 * 60 * 1000;
+  let commentsObserver = null;
+  let commentsPromise = null;
+  let commentsDataCache = null;
   let runtimeTimer = 0;
   let activeController = null;
   const siteTitle =
@@ -62,13 +68,44 @@
     runtimeTimer = window.setInterval(formatDuration, 1000);
   };
 
-  const initPage = () => {
-    enhanceTables(document);
-    mountRuntimeCounter();
-  };
-
   const buildPageTitle = (title) => `${title} · ${siteTitle}`;
   const normalizeEyebrow = (value) => (value || "").trim().toUpperCase();
+  const readSessionJSON = (key) => {
+    try {
+      const raw = window.sessionStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const writeSessionJSON = (key, value) => {
+    try {
+      window.sessionStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      // Ignore storage availability errors.
+    }
+  };
+
+  const hydrateCommentsCache = () => {
+    if (commentsDataCache) return commentsDataCache;
+
+    const cached = readSessionJSON(commentsCacheKey);
+    if (!cached) return null;
+    if (Date.now() - cached.cachedAt > commentsCacheTTL) return null;
+
+    commentsDataCache = cached;
+    return commentsDataCache;
+  };
+
+  const setCommentsCache = (data) => {
+    commentsDataCache = {
+      data,
+      cachedAt: Date.now(),
+    };
+    writeSessionJSON(commentsCacheKey, commentsDataCache);
+    return commentsDataCache;
+  };
   const getCacheKey = (urlString) => {
     const url = new URL(urlString, window.location.href);
     return `${url.origin}${url.pathname}${url.search}`;
@@ -113,6 +150,12 @@
     cachedDocument.documentElement.lang = entry.lang || "";
     cachedDocument.body.innerHTML = entry.mainHTML;
     return cachedDocument;
+  };
+
+  const initPage = () => {
+    enhanceTables(document);
+    mountRuntimeCounter();
+    initComments(document);
   };
 
   const isPrimaryClick = (event) =>
@@ -168,6 +211,119 @@
     if (className) node.className = className;
     if (text) node.textContent = text;
     return node;
+  };
+
+  const fetchCommentsData = async () => {
+    const cached = hydrateCommentsCache();
+    if (cached) return cached.data;
+
+    if (commentsPromise) return commentsPromise;
+
+    commentsPromise = window.fetch(commentsDataUrl, {
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "pjax",
+      },
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then((data) => setCommentsCache(data).data)
+      .finally(() => {
+        commentsPromise = null;
+      });
+
+    return commentsPromise;
+  };
+
+  const renderCommentsSection = (section, comments) => {
+    if (!section || section.dataset.commentsHydrated === "true") return;
+
+    const list = document.createElement("div");
+    list.className = "comment-list";
+
+    comments.forEach((comment) => {
+      const item = createElement("article", "", "comment-item");
+      const meta = createElement("header", "", "comment-meta");
+
+      if (comment.url) {
+        const authorLink = createElement("a", comment.author);
+        authorLink.href = comment.url;
+        authorLink.rel = "nofollow noopener";
+        authorLink.target = "_blank";
+        meta.append(authorLink);
+      } else {
+        meta.append(createElement("span", comment.author));
+      }
+
+      const time = createElement("time", comment.dateLabel || "");
+      if (comment.date) time.dateTime = comment.date;
+      meta.append(time);
+      item.append(meta);
+
+      if (comment.replyTo) {
+        item.append(createElement("p", `Reply to ${comment.replyTo}`, "comment-reply"));
+      }
+
+      const body = createElement("div", "", "comment-body");
+      body.innerHTML = comment.bodyHTML || "";
+      item.append(body);
+      list.append(item);
+    });
+
+    section.querySelector(".comments-placeholder")?.remove();
+    section.append(list);
+    section.classList.remove("comments-pending");
+    section.dataset.commentsHydrated = "true";
+  };
+
+  const loadCommentsForSection = async (section) => {
+    if (!section || section.dataset.commentsHydrated === "true") return;
+
+    const slug = section.dataset.commentsSlug;
+    if (!slug) return;
+
+    try {
+      const data = await fetchCommentsData();
+      renderCommentsSection(section, data[slug] || []);
+    } catch {
+      const placeholder = section.querySelector(".comments-placeholder p");
+      if (placeholder) {
+        placeholder.textContent = "Comments failed to load. Please refresh and try again.";
+      }
+    }
+  };
+
+  const initComments = (root = document) => {
+    const commentsSections = [...root.querySelectorAll("[data-comments-slug]")];
+    if (commentsSections.length === 0) return;
+
+    const cached = hydrateCommentsCache();
+    if (cached?.data) {
+      commentsSections.forEach((section) => {
+        renderCommentsSection(section, cached.data[section.dataset.commentsSlug] || []);
+      });
+      return;
+    }
+
+    if (!commentsObserver) {
+      commentsObserver = new window.IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const section = entry.target;
+          commentsObserver?.unobserve(section);
+          loadCommentsForSection(section);
+        });
+      }, {
+        rootMargin: "320px 0px",
+      });
+    }
+
+    commentsSections.forEach((section) => {
+      if (section.dataset.commentsHydrated === "true") return;
+      commentsObserver?.observe(section);
+    });
   };
 
   const buildOptimisticMain = (meta) => {

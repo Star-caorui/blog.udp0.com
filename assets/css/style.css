@@ -615,6 +615,20 @@ h2 {
   margin-bottom: 1rem;
 }
 
+.comments-placeholder {
+  padding: 0.95rem 1rem;
+  color: var(--muted);
+  background:
+    linear-gradient(180deg, var(--surface-82), var(--surface-96)),
+    linear-gradient(90deg, var(--accent-05), transparent 72%);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.comments-placeholder p {
+  margin: 0;
+}
+
 .comment-item p {
   margin: 0;
 }

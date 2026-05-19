@@ -1,0 +1,21 @@
+{{ $comments := .comments | default slice }}
+<div class="comment-list">
+  {{ range $comments }}
+    <article class="comment-item">
+      <header class="comment-meta">
+        {{ if .url }}
+          <a href="{{ .url }}" rel="nofollow noopener" target="_blank">{{ .author }}</a>
+        {{ else }}
+          <span>{{ .author }}</span>
+        {{ end }}
+        <time datetime="{{ .date }}">{{ dateFormat "2006-01-02" .date }}</time>
+      </header>
+      {{ with .reply_to }}
+        <p class="comment-reply">Reply to {{ . }}</p>
+      {{ end }}
+      <div class="comment-body">
+        {{ .text | markdownify }}
+      </div>
+    </article>
+  {{ end }}
+</div>

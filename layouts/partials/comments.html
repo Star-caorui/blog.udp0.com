@@ -2,27 +2,11 @@
 {{ $commentsData := site.Data.comments | default dict }}
 {{ $comments := index $commentsData $slug }}
 {{ if $comments }}
-  <section class="comments">
+  <section class="comments comments-pending" data-comments-slug="{{ $slug }}">
     <h2>Comments</h2>
-    <div class="comment-list">
-      {{ range sort $comments "date" "desc" }}
-        <article class="comment-item">
-          <header class="comment-meta">
-            {{ if .url }}
-              <a href="{{ .url }}" rel="nofollow noopener" target="_blank">{{ .author }}</a>
-            {{ else }}
-              <span>{{ .author }}</span>
-            {{ end }}
-            <time datetime="{{ .date }}">{{ dateFormat "2006-01-02" .date }}</time>
-          </header>
-          {{ with .reply_to }}
-            <p class="comment-reply">Reply to {{ . }}</p>
-          {{ end }}
-          <div class="comment-body">
-            {{ .text | markdownify }}
-          </div>
-        </article>
-      {{ end }}
+    <div class="comments-placeholder" aria-live="polite">
+      <p>Comments will load when needed.</p>
     </div>
+    <noscript>{{ partial "comments-list.html" (dict "comments" $comments) }}</noscript>
   </section>
 {{ end }}
