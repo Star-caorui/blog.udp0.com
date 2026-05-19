@@ -183,6 +183,42 @@ hr {
   min-height: 8rem;
 }
 
+.post-optimistic .content.optimistic-content {
+  position: relative;
+  min-height: 12rem;
+  margin-top: 1.2rem;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--surface-82), var(--surface-96));
+}
+
+.post-optimistic .content.optimistic-content::before,
+.post-optimistic .content.optimistic-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.post-optimistic .content.optimistic-content::before {
+  background:
+    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 1.2rem / 92% 1.6rem no-repeat,
+    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 3.5rem / 86% 1.6rem no-repeat,
+    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 5.8rem / 90% 1.6rem no-repeat,
+    linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 8.1rem / 78% 1.6rem no-repeat;
+}
+
+.post-optimistic .content.optimistic-content::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 16%, transparent) 45%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: skeleton-shimmer 1.15s ease-in-out infinite;
+}
+
 .main.is-loading {
   min-height: 12rem;
 }

@@ -1,6 +1,13 @@
 <article class="post-line">
   <h2 class="post-line-title">
-    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    <a
+      href="{{ .RelPermalink }}"
+      data-pjax-kind="post"
+      data-pjax-title="{{ .Title }}"
+      data-pjax-date="{{ .Date.Format site.Params.dateFormat }}"
+      data-pjax-date-iso="{{ .Date.Format `2006-01-02` }}"
+      data-pjax-eyebrow="{{ .Section | default `Page` | humanize }}"
+    >{{ .Title }}</a>
   </h2>
   <time class="post-line-date" datetime="{{ .Date.Format `2006-01-02` }}">
     {{ .Date.Format site.Params.dateFormat }}

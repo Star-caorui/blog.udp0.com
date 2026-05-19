@@ -2,6 +2,8 @@
   const parser = new DOMParser();
   let runtimeTimer = 0;
   let activeController = null;
+  const siteTitle =
+    document.title.includes(" · ") ? document.title.split(" · ").at(-1) : document.title;
 
   const enhanceTables = (root = document) => {
     root.querySelectorAll(".content table").forEach((table) => {
@@ -63,6 +65,8 @@
     mountRuntimeCounter();
   };
 
+  const buildPageTitle = (title) => `${title} · ${siteTitle}`;
+
   const isPrimaryClick = (event) =>
     event.button === 0 &&
     !event.metaKey &&
@@ -90,7 +94,95 @@
     return true;
   };
 
-  const toggleLoading = (isLoading) => {
+  const getNavLinks = () =>
+    [...document.querySelectorAll(".site-nav a")]
+      .filter((link) => !link.target || link.target === "_self");
+
+  const updateNavState = (urlString) => {
+    const currentUrl = new URL(urlString, window.location.href);
+
+    getNavLinks().forEach((link) => {
+      const href = link.getAttribute("href");
+      if (!href || href.startsWith("#")) return;
+
+      const linkUrl = new URL(link.href, window.location.href);
+      const isHomeLink = linkUrl.pathname === "/";
+      const isActive = isHomeLink
+        ? currentUrl.pathname === "/" || currentUrl.pathname.startsWith("/posts/")
+        : currentUrl.pathname === linkUrl.pathname;
+
+      link.classList.toggle("is-active", isActive);
+    });
+  };
+
+  const createElement = (tagName, text, className) => {
+    const node = document.createElement(tagName);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  };
+
+  const buildOptimisticPost = (meta) => {
+    const main = document.createElement("main");
+    main.className = "main";
+    main.dataset.optimisticKind = "post";
+
+    const article = createElement("article", "", "post post-optimistic");
+    const header = createElement("header", "", "post-header");
+    header.append(
+      createElement("p", meta.eyebrow || "Posts", "eyebrow"),
+      createElement("h1", meta.title),
+    );
+
+    const metaRow = createElement("div", "", "meta-row");
+    const time = createElement("time", meta.dateLabel || "");
+    if (meta.dateIso) time.dateTime = meta.dateIso;
+    metaRow.append(time);
+    header.append(metaRow);
+
+    const content = createElement("div", "", "content optimistic-content");
+    content.setAttribute("aria-hidden", "true");
+
+    article.append(header, content);
+    main.append(article);
+    return main;
+  };
+
+  const getOptimisticMeta = (link) => {
+    if (!link?.dataset.pjaxKind) return null;
+    if (link.dataset.pjaxKind !== "post") return null;
+
+    const title = link.dataset.pjaxTitle?.trim();
+    if (!title) return null;
+
+    return {
+      kind: "post",
+      title,
+      pageTitle: buildPageTitle(title),
+      dateLabel: link.dataset.pjaxDate?.trim() || "",
+      dateIso: link.dataset.pjaxDateIso?.trim() || "",
+      eyebrow: link.dataset.pjaxEyebrow?.trim() || "Posts",
+    };
+  };
+
+  const applyOptimisticState = (url, link) => {
+    updateNavState(url);
+
+    const meta = getOptimisticMeta(link);
+    if (!meta) return { meta: null };
+
+    const main = document.querySelector(".main");
+    if (main) {
+      const optimisticMain = buildOptimisticPost(meta);
+      main.replaceWith(optimisticMain);
+    }
+
+    document.title = meta.pageTitle;
+    window.scrollTo(0, 0);
+    return { meta };
+  };
+
+  const toggleLoading = (isLoading, context = {}) => {
     const main = document.querySelector(".main");
     if (!main) return () => {};
 
@@ -98,6 +190,13 @@
       main.classList.remove("is-loading");
       main.removeAttribute("aria-busy");
       return () => {};
+    }
+
+    if (context.meta?.kind === "post") {
+      main.setAttribute("aria-busy", "true");
+      return () => {
+        main.removeAttribute("aria-busy");
+      };
     }
 
     let timeoutId = window.setTimeout(() => {
@@ -128,25 +227,79 @@
     window.scrollTo(0, 0);
   };
 
-  const swapPage = (nextDocument, url, historyMode) => {
-    const nextHeader = nextDocument.querySelector(".site-header");
+  const getResponsePostMeta = (nextDocument) => {
+    const postHeader = nextDocument.querySelector(".main .post-header");
+    if (!postHeader) return null;
+
+    return {
+      pageTitle: nextDocument.title || "",
+      eyebrow: postHeader.querySelector(".eyebrow")?.textContent?.trim() || "",
+      title: postHeader.querySelector("h1")?.textContent?.trim() || "",
+      dateLabel: postHeader.querySelector("time")?.textContent?.trim() || "",
+    };
+  };
+
+  const getHeaderMatch = (context, nextDocument) => {
+    if (context.meta?.kind !== "post") return false;
+
+    const responseMeta = getResponsePostMeta(nextDocument);
+    if (!responseMeta) return false;
+
+    const match = {
+      url: context.url,
+      pageTitle: responseMeta.pageTitle === context.meta.pageTitle,
+      eyebrow: responseMeta.eyebrow === context.meta.eyebrow,
+      title: responseMeta.title === context.meta.title,
+      dateLabel: responseMeta.dateLabel === context.meta.dateLabel,
+    };
+    match.all = match.pageTitle && match.eyebrow && match.title && match.dateLabel;
+
+    console.info("[pjax] optimistic post header match", {
+      ...match,
+      optimistic: context.meta,
+      response: responseMeta,
+    });
+    return match;
+  };
+
+  const preserveMatchedHeaderFields = (currentMain, importedMain, match) => {
+    if (!match?.all) return;
+
+    const currentHeader = currentMain?.querySelector(".post-header");
+    const importedHeader = importedMain.querySelector(".post-header");
+    if (!currentHeader || !importedHeader) return;
+
+    const selectors = [".eyebrow", "h1", "time"];
+    selectors.forEach((selector) => {
+      const currentNode = currentHeader.querySelector(selector);
+      const importedNode = importedHeader.querySelector(selector);
+      if (currentNode && importedNode) {
+        importedNode.replaceWith(currentNode.cloneNode(true));
+      }
+    });
+  };
+
+  const swapPage = (nextDocument, url, historyMode, context) => {
     const nextMain = nextDocument.querySelector(".main");
-    if (!nextHeader || !nextMain) {
+    if (!nextMain) {
       window.location.href = url;
       return;
     }
 
-    const currentHeader = document.querySelector(".site-header");
     const currentMain = document.querySelector(".main");
-    const importedHeader = document.importNode(nextHeader, true);
     const importedMain = document.importNode(nextMain, true);
+    const headerMatch = getHeaderMatch(context, nextDocument);
 
-    currentHeader?.replaceWith(importedHeader);
+    if (headerMatch?.all) {
+      preserveMatchedHeaderFields(currentMain, importedMain, headerMatch);
+    } else {
+      document.title = nextDocument.title || document.title;
+    }
+
     currentMain?.replaceWith(importedMain);
-
-    document.title = nextDocument.title || document.title;
     document.documentElement.lang =
       nextDocument.documentElement.lang || document.documentElement.lang;
+    updateNavState(url);
 
     if (historyMode === "push") {
       window.history.pushState({ url }, "", url);
@@ -158,12 +311,16 @@
     restoreScroll(url);
   };
 
-  const navigate = async (url, historyMode = "push") => {
+  const navigate = async (url, historyMode = "push", triggerLink = null) => {
     if (activeController) activeController.abort();
 
     const controller = new AbortController();
     activeController = controller;
-    const stopLoading = toggleLoading(true);
+    const context = {
+      url,
+      ...applyOptimisticState(url, triggerLink),
+    };
+    const stopLoading = toggleLoading(true, context);
 
     try {
       const response = await window.fetch(url, {
@@ -184,7 +341,7 @@
 
       const html = await response.text();
       const nextDocument = parser.parseFromString(html, "text/html");
-      swapPage(nextDocument, response.url || url, historyMode);
+      swapPage(nextDocument, response.url || url, historyMode, context);
     } catch (error) {
       if (error.name !== "AbortError") {
         window.location.href = url;
@@ -202,7 +359,7 @@
     if (!shouldHandleLink(link)) return;
 
     event.preventDefault();
-    navigate(link.href, "push");
+    navigate(link.href, "push", link);
   });
 
   window.addEventListener("popstate", () => {
