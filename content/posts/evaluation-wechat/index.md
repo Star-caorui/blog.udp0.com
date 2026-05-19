@@ -8,7 +8,7 @@ slug = "evaluation-wechat"
 
 *显得没事随手测一下微信客户端之间的差异*
 
-![微信客户端测评.png][1]
+![微信客户端测评][1]
 
 
-[1]: /uploads/2021/122547.png
+[1]: images/wechat-client-comparison.png
