@@ -11,4 +11,4 @@ slug = "evaluation-wechat"
 ![微信客户端测评][1]
 
 
-[1]: images/wechat-client-comparison.png
+[1]: images/wechat-client-comparison.webp
