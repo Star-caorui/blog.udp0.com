@@ -12,14 +12,9 @@ pagerSize = 8
 [permalinks]
 posts = "/posts/:slugorcontentbasename/"
 
-[taxonomies]
-tag = "tags"
-
 [outputs]
 home = ["HTML", "RSS"]
 section = ["HTML", "RSS"]
-taxonomy = ["HTML"]
-term = ["HTML"]
 
 [markup]
   [markup.goldmark]
