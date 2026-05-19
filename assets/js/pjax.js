@@ -11,6 +11,13 @@ let activeController = null;
 
 const pageRevalidateRequests = new Map();
 
+const createElement = (tagName, text = "", className = "") => {
+  const node = document.createElement(tagName);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
+};
+
 const buildPageTitle = (title) => `${title} · ${siteTitle}`;
 
 const getDescriptionContent = (doc = document) =>
@@ -115,11 +122,59 @@ const getOptimisticMeta = (link) => {
   };
 };
 
+const buildPreviewMain = (meta) => {
+  const main = createElement("main", "", "main");
+  const isPageLike = meta.kind === "home" || meta.kind === "page";
+  const shell = createElement(
+    isPageLike ? "section" : "article",
+    "",
+    isPageLike ? "pjax-preview page-preview" : "post pjax-preview post-preview",
+  );
+  const header = createElement(
+    "header",
+    "",
+    isPageLike ? "page-header pjax-preview-header" : "post-header pjax-preview-header",
+  );
+  const body = createElement(
+    "div",
+    "",
+    isPageLike ? "page-copy pjax-preview-body" : "content pjax-preview-body",
+  );
+
+  header.append(
+    createElement("p", meta.eyebrow || "PAGE", "eyebrow"),
+    createElement("h1", meta.title),
+  );
+  if (meta.dateLabel) {
+    const metaRow = createElement("div", "", "meta-row");
+    const time = createElement("time", meta.dateLabel);
+    if (meta.dateIso) time.dateTime = meta.dateIso;
+    metaRow.append(time);
+    header.append(metaRow);
+  }
+
+  body.setAttribute("aria-hidden", "true");
+  ["92%", "74%", "86%", "68%", "79%", "58%"].forEach((width) => {
+    const line = createElement("p", "\u00a0", "pjax-skeleton-line");
+    line.style.width = width;
+    body.append(line);
+  });
+
+  shell.append(header, body);
+  main.append(shell);
+  return main;
+};
+
 const applyOptimisticState = (urlString, link) => {
   updateNavState(urlString);
 
   const meta = getOptimisticMeta(link);
   if (!meta) return { meta: null };
+
+  const main = document.querySelector(".main");
+  if (main) {
+    main.replaceWith(buildPreviewMain(meta));
+  }
 
   document.title = meta.pageTitle;
   window.scrollTo(0, 0);

@@ -246,6 +246,39 @@ hr {
   background-size: 240% 78% !important;
 }
 
+.pjax-preview-body {
+  margin-top: 1.2rem;
+}
+
+.pjax-skeleton-line {
+  max-width: 100%;
+  margin: 0 0 0.95rem;
+}
+
+.main.is-loading .pjax-preview-header :is(.eyebrow, h1, time) {
+  background: none !important;
+  animation: none !important;
+  text-decoration-color: currentColor !important;
+}
+
+.main.is-loading .pjax-preview-header .eyebrow {
+  color: var(--accent) !important;
+  -webkit-text-fill-color: var(--accent);
+  display: block;
+}
+
+.main.is-loading .pjax-preview-header h1 {
+  color: var(--text) !important;
+  -webkit-text-fill-color: var(--text);
+  display: block;
+}
+
+.main.is-loading .pjax-preview-header time {
+  color: var(--muted) !important;
+  -webkit-text-fill-color: var(--muted);
+  display: inline;
+}
+
 .main.is-loading :is(p, li, dd, th, td) {
   background-size: 240% 68% !important;
 }
