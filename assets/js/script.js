@@ -1,5 +1,7 @@
 (() => {
   const parser = new DOMParser();
+  const pageCache = new Map();
+  const pageCacheTTL = 10 * 60 * 1000;
   let runtimeTimer = 0;
   let activeController = null;
   const siteTitle =
@@ -67,6 +69,51 @@
 
   const buildPageTitle = (title) => `${title} · ${siteTitle}`;
   const normalizeEyebrow = (value) => (value || "").trim().toUpperCase();
+  const getCacheKey = (urlString) => {
+    const url = new URL(urlString, window.location.href);
+    return `${url.origin}${url.pathname}${url.search}`;
+  };
+
+  const serializePage = (pageDocument) => {
+    const main = pageDocument.querySelector(".main");
+    if (!main) return null;
+
+    return {
+      title: pageDocument.title || "",
+      lang: pageDocument.documentElement.lang || "",
+      mainHTML: main.outerHTML,
+    };
+  };
+
+  const cachePage = (urlString, pageDocument) => {
+    const page = serializePage(pageDocument);
+    if (!page) return;
+
+    pageCache.set(getCacheKey(urlString), {
+      ...page,
+      cachedAt: Date.now(),
+    });
+  };
+
+  const getCachedPage = (urlString) => {
+    const cacheKey = getCacheKey(urlString);
+    const entry = pageCache.get(cacheKey);
+    if (!entry) return null;
+
+    if (Date.now() - entry.cachedAt > pageCacheTTL) {
+      pageCache.delete(cacheKey);
+      return null;
+    }
+
+    return entry;
+  };
+
+  const materializeCachedDocument = (entry) => {
+    const cachedDocument = document.implementation.createHTMLDocument(entry.title);
+    cachedDocument.documentElement.lang = entry.lang || "";
+    cachedDocument.body.innerHTML = entry.mainHTML;
+    return cachedDocument;
+  };
 
   const isPrimaryClick = (event) =>
     event.button === 0 &&
@@ -323,6 +370,7 @@
     document.documentElement.lang =
       nextDocument.documentElement.lang || document.documentElement.lang;
     updateNavState(url);
+    cachePage(url, nextDocument);
 
     if (historyMode === "push") {
       window.history.pushState({ url }, "", url);
@@ -336,6 +384,13 @@
 
   const navigate = async (url, historyMode = "push", triggerLink = null) => {
     if (activeController) activeController.abort();
+
+    const cachedPage = getCachedPage(url);
+    if (cachedPage) {
+      console.info("[pjax] cache hit", { url });
+      swapPage(materializeCachedDocument(cachedPage), url, historyMode, { url, meta: null });
+      return;
+    }
 
     const controller = new AbortController();
     activeController = controller;
@@ -390,5 +445,6 @@
   });
 
   window.history.replaceState({ url: window.location.href }, "", window.location.href);
+  cachePage(window.location.href, document);
   initPage();
 })();
