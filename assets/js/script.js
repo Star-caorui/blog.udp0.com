@@ -66,6 +66,7 @@
   };
 
   const buildPageTitle = (title) => `${title} · ${siteTitle}`;
+  const normalizeEyebrow = (value) => (value || "").trim().toUpperCase();
 
   const isPrimaryClick = (event) =>
     event.button === 0 &&
@@ -122,46 +123,62 @@
     return node;
   };
 
-  const buildOptimisticPost = (meta) => {
+  const buildOptimisticMain = (meta) => {
     const main = document.createElement("main");
     main.className = "main";
-    main.dataset.optimisticKind = "post";
+    main.dataset.optimisticKind = meta.kind;
 
-    const article = createElement("article", "", "post post-optimistic");
-    const header = createElement("header", "", "post-header");
+    const shellTag = meta.layout === "page-header" ? "section" : "article";
+    const shellClass =
+      meta.layout === "page-header" ? "optimistic-shell page-optimistic" : "post optimistic-shell post-optimistic";
+    const shell = createElement(shellTag, "", shellClass);
+    const header = createElement(
+      "header",
+      "",
+      meta.layout === "page-header" ? "page-header" : "post-header",
+    );
     header.append(
-      createElement("p", meta.eyebrow || "Posts", "eyebrow"),
+      createElement("p", meta.eyebrow || "PAGE", "eyebrow"),
       createElement("h1", meta.title),
     );
 
-    const metaRow = createElement("div", "", "meta-row");
-    const time = createElement("time", meta.dateLabel || "");
-    if (meta.dateIso) time.dateTime = meta.dateIso;
-    metaRow.append(time);
-    header.append(metaRow);
+    if (meta.dateLabel) {
+      const metaRow = createElement("div", "", "meta-row");
+      const time = createElement("time", meta.dateLabel || "");
+      if (meta.dateIso) time.dateTime = meta.dateIso;
+      metaRow.append(time);
+      header.append(metaRow);
+    }
 
-    const content = createElement("div", "", "content optimistic-content");
+    const content = createElement(
+      "div",
+      "",
+      meta.layout === "page-header" ? "page-copy optimistic-content" : "content optimistic-content",
+    );
     content.setAttribute("aria-hidden", "true");
 
-    article.append(header, content);
-    main.append(article);
+    shell.append(header, content);
+    main.append(shell);
     return main;
   };
 
   const getOptimisticMeta = (link) => {
     if (!link?.dataset.pjaxKind) return null;
-    if (link.dataset.pjaxKind !== "post") return null;
 
     const title = link.dataset.pjaxTitle?.trim();
     if (!title) return null;
 
+    const kind = link.dataset.pjaxKind;
+    const layout = kind === "home" ? "page-header" : kind === "post" ? "post-header" : "post-header";
+
     return {
-      kind: "post",
+      kind,
+      layout,
       title,
-      pageTitle: buildPageTitle(title),
+      pageTitle: link.dataset.pjaxPageTitle?.trim() || buildPageTitle(title),
       dateLabel: link.dataset.pjaxDate?.trim() || "",
       dateIso: link.dataset.pjaxDateIso?.trim() || "",
-      eyebrow: link.dataset.pjaxEyebrow?.trim() || "Posts",
+      eyebrow: link.dataset.pjaxEyebrow?.trim() || (kind === "post" ? "POSTS" : "PAGE"),
     };
   };
 
@@ -173,7 +190,7 @@
 
     const main = document.querySelector(".main");
     if (main) {
-      const optimisticMain = buildOptimisticPost(meta);
+      const optimisticMain = buildOptimisticMain(meta);
       main.replaceWith(optimisticMain);
     }
 
@@ -192,7 +209,7 @@
       return () => {};
     }
 
-    if (context.meta?.kind === "post") {
+    if (context.meta) {
       main.setAttribute("aria-busy", "true");
       return () => {
         main.removeAttribute("aria-busy");
@@ -227,34 +244,36 @@
     window.scrollTo(0, 0);
   };
 
-  const getResponsePostMeta = (nextDocument) => {
-    const postHeader = nextDocument.querySelector(".main .post-header");
-    if (!postHeader) return null;
+  const getResponseHeaderMeta = (nextDocument) => {
+    const header =
+      nextDocument.querySelector(".main .post-header") ||
+      nextDocument.querySelector(".main .page-header");
+    if (!header) return null;
 
     return {
       pageTitle: nextDocument.title || "",
-      eyebrow: postHeader.querySelector(".eyebrow")?.textContent?.trim() || "",
-      title: postHeader.querySelector("h1")?.textContent?.trim() || "",
-      dateLabel: postHeader.querySelector("time")?.textContent?.trim() || "",
+      eyebrow: header.querySelector(".eyebrow")?.textContent?.trim() || "",
+      title: header.querySelector("h1")?.textContent?.trim() || "",
+      dateLabel: header.querySelector("time")?.textContent?.trim() || "",
     };
   };
 
   const getHeaderMatch = (context, nextDocument) => {
-    if (context.meta?.kind !== "post") return false;
+    if (!context.meta) return false;
 
-    const responseMeta = getResponsePostMeta(nextDocument);
+    const responseMeta = getResponseHeaderMeta(nextDocument);
     if (!responseMeta) return false;
 
     const match = {
       url: context.url,
       pageTitle: responseMeta.pageTitle === context.meta.pageTitle,
-      eyebrow: responseMeta.eyebrow === context.meta.eyebrow,
+      eyebrow: normalizeEyebrow(responseMeta.eyebrow) === normalizeEyebrow(context.meta.eyebrow),
       title: responseMeta.title === context.meta.title,
       dateLabel: responseMeta.dateLabel === context.meta.dateLabel,
     };
     match.all = match.pageTitle && match.eyebrow && match.title && match.dateLabel;
 
-    console.info("[pjax] optimistic post header match", {
+    console.info("[pjax] optimistic header match", {
       ...match,
       optimistic: context.meta,
       response: responseMeta,
@@ -265,8 +284,12 @@
   const preserveMatchedHeaderFields = (currentMain, importedMain, match) => {
     if (!match?.all) return;
 
-    const currentHeader = currentMain?.querySelector(".post-header");
-    const importedHeader = importedMain.querySelector(".post-header");
+    const currentHeader =
+      currentMain?.querySelector(".post-header") ||
+      currentMain?.querySelector(".page-header");
+    const importedHeader =
+      importedMain.querySelector(".post-header") ||
+      importedMain.querySelector(".page-header");
     if (!currentHeader || !importedHeader) return;
 
     const selectors = [".eyebrow", "h1", "time"];

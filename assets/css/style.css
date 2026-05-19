@@ -184,7 +184,7 @@ hr {
   min-height: 8rem;
 }
 
-.post-optimistic .content.optimistic-content {
+.optimistic-shell .optimistic-content {
   position: relative;
   min-height: 12rem;
   margin-top: 1.2rem;
@@ -194,14 +194,14 @@ hr {
   background: linear-gradient(180deg, var(--surface-82), var(--surface-96));
 }
 
-.post-optimistic .content.optimistic-content::before,
-.post-optimistic .content.optimistic-content::after {
+.optimistic-shell .optimistic-content::before,
+.optimistic-shell .optimistic-content::after {
   content: "";
   position: absolute;
   inset: 0;
 }
 
-.post-optimistic .content.optimistic-content::before {
+.optimistic-shell .optimistic-content::before {
   background:
     linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 1.2rem / 92% 1.6rem no-repeat,
     linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 3.5rem / 86% 1.6rem no-repeat,
@@ -209,7 +209,7 @@ hr {
     linear-gradient(var(--surface-90) 0.95rem, transparent 0) 1rem 8.1rem / 78% 1.6rem no-repeat;
 }
 
-.post-optimistic .content.optimistic-content::after {
+.optimistic-shell .optimistic-content::after {
   background: linear-gradient(
     90deg,
     transparent 0%,

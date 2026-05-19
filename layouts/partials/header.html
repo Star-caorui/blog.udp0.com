@@ -4,14 +4,35 @@
       <nav class="site-nav" aria-label="Primary">
         {{ range . }}
           {{ $isActive := false }}
+          {{ $pjaxKind := "page" }}
+          {{ $pjaxTitle := .Name }}
+          {{ $pjaxPageTitle := printf "%s · %s" .Name site.Title }}
+          {{ $pjaxEyebrow := "PAGE" }}
+          {{ $pjaxDate := "" }}
+          {{ $pjaxDateISO := "" }}
           {{ if eq .URL "/" }}
             {{ $isActive = or $.IsHome (eq $.Section "posts") }}
+            {{ $pjaxKind = "home" }}
+            {{ $pjaxTitle = "Posts" }}
+            {{ $pjaxPageTitle = site.Title }}
           {{ else if or ($.IsMenuCurrent `main` .) ($.HasMenuCurrent `main` .) (eq $.RelPermalink .URL) }}
             {{ $isActive = true }}
+          {{ end }}
+          {{ with .Page }}
+            {{ $pjaxTitle = .Title }}
+            {{ $pjaxPageTitle = printf "%s · %s" .Title site.Title }}
+            {{ $pjaxDate = .Date.Format site.Params.dateFormat }}
+            {{ $pjaxDateISO = .Date.Format `2006-01-02` }}
           {{ end }}
           <a
             class="{{ if $isActive }}is-active{{ end }}"
             href="{{ .URL }}"
+            data-pjax-kind="{{ $pjaxKind }}"
+            data-pjax-title="{{ $pjaxTitle }}"
+            data-pjax-page-title="{{ $pjaxPageTitle }}"
+            data-pjax-eyebrow="{{ $pjaxEyebrow }}"
+            {{ with $pjaxDate }}data-pjax-date="{{ . }}"{{ end }}
+            {{ with $pjaxDateISO }}data-pjax-date-iso="{{ . }}"{{ end }}
           >{{ .Name }}</a>
         {{ end }}
         {{ with site.Home.OutputFormats.Get "RSS" }}
