@@ -1,22 +1,20 @@
 (() => {
   const parser = new DOMParser();
-  const pageCache = new Map();
-  const cacheModeStorageKey = "pjax-cache-mode";
-  const cacheModes = ["hybrid", "storage-only"];
   const runtimeCacheName = "pjax-runtime-v2";
   const runtimeCacheKindHeader = "x-pjax-cache-kind";
   const runtimeCacheAtHeader = "x-pjax-cached-at";
   const runtimeCacheTTLHeader = "x-pjax-cache-ttl";
+  const runtimeCacheETagHeader = "x-pjax-origin-etag";
   const pageCacheTTL = 10 * 60 * 1000;
   const commentsDataUrl = "/comments/index.json";
   const commentsCacheTTL = 10 * 60 * 1000;
   let commentsObserver = null;
   let commentsPromise = null;
   let commentsDataCache = null;
+  const pageRevalidateRequests = new Map();
   let runtimeCachePromise = null;
   let runtimeTimer = 0;
   let activeController = null;
-  let cacheMode = "hybrid";
   const siteTitle =
     document.title.includes(" · ") ? document.title.split(" · ").at(-1) : document.title;
 
@@ -82,56 +80,9 @@
     const segments = url.pathname.split("/").filter(Boolean);
     return segments.at(-1) || "home";
   };
-  const readSessionValue = (key) => {
-    try {
-      return window.sessionStorage.getItem(key);
-    } catch {
-      return null;
-    }
-  };
-
-  const writeSessionValue = (key, value) => {
-    try {
-      window.sessionStorage.setItem(key, value);
-    } catch {
-      // Ignore storage availability errors.
-    }
-  };
-
-  const shouldUseMemoryCache = () => cacheMode === "hybrid";
   const isFresh = (cachedAt, ttl) => cachedAt > 0 && ttl > 0 && Date.now() - cachedAt <= ttl;
   const canUseRuntimeCache = () => typeof window.caches !== "undefined";
   const getRuntimeCacheRequest = (urlString) => new Request(getCacheKey(urlString), { method: "GET" });
-  const clearMemoryCaches = () => {
-    pageCache.clear();
-    commentsDataCache = null;
-  };
-
-  const primeCurrentPageMemoryCache = () => {
-    if (!shouldUseMemoryCache()) return;
-
-    const page = serializePage(document);
-    if (!page) return;
-    setPageCache(window.location.href, page);
-  };
-
-  const setCacheMode = (nextMode) => {
-    if (!cacheModes.includes(nextMode)) {
-      throw new Error(`Unsupported cache mode: ${nextMode}`);
-    }
-
-    cacheMode = nextMode;
-    writeSessionValue(cacheModeStorageKey, nextMode);
-    clearMemoryCaches();
-    primeCurrentPageMemoryCache();
-    console.info("[pjax] cache mode", { mode: cacheMode });
-    return cacheMode;
-  };
-
-  const initCacheMode = () => {
-    const storedMode = readSessionValue(cacheModeStorageKey);
-    cacheMode = cacheModes.includes(storedMode) ? storedMode : "hybrid";
-  };
 
   const openRuntimeCache = async () => {
     if (!canUseRuntimeCache()) return null;
@@ -142,7 +93,7 @@
     return runtimeCachePromise;
   };
 
-  const buildRuntimeCacheResponse = (payload, kind, ttl) =>
+  const buildRuntimeCacheResponse = (payload, kind, ttl, etag = "") =>
     new Response(JSON.stringify(payload), {
       status: 200,
       headers: {
@@ -150,6 +101,7 @@
         [runtimeCacheKindHeader]: kind,
         [runtimeCacheAtHeader]: String(Date.now()),
         [runtimeCacheTTLHeader]: String(ttl),
+        [runtimeCacheETagHeader]: etag,
       },
     });
 
@@ -157,6 +109,7 @@
     kind: response.headers.get(runtimeCacheKindHeader) || "",
     cachedAt: Number(response.headers.get(runtimeCacheAtHeader) || 0),
     ttl: Number(response.headers.get(runtimeCacheTTLHeader) || 0),
+    etag: response.headers.get(runtimeCacheETagHeader) || "",
   });
 
   const getPersistentCacheEntry = async (urlString, expectedKind) => {
@@ -177,20 +130,21 @@
       return {
         payload: await response.json(),
         cachedAt: meta.cachedAt,
+        etag: meta.etag,
       };
     } catch {
       return null;
     }
   };
 
-  const putPersistentCacheEntry = async (urlString, payload, kind, ttl) => {
+  const putPersistentCacheEntry = async (urlString, payload, kind, ttl, etag = "") => {
     try {
       const runtimeCache = await openRuntimeCache();
       if (!runtimeCache) return;
 
       await runtimeCache.put(
         getRuntimeCacheRequest(urlString),
-        buildRuntimeCacheResponse(payload, kind, ttl),
+        buildRuntimeCacheResponse(payload, kind, ttl, etag),
       );
     } catch {
       // Ignore runtime cache write failures.
@@ -198,7 +152,6 @@
   };
 
   const getCommentsCache = () => {
-    if (!shouldUseMemoryCache()) return null;
     if (!commentsDataCache) return null;
     if (!isFresh(commentsDataCache.cachedAt, commentsCacheTTL)) {
       commentsDataCache = null;
@@ -209,13 +162,6 @@
   };
 
   const setCommentsCache = (data, cachedAt = Date.now()) => {
-    if (!shouldUseMemoryCache()) {
-      return {
-        data,
-        cachedAt,
-      };
-    }
-
     commentsDataCache = {
       data,
       cachedAt,
@@ -239,47 +185,57 @@
     };
   };
 
-  const setPageCache = (urlString, page, cachedAt = Date.now()) => {
-    if (!shouldUseMemoryCache()) return;
-    pageCache.set(getCacheKey(urlString), {
-      ...page,
-      cachedAt,
-    });
-  };
-
-  const cachePage = (urlString, pageDocument) => {
+  const cachePage = (urlString, pageDocument, etag = "") => {
     const page = serializePage(pageDocument);
     if (!page) return;
 
-    setPageCache(urlString, page);
-    void putPersistentCacheEntry(urlString, page, "page", pageCacheTTL);
-  };
-
-  const getCachedPage = (urlString) => {
-    if (!shouldUseMemoryCache()) return null;
-    const cacheKey = getCacheKey(urlString);
-    const entry = pageCache.get(cacheKey);
-    if (!entry) return null;
-
-    if (Date.now() - entry.cachedAt > pageCacheTTL) {
-      pageCache.delete(cacheKey);
-      return null;
-    }
-
-    return entry;
+    void putPersistentCacheEntry(urlString, page, "page", pageCacheTTL, etag);
   };
 
   const getPersistentPage = async (urlString) => {
     const cached = await getPersistentCacheEntry(urlString, "page");
     if (!cached?.payload) return null;
 
-    if (shouldUseMemoryCache()) {
-      setPageCache(urlString, cached.payload, cached.cachedAt);
-    }
     return {
       ...cached.payload,
       cachedAt: cached.cachedAt,
+      etag: cached.etag,
     };
+  };
+
+  const revalidatePersistentPage = (urlString, etag) => {
+    if (!etag) return;
+
+    const cacheKey = getCacheKey(urlString);
+    if (pageRevalidateRequests.has(cacheKey)) return;
+
+    const task = window.fetch(urlString, {
+      credentials: "same-origin",
+      cache: "no-store",
+      headers: {
+        "X-Requested-With": "pjax",
+        "If-None-Match": etag,
+      },
+    })
+      .then(async (response) => {
+        if (response.status === 304) return;
+        if (!response.ok) return;
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("text/html")) return;
+
+        const html = await response.text();
+        const nextDocument = parser.parseFromString(html, "text/html");
+        cachePage(response.url || urlString, nextDocument, response.headers.get("etag") || "");
+      })
+      .catch(() => {
+        // Ignore background revalidation failures.
+      })
+      .finally(() => {
+        pageRevalidateRequests.delete(cacheKey);
+      });
+
+    pageRevalidateRequests.set(cacheKey, task);
   };
 
   const materializeCachedDocument = (entry) => {
@@ -676,7 +632,6 @@
     document.documentElement.lang =
       nextDocument.documentElement.lang || document.documentElement.lang;
     updateNavState(url);
-    cachePage(url, nextDocument);
 
     if (historyMode === "push") {
       window.history.pushState({ url }, "", url);
@@ -690,13 +645,6 @@
 
   const navigate = async (url, historyMode = "push", triggerLink = null) => {
     if (activeController) activeController.abort();
-
-    const cachedPage = getCachedPage(url);
-    if (cachedPage) {
-      console.info("[pjax] cache hit", { url, source: "memory" });
-      swapPage(materializeCachedDocument(cachedPage), url, historyMode, { url, meta: null });
-      return;
-    }
 
     const controller = new AbortController();
     activeController = controller;
@@ -713,6 +661,7 @@
       if (persistentPage) {
         console.info("[pjax] cache hit", { url, source: "cache-storage" });
         swapPage(materializeCachedDocument(persistentPage), url, historyMode, { url, meta: null });
+        revalidatePersistentPage(url, persistentPage.etag || "");
         return;
       }
 
@@ -734,6 +683,7 @@
 
       const html = await response.text();
       const nextDocument = parser.parseFromString(html, "text/html");
+      cachePage(response.url || url, nextDocument, response.headers.get("etag") || "");
       swapPage(nextDocument, response.url || url, historyMode, context);
     } catch (error) {
       if (error.name !== "AbortError") {
@@ -759,20 +709,6 @@
     navigate(window.location.href, "replace");
   });
 
-  initCacheMode();
-  window.__pjaxCacheMode = (nextMode) => {
-    if (!nextMode) {
-      return {
-        mode: cacheMode,
-        modes: cacheModes,
-      };
-    }
-
-    return {
-      mode: setCacheMode(nextMode),
-      modes: cacheModes,
-    };
-  };
   window.history.replaceState({ url: window.location.href }, "", window.location.href);
   cachePage(window.location.href, document);
   initPage();
