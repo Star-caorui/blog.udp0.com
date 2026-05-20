@@ -5,6 +5,14 @@
   {{ with site.Params.footerHTML }}
     <div class="footer-meta">{{ . | safeHTML }}</div>
   {{ end }}
+  {{ with site.Home.OutputFormats.Get "RSS" }}
+    <p class="footer-meta">
+      <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">
+        <span>RSS</span>
+        <span class="nav-external-icon" aria-hidden="true">&#x2197;&#xFE0E;</span>
+      </a>
+    </p>
+  {{ end }}
   <p class="footer-copy">Copyright © {{ site.Params.since }} {{ site.Params.author }}</p>
   {{ with site.Params.siteStartedAt }}
     <p
