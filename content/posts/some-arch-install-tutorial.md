@@ -13,11 +13,11 @@ slug = "some-arch-install-tutorial"
 
 
 ### 阅读提醒
-{{% note title="阅读提醒" %}}
+{{< note title="阅读提醒" >}}
 - 我更建议通过 Arch Wiki 及其他**高质量教程**安装 Arch。
 - 我不推荐无来源、无维护状态的第三方教程；如果你能分辨质量，自行筛选也没问题。
 - Arch Linux 是滚动更新发行版，安装教程天然具有时效性。
-{{% /note %}}
+{{< /note >}}
 
 ### Arch Wiki
 - [如何安装 Arch Linux][1]：基本安装教程

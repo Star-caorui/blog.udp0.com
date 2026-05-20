@@ -32,15 +32,15 @@ render = 'always'
 ### 安装 Arch Linux
 前提假设你已完成下载并校验，成功制作 Arch Linux ISO 安装媒介，并已临时关闭安全启动。通过 UEFI 启动并引导到 Arch Linux ISO 安装媒介。
 
-{{% note title="前提条件" %}}
+{{< note title="前提条件" >}}
 我不会对传统引导提供支持，因为安全引导需要 UEFI。
-{{% /note %}}
+{{< /note >}}
 
 首先，让我们做一些准备工作。换源并更新 Arch Linux ISO 中的密钥链。
 
-{{% warn title="操作提醒" %}}
+{{< warn title="操作提醒" >}}
 这里的部分更新方式并不算最佳实践，请自行判断是否接受。
-{{% /warn %}}
+{{< /warn >}}
 
 ```shell
 echo "Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch" > /etc/pacman.d/mirrorlist

@@ -32,9 +32,9 @@ ImprovMX 是一款像 Cloudflare 邮件转发的服务。ImprovMX 仅需添加 M
 ![image.png][8]
 
 ## 使用 Outlook 别名进行发信
-{{% warn title="注意事项" %}}
+{{< warn title="注意事项" >}}
 此功能可能需要修改你的微软账号主要邮箱。
-{{% /warn %}}
+{{< /warn >}}
 
 访问 [管理你登录 Microsoft 的方式][9] 添加你要发信的电子邮箱
 ![image.png][10]
@@ -49,9 +49,9 @@ ImprovMX 是一款像 Cloudflare 邮件转发的服务。ImprovMX 仅需添加 M
   ```
 此时你就可以从 [Outlook][12] 发信了。
 
-{{% tip title="补充说明" %}}
+{{< tip title="补充说明" >}}
 Outlook 可以自定义发件地址，不过需要先完成验证；前面添加别名时已经做过这一步了。
-{{% /tip %}}
+{{< /tip >}}
 
 ![image.png][13]
 
