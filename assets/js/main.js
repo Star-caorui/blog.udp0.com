@@ -138,7 +138,7 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     if (!shouldHandleLink(link)) return;
 
     event.preventDefault();
-    navigate(link.href, "push");
+    navigate(link.href, "push", link);
   });
 
   window.addEventListener("popstate", () => {

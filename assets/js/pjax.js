@@ -7,6 +7,8 @@ import {
 let parser = null;
 let initPage = () => {};
 let activeController = null;
+let activeLoadingCleanup = () => {};
+let loadingId = 0;
 
 const pageRevalidateRequests = new Map();
 
@@ -97,7 +99,55 @@ const revalidatePersistentPage = (urlString, etag) => {
   pageRevalidateRequests.set(cacheKey, task);
 };
 
-const toggleLoading = (isLoading) => {
+const getOptimisticMeta = (link) => {
+  if (!link?.dataset.pjaxKind) return null;
+
+  const title = link.dataset.pjaxTitle?.trim();
+  if (!title) return null;
+
+  const kind = link.dataset.pjaxKind;
+  return {
+    kind,
+    title,
+    pageTitle: link.dataset.pjaxPageTitle?.trim() || document.title,
+    dateLabel: link.dataset.pjaxDate?.trim() || "",
+    dateIso: link.dataset.pjaxDateIso?.trim() || "",
+    eyebrow: link.dataset.pjaxEyebrow?.trim() || (kind === "post" ? "POSTS" : "PAGE"),
+  };
+};
+
+const ensureChild = (parent, selector, tagName, className = "") => {
+  const existing = parent.querySelector(selector);
+  if (existing) return existing;
+
+  const node = document.createElement(tagName);
+  if (className) node.className = className;
+  parent.append(node);
+  return node;
+};
+
+const applyLoadingPreview = (main, meta) => {
+  if (!meta) return;
+
+  const header = main.querySelector(".page-header, .post-header");
+  if (!header) return;
+
+  const eyebrow = ensureChild(header, ".eyebrow", "p", "eyebrow");
+  const title = ensureChild(header, "h1", "h1");
+
+  eyebrow.textContent = meta.eyebrow;
+  title.textContent = meta.title;
+  header.classList.add("pjax-preview-header");
+
+  if (!meta.dateLabel) return;
+
+  const metaRow = ensureChild(header, ".meta-row", "div", "meta-row");
+  const time = ensureChild(metaRow, "time", "time");
+  time.textContent = meta.dateLabel;
+  if (meta.dateIso) time.dateTime = meta.dateIso;
+};
+
+const toggleLoading = (isLoading, context = {}) => {
   const main = getMain();
   if (!main) return () => {};
 
@@ -107,15 +157,35 @@ const toggleLoading = (isLoading) => {
     return () => {};
   }
 
+  const id = `${++loadingId}`;
+  const initialHeight = main.style.height;
+  const initialMinHeight = main.style.minHeight;
+  const initialOverflow = main.style.overflow;
+  const initialTitle = document.title;
   const timeoutId = window.setTimeout(() => {
+    const height = main.getBoundingClientRect().height;
+    main.dataset.pjaxLoadingId = id;
+    main.style.height = `${height}px`;
+    main.style.minHeight = `${height}px`;
+    main.style.overflow = "hidden";
+    applyLoadingPreview(main, context.meta);
+    if (context.meta?.pageTitle) document.title = context.meta.pageTitle;
     main.classList.add("is-loading");
     main.setAttribute("aria-busy", "true");
   }, 140);
 
   return () => {
     window.clearTimeout(timeoutId);
+    if (!main.isConnected) return;
+    if (main.dataset.pjaxLoadingId !== id) return;
+
+    main.style.height = initialHeight;
+    main.style.minHeight = initialMinHeight;
+    main.style.overflow = initialOverflow;
     main.classList.remove("is-loading");
     main.removeAttribute("aria-busy");
+    delete main.dataset.pjaxLoadingId;
+    if (document.title === context.meta?.pageTitle) document.title = initialTitle;
   };
 };
 
@@ -163,12 +233,19 @@ export const setupPjax = (options = {}) => {
   initPage = options.initPage || (() => {});
 };
 
-export const navigate = async (urlString, historyMode = "push") => {
-  if (activeController) activeController.abort();
+export const navigate = async (urlString, historyMode = "push", triggerLink = null) => {
+  if (activeController) {
+    activeController.abort();
+    activeLoadingCleanup();
+    activeLoadingCleanup = () => {};
+  }
 
   const controller = new AbortController();
   activeController = controller;
-  const stopLoading = toggleLoading(true);
+  const stopLoading = toggleLoading(true, {
+    meta: getOptimisticMeta(triggerLink),
+  });
+  activeLoadingCleanup = stopLoading;
 
   try {
     const cachedResponse = await readCache(urlString);
@@ -213,6 +290,7 @@ export const navigate = async (urlString, historyMode = "push") => {
     if (activeController === controller) {
       activeController = null;
       stopLoading();
+      activeLoadingCleanup = () => {};
     }
   }
 };
