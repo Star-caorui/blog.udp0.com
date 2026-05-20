@@ -19,7 +19,7 @@
     background-image: linear-gradient(
       -78deg,
       transparent 0.18em,
-      var(--accent-38) 0.18em calc(100% - 0.18em),
+      color-mix(in srgb, var(--accent) 38%, transparent) 0.18em calc(100% - 0.18em),
       transparent calc(100% - 0.18em)
     );
     background-size: 100% 100%;
@@ -28,12 +28,11 @@
 
   body > header > nav a:hover {
     color: var(--text);
-    background: var(--accent-08);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
   }
 
   .post-line-title a:hover,
-  body > footer > a:hover,
-  .pagination-link:hover {
+  body > footer > a:hover {
     color: var(--accent);
   }
 

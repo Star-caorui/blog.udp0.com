@@ -6,32 +6,7 @@
   --muted: #73706b;
   --accent: #508fff;
   --code-bg: #ffffff;
-  --green: #2d9b66;
-  --teal: #198f73;
-  --orange: #b97a16;
-  --red: #c45243;
   --line: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
-  --accent-05: color-mix(in srgb, var(--accent) 5%, transparent);
-  --accent-08: color-mix(in srgb, var(--accent) 8%, transparent);
-  --accent-10: color-mix(in srgb, var(--accent) 10%, transparent);
-  --accent-14: color-mix(in srgb, var(--accent) 14%, transparent);
-  --accent-16: color-mix(in srgb, var(--accent) 16%, transparent);
-  --accent-28: color-mix(in srgb, var(--accent) 28%, transparent);
-  --accent-34: color-mix(in srgb, var(--accent) 34%, transparent);
-  --accent-38: color-mix(in srgb, var(--accent) 38%, transparent);
-  --accent-40: color-mix(in srgb, var(--accent) 40%, transparent);
-  --surface-82: color-mix(in srgb, var(--surface) 82%, transparent);
-  --surface-90: color-mix(in srgb, var(--surface) 90%, transparent);
-  --surface-96: color-mix(in srgb, var(--surface) 96%, transparent);
-  --green-14: color-mix(in srgb, var(--green) 14%, transparent);
-  --green-34: color-mix(in srgb, var(--green) 34%, transparent);
-  --teal-14: color-mix(in srgb, var(--teal) 14%, transparent);
-  --teal-34: color-mix(in srgb, var(--teal) 34%, transparent);
-  --orange-16: color-mix(in srgb, var(--orange) 16%, transparent);
-  --orange-34: color-mix(in srgb, var(--orange) 34%, transparent);
-  --red-16: color-mix(in srgb, var(--red) 16%, transparent);
-  --red-34: color-mix(in srgb, var(--red) 34%, transparent);
   --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "New York", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
   --sans: "Avenir Next", "Helvetica Neue", "PingFang SC", "Noto Sans SC", sans-serif;
 }
@@ -45,9 +20,6 @@
     --muted: #a5afbf;
     --accent: #7aa7ff;
     --code-bg: #151a21;
-    --surface-82: color-mix(in srgb, var(--surface) 92%, transparent);
-    --surface-90: color-mix(in srgb, var(--surface) 96%, transparent);
-    --surface-96: var(--surface);
   }
 }
 
@@ -97,7 +69,7 @@ a {
 
 ::selection {
   color: var(--text);
-  background: var(--accent-28);
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 .content a,
@@ -107,7 +79,7 @@ a {
   background-image: linear-gradient(
     -78deg,
     transparent 0.18em,
-    var(--accent-28) 0.18em calc(100% - 0.18em),
+    color-mix(in srgb, var(--accent) 28%, transparent) 0.18em calc(100% - 0.18em),
     transparent calc(100% - 0.18em)
   );
   background-repeat: no-repeat;
@@ -162,7 +134,7 @@ blockquote {
   padding-block: 0.2rem;
   color: var(--muted);
   padding-inline-start: 1rem;
-  border-inline-start: 3px solid var(--accent-40);
+  border-inline-start: 3px solid color-mix(in srgb, var(--accent) 34%, transparent);
 }
 
 hr {

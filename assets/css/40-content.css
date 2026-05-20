@@ -143,21 +143,25 @@ h2 {
 }
 
 .content th {
-  background: var(--accent-08);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .callout {
-  --callout-tint: var(--accent-14);
-  --callout-border: var(--accent-34);
   --callout-accent: var(--accent);
+  --callout-tint: color-mix(in srgb, var(--callout-accent) 14%, transparent);
+  --callout-border: color-mix(in srgb, var(--callout-accent) 34%, transparent);
   margin: 1.5rem 0;
   padding: 0.95rem 1rem 1rem;
   background:
-    linear-gradient(135deg, var(--surface-82), var(--surface-96)),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface) 88%, transparent),
+      color-mix(in srgb, var(--surface) 96%, transparent)
+    ),
     linear-gradient(90deg, var(--callout-tint), transparent 72%);
   border: 1px solid var(--callout-border);
   border-radius: 14px;
-  box-shadow: 0 1px 0 var(--accent-05);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 5%, transparent);
 }
 
 .callout-head {
@@ -187,37 +191,27 @@ h2 {
 }
 
 .callout-body code {
-  background: var(--surface-90);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
 }
 
 .callout-note {
-  --callout-tint: var(--accent-14);
-  --callout-border: var(--accent-34);
   --callout-accent: var(--accent);
 }
 
 .callout-tip {
-  --callout-tint: var(--green-14);
-  --callout-border: var(--green-34);
-  --callout-accent: var(--green);
+  --callout-accent: green;
 }
 
 .callout-success {
-  --callout-tint: var(--teal-14);
-  --callout-border: var(--teal-34);
-  --callout-accent: var(--teal);
+  --callout-accent: teal;
 }
 
 .callout-warn {
-  --callout-tint: var(--orange-16);
-  --callout-border: var(--orange-34);
-  --callout-accent: var(--orange);
+  --callout-accent: orange;
 }
 
 .callout-caution {
-  --callout-tint: var(--red-16);
-  --callout-border: var(--red-34);
-  --callout-accent: var(--red);
+  --callout-accent: red;
 }
 
 .comments {
@@ -268,39 +262,4 @@ h2 {
   margin-bottom: 0.35rem;
   font-family: var(--sans);
   font-size: 0.82rem;
-}
-
-.pagination {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(8.5rem, 100%), 1fr));
-  align-items: center;
-  gap: clamp(0.5rem, 1.2vw, 1rem);
-  margin-top: 1.6rem;
-  padding-top: 0.3rem;
-  font-family: var(--sans);
-  font-size: 0.88rem;
-}
-
-.pagination-prev {
-  justify-self: start;
-}
-
-.pagination-next {
-  justify-self: end;
-}
-
-.pagination-link {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.pagination-status {
-  color: var(--muted);
-  white-space: nowrap;
-  text-align: center;
-}
-
-.is-disabled {
-  opacity: 0.45;
-  pointer-events: none;
 }

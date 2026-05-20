@@ -14,7 +14,7 @@ body > header > nav {
   padding: 0.18rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--surface-82);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
   font-family: var(--sans);
   font-size: clamp(0.88rem, 0.3vw + 0.82rem, 0.92rem);
 }
@@ -27,7 +27,6 @@ body > header > nav a {
   border-radius: 999px;
   text-decoration: none;
   color: var(--muted);
-  transition: background-color 120ms ease, color 120ms ease;
 }
 
 .nav-external-icon {
@@ -37,5 +36,5 @@ body > header > nav a {
 
 body > header > nav a.is-active {
   color: var(--text);
-  background: var(--accent-10);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
