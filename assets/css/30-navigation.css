@@ -4,7 +4,7 @@ body > header {
   align-items: center;
   justify-content: center;
   margin-bottom: clamp(1.6rem, 4vw, 2.25rem);
-  padding: clamp(0.1rem, 0.35vw, 0.2rem) 0 clamp(0.25rem, 0.7vw, 0.4rem);
+  padding: calc(1rem + clamp(0.1rem, 0.35vw, 0.2rem)) 0 clamp(0.25rem, 0.7vw, 0.4rem);
 }
 
 .liquid-glass-filter {
