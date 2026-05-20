@@ -74,92 +74,13 @@ a {
   background: color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
-.content a,
-.page-copy a,
-.comment-body a {
-  text-decoration: none;
-  background-image: linear-gradient(
-    -78deg,
-    transparent 0.18em,
-    color-mix(in srgb, var(--accent) 28%, transparent) 0.18em calc(100% - 0.18em),
-    transparent calc(100% - 0.18em)
-  );
-  background-repeat: no-repeat;
-  background-position: 0 92%;
-  background-size: 100% 0.5em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  transition: color 120ms ease, background-size 120ms ease, background-image 120ms ease;
-}
-
 @media (hover: hover) and (pointer: fine) {
   a:hover {
     color: var(--accent);
-  }
-
-  .content a:hover,
-  .page-copy a:hover,
-  .comment-body a:hover {
-    background-image: linear-gradient(
-      -78deg,
-      transparent 0.18em,
-      color-mix(in srgb, var(--accent) 38%, transparent) 0.18em calc(100% - 0.18em),
-      transparent calc(100% - 0.18em)
-    );
-    background-size: 100% 100%;
-    background-position: 0 100%;
   }
 }
 
 img {
   max-width: 100%;
   height: auto;
-}
-
-.content img,
-.page-copy img,
-.comment-body img {
-  display: block;
-  border-radius: 12px;
-}
-
-code,
-pre {
-  font-family: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.92em;
-}
-
-code {
-  padding: 0.12rem 0.35rem;
-  background: var(--code-bg);
-  border-radius: 6px;
-}
-
-pre {
-  overflow-x: auto;
-  max-width: 100%;
-  padding: 1rem 1.1rem;
-  background: var(--code-bg);
-  border-radius: 12px;
-  border: 1px solid var(--line);
-}
-
-pre code {
-  padding: 0;
-  background: transparent;
-}
-
-blockquote {
-  margin-block: 1.75rem;
-  margin-inline: 0;
-  padding-block: 0.2rem;
-  color: var(--muted);
-  padding-inline-start: 1rem;
-  border-inline-start: 3px solid color-mix(in srgb, var(--accent) 34%, transparent);
-}
-
-hr {
-  border: 0;
-  height: 1.5rem;
-  margin: 0;
 }

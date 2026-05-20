@@ -20,7 +20,9 @@
   (resources.Get "css/10-layout.css")
   (resources.Get "css/20-loading.css")
   (resources.Get "css/30-navigation.css")
-  (resources.Get "css/40-content.css")
+  (resources.Get "css/40-page.css")
+  (resources.Get "css/41-markdown.css")
+  (resources.Get "css/42-comments.css")
   (resources.Get "css/50-footer.css")
 }}
 {{ with resources.Concat "css/style.css" $styles | minify }}
