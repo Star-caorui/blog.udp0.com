@@ -30,9 +30,7 @@ params:
   favicon: "https://src.inetech.fun/favicon.webp"
   records:
     icp: 蒙 ICP 备 2022000209 号-2
-    police:
-      text: 蒙公网安备 15020202000279 号
-      code: "15020202000279"
+    police: 蒙公网安备 15020202000279 号
 
 menus:
   main:

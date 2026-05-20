@@ -14,13 +14,8 @@
         <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
       {{ end }}
       {{ with .police }}
-        {{ $policeURL := "https://beian.mps.gov.cn/#/query/webSearch" }}
-        {{ with .code }}
-          {{ $policeURL = printf "%s?code=%s" $policeURL . }}
-        {{ end }}
-        {{ with .text }}
-          <a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
-        {{ end }}
+        {{ $policeURL := printf "https://beian.mps.gov.cn/#/query/webSearch?code=%s" . }}
+        <a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
       {{ end }}
     </div>
   {{ end }}
