@@ -1,4 +1,5 @@
 baseURL: "https://blog.udp0.com/"
+disableHugoGeneratorInject: true
 defaultContentLanguage: zh-cn
 hasCJKLanguage: true
 locale: zh-cn
