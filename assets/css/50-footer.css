@@ -1,16 +1,12 @@
 body > footer {
-  padding-block: 2.5rem;
+  padding-block: 2rem;
 
   display: grid;
   place-items: center;
-  gap: 0.25rem;
 
   color: var(--muted);
   font-family: var(--sans);
   font-size: 0.875rem;
-  line-height: 1.5;
-
-  text-align: center;
 }
 
 body > footer > * {
