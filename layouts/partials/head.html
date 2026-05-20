@@ -7,7 +7,9 @@
     {{ .Title }} · {{ site.Title }}
   {{ end }}
 </title>
-<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+{{ with .Description }}
+  <meta name="description" content="{{ . }}">
+{{ end }}
 <link rel="canonical" href="{{ .Permalink }}">
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ with site.Home.OutputFormats.Get `RSS` }}{{ .RelPermalink }}{{ end }}">
 {{ with site.Params.favicon }}
