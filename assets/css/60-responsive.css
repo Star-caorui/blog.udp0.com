@@ -15,7 +15,6 @@
 
   .content a:hover,
   .page-copy a:hover,
-  .post-description a:hover,
   .comment-body a:hover {
     background-image: linear-gradient(
       -78deg,

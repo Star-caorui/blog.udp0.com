@@ -1,9 +1,7 @@
 body > footer {
   padding-block: 2rem;
-
   display: grid;
   place-items: center;
-
   color: var(--muted);
   font-family: var(--sans);
   font-size: 0.875rem;

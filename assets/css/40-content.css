@@ -28,7 +28,6 @@ h2 {
 }
 
 .page-copy,
-.post-description,
 .empty-state {
   max-width: 34rem;
   color: var(--muted);
@@ -43,8 +42,7 @@ h2 {
   text-transform: uppercase;
 }
 
-.page-copy,
-.post-description {
+.page-copy {
   margin: 0;
 }
 
