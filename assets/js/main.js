@@ -2,9 +2,9 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
 
 (() => {
   let runtimeTimer = 0;
+  let runtimeObserver = null;
+  let runtimeCounter = null;
   const parser = new DOMParser();
-  const siteTitle =
-    document.title.includes(" · ") ? document.title.split(" · ").at(-1) : document.title;
 
   const enhanceTables = (root = document) => {
     root.querySelectorAll(".content table").forEach((table) => {
@@ -17,10 +17,16 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
   };
 
   const mountRuntimeCounter = () => {
-    if (runtimeTimer) return;
-
     const counter = document.querySelector("[data-site-started-at]");
     if (!counter) return;
+    if (counter === runtimeCounter) return;
+
+    if (runtimeTimer) {
+      window.clearInterval(runtimeTimer);
+      runtimeTimer = 0;
+    }
+    runtimeObserver?.disconnect();
+    runtimeCounter = counter;
 
     const startedAt = new Date(counter.dataset.siteStartedAt || "");
     if (Number.isNaN(startedAt.getTime())) return;
@@ -58,7 +64,34 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     };
 
     formatDuration();
-    runtimeTimer = window.setInterval(formatDuration, 1000);
+
+    const startTimer = () => {
+      if (runtimeTimer) return;
+      formatDuration();
+      runtimeTimer = window.setInterval(formatDuration, 1000);
+    };
+    const stopTimer = () => {
+      if (!runtimeTimer) return;
+      window.clearInterval(runtimeTimer);
+      runtimeTimer = 0;
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      startTimer();
+      return;
+    }
+
+    runtimeObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          startTimer();
+        } else {
+          stopTimer();
+        }
+      },
+      { rootMargin: "0px" },
+    );
+    runtimeObserver.observe(counter);
   };
 
   const isPrimaryClick = (event) =>
@@ -95,7 +128,6 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
 
   setupPjax({
     parser,
-    siteTitle,
     initPage,
   });
 
@@ -106,7 +138,7 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     if (!shouldHandleLink(link)) return;
 
     event.preventDefault();
-    navigate(link.href, "push", link);
+    navigate(link.href, "push");
   });
 
   window.addEventListener("popstate", () => {

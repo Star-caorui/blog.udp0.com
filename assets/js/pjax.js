@@ -5,22 +5,12 @@ import {
 } from "./cache.js";
 
 let parser = null;
-let siteTitle = "";
 let initPage = () => {};
 let activeController = null;
 
 const pageRevalidateRequests = new Map();
 
-const createElement = (tagName, text = "", className = "") => {
-  const node = document.createElement(tagName);
-  if (className) node.className = className;
-  if (text) node.textContent = text;
-  return node;
-};
-
 const getMain = (doc = document) => doc.querySelector("body > main");
-
-const buildPageTitle = (title) => `${title} · ${siteTitle}`;
 
 const getDescriptionContent = (doc = document) =>
   doc.querySelector('meta[name="description"]')?.getAttribute("content") || "";
@@ -107,83 +97,7 @@ const revalidatePersistentPage = (urlString, etag) => {
   pageRevalidateRequests.set(cacheKey, task);
 };
 
-const getOptimisticMeta = (link) => {
-  if (!link?.dataset.pjaxKind) return null;
-
-  const title = link.dataset.pjaxTitle?.trim();
-  if (!title) return null;
-
-  const kind = link.dataset.pjaxKind;
-  return {
-    kind,
-    title,
-    pageTitle: link.dataset.pjaxPageTitle?.trim() || buildPageTitle(title),
-    dateLabel: link.dataset.pjaxDate?.trim() || "",
-    dateIso: link.dataset.pjaxDateIso?.trim() || "",
-    eyebrow: link.dataset.pjaxEyebrow?.trim() || (kind === "post" ? "POSTS" : "PAGE"),
-  };
-};
-
-const buildPreviewMain = (meta) => {
-  const main = createElement("main");
-  const isPageLike = meta.kind === "home" || meta.kind === "page";
-  const shell = createElement(
-    isPageLike ? "section" : "article",
-    "",
-    isPageLike ? "pjax-preview page-preview" : "post pjax-preview post-preview",
-  );
-  const header = createElement(
-    "header",
-    "",
-    isPageLike ? "page-header pjax-preview-header" : "post-header pjax-preview-header",
-  );
-  const body = createElement(
-    "div",
-    "",
-    isPageLike ? "page-copy pjax-preview-body" : "content pjax-preview-body",
-  );
-
-  header.append(
-    createElement("p", meta.eyebrow || "PAGE", "eyebrow"),
-    createElement("h1", meta.title),
-  );
-  if (meta.dateLabel) {
-    const metaRow = createElement("div", "", "meta-row");
-    const time = createElement("time", meta.dateLabel);
-    if (meta.dateIso) time.dateTime = meta.dateIso;
-    metaRow.append(time);
-    header.append(metaRow);
-  }
-
-  body.setAttribute("aria-hidden", "true");
-  ["92%", "74%", "86%", "68%", "79%", "58%"].forEach((width) => {
-    const line = createElement("p", "\u00a0", "pjax-skeleton-line");
-    line.style.width = width;
-    body.append(line);
-  });
-
-  shell.append(header, body);
-  main.append(shell);
-  return main;
-};
-
-const applyOptimisticState = (urlString, link) => {
-  updateNavState(urlString);
-
-  const meta = getOptimisticMeta(link);
-  if (!meta) return { meta: null };
-
-  const main = getMain();
-  if (main) {
-    main.replaceWith(buildPreviewMain(meta));
-  }
-
-  document.title = meta.pageTitle;
-  window.scrollTo(0, 0);
-  return { meta };
-};
-
-const toggleLoading = (isLoading, context = {}) => {
+const toggleLoading = (isLoading) => {
   const main = getMain();
   if (!main) return () => {};
 
@@ -191,15 +105,6 @@ const toggleLoading = (isLoading, context = {}) => {
     main.classList.remove("is-loading");
     main.removeAttribute("aria-busy");
     return () => {};
-  }
-
-  if (context.meta) {
-    main.classList.add("is-loading");
-    main.setAttribute("aria-busy", "true");
-    return () => {
-      main.classList.remove("is-loading");
-      main.removeAttribute("aria-busy");
-    };
   }
 
   const timeoutId = window.setTimeout(() => {
@@ -255,20 +160,15 @@ const swapPage = (nextDocument, urlString, historyMode) => {
 
 export const setupPjax = (options = {}) => {
   parser = options.parser || new DOMParser();
-  siteTitle = options.siteTitle || "";
   initPage = options.initPage || (() => {});
 };
 
-export const navigate = async (urlString, historyMode = "push", triggerLink = null) => {
+export const navigate = async (urlString, historyMode = "push") => {
   if (activeController) activeController.abort();
 
   const controller = new AbortController();
   activeController = controller;
-  const context = {
-    url: urlString,
-    ...applyOptimisticState(urlString, triggerLink),
-  };
-  const stopLoading = toggleLoading(true, context);
+  const stopLoading = toggleLoading(true);
 
   try {
     const cachedResponse = await readCache(urlString);
