@@ -62,8 +62,7 @@ h2 {
 }
 
 .post-line-date,
-.meta-row,
-body > footer {
+.meta-row {
   color: var(--muted);
   font-family: var(--sans);
   font-size: 0.88rem;
