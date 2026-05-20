@@ -23,6 +23,9 @@ markup:
   highlight:
     style: hrdark
 
+build:
+  noJSConfigInAssets: false
+
 params:
   author: Betterr
   since: 2020
