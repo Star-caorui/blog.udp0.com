@@ -1,6 +1,6 @@
 <header>
   {{ with site.Menus.main }}
-    <nav class="site-nav" aria-label="Primary">
+    <nav aria-label="Primary">
       {{ range . }}
         {{ partial "menu-link.html" (dict "item" . "page" $) }}
       {{ end }}

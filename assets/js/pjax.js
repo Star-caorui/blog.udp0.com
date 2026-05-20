@@ -45,7 +45,7 @@ const restoreScroll = (urlString) => {
 const updateNavState = (urlString) => {
   const currentUrl = new URL(urlString, window.location.href);
 
-  document.querySelectorAll(".site-nav a").forEach((link) => {
+  document.querySelectorAll("body > header > nav a").forEach((link) => {
     if (link.target && link.target !== "_self") return;
 
     const href = link.getAttribute("href");
