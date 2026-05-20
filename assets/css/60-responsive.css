@@ -1,0 +1,60 @@
+@media (max-width: 520px) {
+  .post-line-date {
+    width: 100%;
+    flex-basis: auto;
+    margin-inline-start: 0;
+    text-align: start;
+    font-size: 0.82rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    color: var(--accent);
+  }
+
+  .content a:hover,
+  .page-copy a:hover,
+  .post-description a:hover,
+  .comment-body a:hover {
+    background-image: linear-gradient(
+      -78deg,
+      transparent 0.18em,
+      var(--accent-38) 0.18em calc(100% - 0.18em),
+      transparent calc(100% - 0.18em)
+    );
+    background-size: 100% 100%;
+    background-position: 0 100%;
+  }
+
+  .site-nav a:hover {
+    color: var(--text);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--surface) 42%, transparent),
+        color-mix(in srgb, var(--accent) 12%, transparent)
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 42%, transparent),
+      0 5px 16px color-mix(in srgb, var(--accent) 14%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .site-nav.has-liquid-target a:hover {
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .post-line-title a:hover,
+  .footer-primary a:hover,
+  .footer-records a:hover,
+  .pagination-link:hover {
+    color: var(--accent);
+  }
+
+  .post-line-title a:hover {
+    text-decoration: underline;
+  }
+}

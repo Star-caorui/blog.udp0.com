@@ -1,0 +1,206 @@
+.main.is-loading {
+  --skeleton-base: #d9dde4;
+  --skeleton-glint: rgba(255, 255, 255, 0.9);
+  cursor: progress;
+}
+
+.main.is-loading :is(
+  .eyebrow,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  dt,
+  dd,
+  time,
+  span,
+  a,
+  code,
+  th,
+  td
+) {
+  color: transparent !important;
+  text-shadow: none !important;
+  -webkit-text-fill-color: transparent;
+  background:
+    linear-gradient(
+      90deg,
+      var(--skeleton-base) 0%,
+      var(--skeleton-base) 38%,
+      var(--skeleton-glint) 50%,
+      var(--skeleton-base) 62%,
+      var(--skeleton-base) 100%
+    )
+    120% 50% / 240% 72% no-repeat !important;
+  border-radius: 999px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  text-decoration-color: transparent !important;
+  animation: skeleton-shimmer 1.25s ease-in-out infinite;
+}
+
+.main.is-loading :is(.eyebrow, h1, h2, h3, h4, time, code) {
+  display: table;
+}
+
+.main.is-loading :is(a, span) {
+  border-radius: 0.35em;
+}
+
+.main.is-loading .post-line-title {
+  background: none !important;
+  display: block;
+  animation: none;
+}
+
+.main.is-loading .post-line-title a {
+  display: inline;
+  background-size: 240% 78% !important;
+}
+
+.pjax-preview-body {
+  margin-top: 1.2rem;
+}
+
+.pjax-skeleton-line {
+  max-width: 100%;
+  margin: 0 0 0.95rem;
+}
+
+.main.is-loading .pjax-preview-header :is(.eyebrow, h1, time) {
+  background: none !important;
+  animation: none !important;
+  text-decoration-color: currentColor !important;
+}
+
+.main.is-loading .pjax-preview-header .eyebrow {
+  color: var(--accent) !important;
+  -webkit-text-fill-color: var(--accent);
+  display: block;
+}
+
+.main.is-loading .pjax-preview-header h1 {
+  color: var(--text) !important;
+  -webkit-text-fill-color: var(--text);
+  display: block;
+}
+
+.main.is-loading .pjax-preview-header time {
+  color: var(--muted) !important;
+  -webkit-text-fill-color: var(--muted);
+  display: inline;
+}
+
+.main.is-loading :is(p, li, dd, th, td) {
+  background-size: 240% 68% !important;
+}
+
+.main.is-loading li::marker {
+  color: transparent;
+}
+
+.main.is-loading :is(pre, blockquote, .callout) {
+  color: transparent !important;
+  background:
+    linear-gradient(
+      90deg,
+      var(--skeleton-base) 0%,
+      var(--skeleton-base) 38%,
+      var(--skeleton-glint) 50%,
+      var(--skeleton-base) 62%,
+      var(--skeleton-base) 100%
+    )
+    120% 1rem / 240% 0.95rem repeat-y !important;
+  border-color: transparent !important;
+  animation: skeleton-shimmer 1.25s ease-in-out infinite;
+}
+
+.main.is-loading :is(pre, blockquote, .callout) * {
+  visibility: hidden;
+}
+
+.main.is-loading :is(.table-wrap, table) {
+  background: transparent !important;
+}
+
+.main.is-loading :is(img, iframe, video) {
+  background:
+    linear-gradient(
+      90deg,
+      var(--skeleton-base) 0%,
+      var(--skeleton-base) 38%,
+      var(--skeleton-glint) 50%,
+      var(--skeleton-base) 62%,
+      var(--skeleton-base) 100%
+    )
+    120% 0 / 240% 100% no-repeat !important;
+  border-radius: 12px;
+  opacity: 0.45;
+  filter: grayscale(1);
+  animation: skeleton-shimmer 1.25s ease-in-out infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .main.is-loading {
+    --skeleton-base: #3b4552;
+    --skeleton-glint: rgba(255, 255, 255, 0.22);
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 120% 50%;
+  }
+
+  to {
+    background-position: -120% 50%;
+  }
+}
+
+@keyframes skeleton-shimmer-y {
+  from {
+    background-position:
+      120% 1rem,
+      120% 1rem;
+  }
+
+  to {
+    background-position:
+      -120% 1rem,
+      -120% 1rem;
+  }
+}
+
+.main.is-loading :is(pre, blockquote, .callout) {
+  animation-name: skeleton-shimmer-y;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main.is-loading :is(
+    .eyebrow,
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    li,
+    dt,
+    dd,
+    time,
+    span,
+    a,
+    code,
+    th,
+    td,
+    pre,
+    blockquote,
+    .callout,
+    img,
+    iframe,
+    video
+  ) {
+    animation: none !important;
+  }
+}
