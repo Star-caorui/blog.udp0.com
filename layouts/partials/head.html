@@ -22,7 +22,6 @@
   (resources.Get "css/30-navigation.css")
   (resources.Get "css/40-content.css")
   (resources.Get "css/50-footer.css")
-  (resources.Get "css/60-responsive.css")
 }}
 {{ with resources.Concat "css/style.css" $styles | minify }}
   {{ $hash := substr (sha256 .Content) 0 8 }}

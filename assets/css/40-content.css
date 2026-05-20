@@ -98,6 +98,22 @@ h2 {
   text-decoration: none;
 }
 
+@media (max-width: 520px) {
+  .post-line-date {
+    width: 100%;
+    flex-basis: auto;
+    margin-inline-start: 0;
+    text-align: start;
+    font-size: 0.82rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .post-line-title a:hover {
+    text-decoration: underline;
+  }
+}
+
 .post {
   background: transparent;
 }

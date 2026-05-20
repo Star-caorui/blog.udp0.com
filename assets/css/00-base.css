@@ -59,6 +59,8 @@ body {
 
 a {
   color: inherit;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
 }
 
 :focus-visible {
@@ -88,6 +90,25 @@ a {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: color 120ms ease, background-size 120ms ease, background-image 120ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    color: var(--accent);
+  }
+
+  .content a:hover,
+  .page-copy a:hover,
+  .comment-body a:hover {
+    background-image: linear-gradient(
+      -78deg,
+      transparent 0.18em,
+      color-mix(in srgb, var(--accent) 38%, transparent) 0.18em calc(100% - 0.18em),
+      transparent calc(100% - 0.18em)
+    );
+    background-size: 100% 100%;
+    background-position: 0 100%;
+  }
 }
 
 img {

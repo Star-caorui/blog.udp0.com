@@ -38,3 +38,10 @@ body > header > nav a.is-active {
   color: var(--text);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
+
+@media (hover: hover) and (pointer: fine) {
+  body > header > nav a:hover {
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+}
