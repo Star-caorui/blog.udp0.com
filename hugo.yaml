@@ -1,9 +1,10 @@
 baseURL: "https://blog.udp0.com/"
+defaultContentLanguage: zh-cn
+hasCJKLanguage: true
 locale: zh-cn
 title: iNetech Blog
-defaultContentLanguage: zh-cn
-enableRobotsTXT: true
 summaryLength: 28
+enableRobotsTXT: true
 disableKinds:
   - taxonomy
   - term
@@ -19,10 +20,14 @@ outputs:
 
 markup:
   goldmark:
+    extensions:
+      extras:
+        superscript:
+          enable: true
     renderer:
       unsafe: true
   highlight:
-    noClasses: true
+    style: hrdark
 
 params:
   author: Betterr
