@@ -48,7 +48,7 @@
   }
 
   .post-line-title a:hover,
-  .footer-link:hover,
+  body > footer > a:hover,
   .pagination-link:hover {
     color: var(--accent);
   }

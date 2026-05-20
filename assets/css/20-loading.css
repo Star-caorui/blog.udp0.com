@@ -1,10 +1,10 @@
-.main.is-loading {
+main.is-loading {
   --skeleton-base: #d9dde4;
   --skeleton-glint: rgba(255, 255, 255, 0.9);
   cursor: progress;
 }
 
-.main.is-loading :is(
+main.is-loading :is(
   .eyebrow,
   h1,
   h2,
@@ -41,21 +41,21 @@
   animation: skeleton-shimmer 1.25s ease-in-out infinite;
 }
 
-.main.is-loading :is(.eyebrow, h1, h2, h3, h4, time, code) {
+main.is-loading :is(.eyebrow, h1, h2, h3, h4, time, code) {
   display: table;
 }
 
-.main.is-loading :is(a, span) {
+main.is-loading :is(a, span) {
   border-radius: 0.35em;
 }
 
-.main.is-loading .post-line-title {
+main.is-loading .post-line-title {
   background: none !important;
   display: block;
   animation: none;
 }
 
-.main.is-loading .post-line-title a {
+main.is-loading .post-line-title a {
   display: inline;
   background-size: 240% 78% !important;
 }
@@ -69,39 +69,39 @@
   margin: 0 0 0.95rem;
 }
 
-.main.is-loading .pjax-preview-header :is(.eyebrow, h1, time) {
+main.is-loading .pjax-preview-header :is(.eyebrow, h1, time) {
   background: none !important;
   animation: none !important;
   text-decoration-color: currentColor !important;
 }
 
-.main.is-loading .pjax-preview-header .eyebrow {
+main.is-loading .pjax-preview-header .eyebrow {
   color: var(--accent) !important;
   -webkit-text-fill-color: var(--accent);
   display: block;
 }
 
-.main.is-loading .pjax-preview-header h1 {
+main.is-loading .pjax-preview-header h1 {
   color: var(--text) !important;
   -webkit-text-fill-color: var(--text);
   display: block;
 }
 
-.main.is-loading .pjax-preview-header time {
+main.is-loading .pjax-preview-header time {
   color: var(--muted) !important;
   -webkit-text-fill-color: var(--muted);
   display: inline;
 }
 
-.main.is-loading :is(p, li, dd, th, td) {
+main.is-loading :is(p, li, dd, th, td) {
   background-size: 240% 68% !important;
 }
 
-.main.is-loading li::marker {
+main.is-loading li::marker {
   color: transparent;
 }
 
-.main.is-loading :is(pre, blockquote, .callout) {
+main.is-loading :is(pre, blockquote, .callout) {
   color: transparent !important;
   background:
     linear-gradient(
@@ -117,15 +117,15 @@
   animation: skeleton-shimmer 1.25s ease-in-out infinite;
 }
 
-.main.is-loading :is(pre, blockquote, .callout) * {
+main.is-loading :is(pre, blockquote, .callout) * {
   visibility: hidden;
 }
 
-.main.is-loading :is(.table-wrap, table) {
+main.is-loading :is(.table-wrap, table) {
   background: transparent !important;
 }
 
-.main.is-loading :is(img, iframe, video) {
+main.is-loading :is(img, iframe, video) {
   background:
     linear-gradient(
       90deg,
@@ -143,7 +143,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .main.is-loading {
+  main.is-loading {
     --skeleton-base: #3b4552;
     --skeleton-glint: rgba(255, 255, 255, 0.22);
   }
@@ -173,12 +173,12 @@
   }
 }
 
-.main.is-loading :is(pre, blockquote, .callout) {
+main.is-loading :is(pre, blockquote, .callout) {
   animation-name: skeleton-shimmer-y;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .main.is-loading :is(
+  main.is-loading :is(
     .eyebrow,
     h1,
     h2,

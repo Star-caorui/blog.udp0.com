@@ -1,19 +1,18 @@
-<footer class="site-footer">
+<footer>
   {{ with site.Home.OutputFormats.Get "RSS" }}
-    <a class="footer-link" href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">RSS</a>
+    <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">RSS</a>
   {{ end }}
   {{ with site.Params.records }}
     {{ with .icp }}
-      <a class="footer-link" href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
     {{ end }}
     {{ with .police }}
       {{ $policeURL := printf "https://beian.mps.gov.cn/#/query/webSearch?code=%s" . }}
-      <a class="footer-link" href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
+      <a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
     {{ end }}
   {{ end }}
   {{ with site.Params.siteStartedAt }}
     <p
-      class="footer-runtime"
       data-site-started-at="{{ . }}"
     >记录已延续了</p>
   {{ end }}

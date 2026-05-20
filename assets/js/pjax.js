@@ -18,6 +18,8 @@ const createElement = (tagName, text = "", className = "") => {
   return node;
 };
 
+const getMain = (doc = document) => doc.querySelector("body > main");
+
 const buildPageTitle = (title) => `${title} · ${siteTitle}`;
 
 const getDescriptionContent = (doc = document) =>
@@ -123,7 +125,7 @@ const getOptimisticMeta = (link) => {
 };
 
 const buildPreviewMain = (meta) => {
-  const main = createElement("main", "", "main");
+  const main = createElement("main");
   const isPageLike = meta.kind === "home" || meta.kind === "page";
   const shell = createElement(
     isPageLike ? "section" : "article",
@@ -171,7 +173,7 @@ const applyOptimisticState = (urlString, link) => {
   const meta = getOptimisticMeta(link);
   if (!meta) return { meta: null };
 
-  const main = document.querySelector(".main");
+  const main = getMain();
   if (main) {
     main.replaceWith(buildPreviewMain(meta));
   }
@@ -182,7 +184,7 @@ const applyOptimisticState = (urlString, link) => {
 };
 
 const toggleLoading = (isLoading, context = {}) => {
-  const main = document.querySelector(".main");
+  const main = getMain();
   if (!main) return () => {};
 
   if (!isLoading) {
@@ -225,13 +227,13 @@ const syncHeadMeta = (nextDocument) => {
 };
 
 const swapPage = (nextDocument, urlString, historyMode) => {
-  const nextMain = nextDocument.querySelector(".main");
+  const nextMain = getMain(nextDocument);
   if (!nextMain) {
     window.location.href = urlString;
     return;
   }
 
-  const currentMain = document.querySelector(".main");
+  const currentMain = getMain();
   const importedMain = document.importNode(nextMain, true);
 
   document.title = nextDocument.title || document.title;
