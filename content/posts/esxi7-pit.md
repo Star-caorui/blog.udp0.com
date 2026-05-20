@@ -13,8 +13,10 @@ slug = "esxi7-pit"
 解决方法：
 
 - 更新最新固件：在新版 BIOS 可能会添加 NVMe 驱动，提供支持。
-- 自行将 NVMe 驱动注入到固件 ^[参考教程](https://www.bilibili.com/read/cv4475152/)^
+- 自行将 NVMe 驱动注入到固件[^nvme-bios]
 - 从其他可引导设备启动，载入 NVMe 驱动，引导进入。
+
+[^nvme-bios]: [参考教程](https://www.bilibili.com/read/cv4475152/)
 
 我的选择：
 

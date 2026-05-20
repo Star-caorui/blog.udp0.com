@@ -19,13 +19,6 @@ outputs:
     - RSS
 
 markup:
-  goldmark:
-    extensions:
-      extras:
-        superscript:
-          enable: true
-    renderer:
-      unsafe: false
   highlight:
     style: hrdark
 
