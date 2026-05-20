@@ -1,10 +1,8 @@
 <footer class="site-footer">
   <div class="footer-primary" aria-label="站点信息">
-    <span class="footer-item footer-copy">Copyright © {{ site.Params.since }} {{ site.Params.author }}</span>
     {{ with site.Home.OutputFormats.Get "RSS" }}
       <a class="footer-item footer-rss" href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">
         <span>RSS</span>
-        <span class="nav-external-icon" aria-hidden="true">&#x2197;&#xFE0E;</span>
       </a>
     {{ end }}
   </div>
@@ -15,6 +13,7 @@
       {{ end }}
       {{ with .police }}
         {{ $policeURL := printf "https://beian.mps.gov.cn/#/query/webSearch?code=%s" . }}
+        <br />
         <a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
       {{ end }}
     </div>
