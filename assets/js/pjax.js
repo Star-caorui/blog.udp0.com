@@ -1,8 +1,4 @@
-import {
-  getCacheKey,
-  readCache,
-  writeCache,
-} from "./cache.js";
+import { getCacheKey, readCache, writeCache } from "./cache.js";
 import { startTransition } from "./pjax-transition.js";
 
 let parser = null;
@@ -11,24 +7,45 @@ let activeController = null;
 let activeTransitionCleanup = () => {};
 
 const pageRevalidateRequests = new Map();
+const pjaxHeaders = { "X-Requested-With": "pjax" };
 
 const getMain = (doc = document) => doc.querySelector("body > main");
 
-const getDescriptionContent = (doc = document) =>
-  doc.querySelector('meta[name="description"]')?.getAttribute("content") || "";
+const isHtmlResponse = (response) =>
+  (response.headers.get("content-type") || "").includes("text/html");
 
-const getCanonicalHref = (doc = document) =>
-  doc.querySelector('link[rel="canonical"]')?.getAttribute("href") || "";
+const getNavigationUrl = (urlString, responseUrl) => {
+  const requestedUrl = new URL(urlString, window.location.href);
+  const nextUrl = new URL(responseUrl || urlString, window.location.href);
+
+  if (requestedUrl.hash) nextUrl.hash = requestedUrl.hash;
+
+  return nextUrl.href;
+};
+
+const decodeHashId = (hash) => {
+  try {
+    return decodeURIComponent(hash.slice(1));
+  } catch {
+    return hash.slice(1);
+  }
+};
+
+const getHashTarget = (hash) => {
+  if (!hash) return null;
+
+  const id = decodeHashId(hash);
+  if (!id) return null;
+
+  return document.getElementById(id) || document.getElementsByName(id)[0] || null;
+};
 
 const restoreScroll = (urlString) => {
   const url = new URL(urlString, window.location.href);
-  if (url.hash) {
-    const decoded = decodeURIComponent(url.hash);
-    const target = document.getElementById(decoded.slice(1)) || document.querySelector(decoded);
-    if (target) {
-      target.scrollIntoView();
-      return;
-    }
+  const target = getHashTarget(url.hash);
+  if (target) {
+    target.scrollIntoView();
+    return;
   }
 
   window.scrollTo(0, 0);
@@ -56,22 +73,18 @@ const updateNavState = (urlString) => {
 const buildCurrentDocumentResponse = () =>
   new Response(document.documentElement.outerHTML, {
     status: 200,
-    headers: {
-      "content-type": "text/html; charset=utf-8",
-    },
+    headers: { "content-type": "text/html; charset=utf-8" },
   });
 
 const cachePageResponse = (urlString, response, signal) => {
   if (!response) return;
   if (signal?.aborted) return;
 
-  void writeCache(urlString, response.clone(), { signal });
+  void writeCache(urlString, response, { signal });
 };
 
 const abortPageRevalidations = () => {
-  pageRevalidateRequests.forEach(({ controller }) => {
-    controller.abort();
-  });
+  pageRevalidateRequests.forEach(({ controller }) => controller.abort());
   pageRevalidateRequests.clear();
 };
 
@@ -90,7 +103,7 @@ const revalidatePersistentPage = (urlString, etag) => {
     credentials: "same-origin",
     cache: "no-store",
     headers: {
-      "X-Requested-With": "pjax",
+      ...pjaxHeaders,
       "If-None-Match": etag,
     },
   })
@@ -98,9 +111,7 @@ const revalidatePersistentPage = (urlString, etag) => {
       if (controller.signal.aborted) return;
       if (response.status === 304) return;
       if (!response.ok) return;
-
-      const contentType = response.headers.get("content-type") || "";
-      if (!contentType.includes("text/html")) return;
+      if (!isHtmlResponse(response)) return;
 
       cachePageResponse(response.url || urlString, response, controller.signal);
     })
@@ -114,16 +125,27 @@ const revalidatePersistentPage = (urlString, etag) => {
     });
 };
 
-const syncHeadMeta = (nextDocument) => {
-  const currentDescription = document.querySelector('meta[name="description"]');
-  if (currentDescription) {
-    currentDescription.setAttribute("content", getDescriptionContent(nextDocument));
+const syncHeadElement = (selector, nextDocument) => {
+  const currentElement = document.head.querySelector(selector);
+  const nextElement = nextDocument.head.querySelector(selector);
+
+  if (!nextElement) {
+    currentElement?.remove();
+    return;
   }
 
-  const currentCanonical = document.querySelector('link[rel="canonical"]');
-  if (currentCanonical) {
-    currentCanonical.setAttribute("href", getCanonicalHref(nextDocument));
+  const importedElement = document.importNode(nextElement, true);
+  if (currentElement) {
+    currentElement.replaceWith(importedElement);
+    return;
   }
+
+  document.head.appendChild(importedElement);
+};
+
+const syncHeadMeta = (nextDocument) => {
+  syncHeadElement('meta[name="description"]', nextDocument);
+  syncHeadElement('link[rel="canonical"]', nextDocument);
 };
 
 const swapPage = (nextDocument, urlString, historyMode) => {
@@ -170,69 +192,106 @@ export const setupPjax = (options = {}) => {
   initPage = options.initPage || (() => {});
 };
 
+const abortActiveNavigation = () => {
+  if (!activeController) return;
+
+  activeController.abort();
+  activeTransitionCleanup();
+  activeTransitionCleanup = () => {};
+};
+
+const startNavigation = () => {
+  const controller = new AbortController();
+  const stopTransition = startTransition(getMain());
+
+  activeController = controller;
+  activeTransitionCleanup = stopTransition;
+
+  return {
+    controller,
+    isActive: () => activeController === controller && !controller.signal.aborted,
+    stopTransition,
+  };
+};
+
+const finishNavigation = ({ controller, stopTransition }) => {
+  if (activeController !== controller) return;
+
+  activeController = null;
+  stopTransition();
+  activeTransitionCleanup = () => {};
+};
+
+const readCachedDocument = async (urlString, isActive) => {
+  const response = await readCache(urlString);
+  if (!isActive() || !response) return null;
+
+  const html = await response.text();
+  if (!isActive()) return null;
+
+  return {
+    document: parser.parseFromString(html, "text/html"),
+    response,
+  };
+};
+
+const fetchPageResponse = (urlString, signal) =>
+  window.fetch(urlString, {
+    signal,
+    credentials: "same-origin",
+    headers: pjaxHeaders,
+  });
+
+const parsePageResponse = async (response, isActive) => {
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  if (!isHtmlResponse(response)) return null;
+
+  const cacheResponse = response.clone();
+  const html = await response.text();
+  if (!isActive()) return null;
+
+  return {
+    cacheResponse,
+    document: parser.parseFromString(html, "text/html"),
+  };
+};
+
 export const navigate = async (urlString, historyMode = "push") => {
   abortPageRevalidations();
+  abortActiveNavigation();
 
-  if (activeController) {
-    activeController.abort();
-    activeTransitionCleanup();
-    activeTransitionCleanup = () => {};
-  }
-
-  const controller = new AbortController();
-  activeController = controller;
-  const stopTransition = startTransition(getMain());
-  activeTransitionCleanup = stopTransition;
-  const isActive = () => activeController === controller && !controller.signal.aborted;
+  const navigation = startNavigation();
 
   try {
-    const cachedResponse = await readCache(urlString);
-    if (!isActive()) return;
+    const cachedPage = await readCachedDocument(urlString, navigation.isActive);
+    if (!navigation.isActive()) return;
 
-    if (cachedResponse) {
-      const cachedHtml = await cachedResponse.text();
-      if (!isActive()) return;
-      const cachedDocument = parser.parseFromString(cachedHtml, "text/html");
-      if (!isActive()) return;
-      swapPage(cachedDocument, urlString, historyMode);
-      revalidatePersistentPage(urlString, cachedResponse.headers.get("etag") || "");
+    if (cachedPage) {
+      swapPage(cachedPage.document, urlString, historyMode);
+      revalidatePersistentPage(urlString, cachedPage.response.headers.get("etag") || "");
       return;
     }
 
-    const response = await window.fetch(urlString, {
-      signal: controller.signal,
-      credentials: "same-origin",
-      headers: {
-        "X-Requested-With": "pjax",
-      },
-    });
+    const response = await fetchPageResponse(urlString, navigation.controller.signal);
+    if (!navigation.isActive()) return;
 
-    if (!isActive()) return;
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const fetchedPage = await parsePageResponse(response, navigation.isActive);
+    if (!navigation.isActive()) return;
 
-    const contentType = response.headers.get("content-type") || "";
-    if (!contentType.includes("text/html")) {
-      if (isActive()) window.location.href = urlString;
+    if (!fetchedPage) {
+      window.location.href = urlString;
       return;
     }
 
-    const responseForCache = response.clone();
-    const html = await response.text();
-    if (!isActive()) return;
-    const nextDocument = parser.parseFromString(html, "text/html");
-    if (!isActive()) return;
-    cachePageResponse(response.url || urlString, responseForCache, controller.signal);
-    swapPage(nextDocument, response.url || urlString, historyMode);
+    const responseUrl = getNavigationUrl(urlString, response.url);
+    cachePageResponse(responseUrl, fetchedPage.cacheResponse, navigation.controller.signal);
+    swapPage(fetchedPage.document, responseUrl, historyMode);
   } catch (error) {
-    if (isActive() && error.name !== "AbortError") {
+    if (navigation.isActive() && error.name !== "AbortError") {
       window.location.href = urlString;
     }
   } finally {
-    if (activeController === controller) {
-      activeController = null;
-      stopTransition();
-      activeTransitionCleanup = () => {};
-    }
+    finishNavigation(navigation);
   }
 };
 

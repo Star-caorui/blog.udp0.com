@@ -4,9 +4,11 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
   let runtimeTimer = 0;
   let runtimeObserver = null;
   let runtimeCounter = null;
+  const copyResetTimers = new WeakMap();
   const parser = new DOMParser();
   const secondMs = 1000;
   const daySeconds = 86400;
+  const runtimeZeroText = "记录已延续了 0 年 0 天 0 小时 0 分 0 秒";
 
   const addYears = (date, years) => {
     const next = new Date(date);
@@ -14,31 +16,38 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     return next;
   };
 
-  const createRuntimeFormatter = (startedAt) => {
+  const getRuntimeParts = (startedAt) => {
+    const now = new Date();
+    if (now < startedAt) {
+      return { years: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+    }
+
     let years = 0;
     let anchor = startedAt;
     let nextAnchor = addYears(startedAt, 1);
 
-    return () => {
-      const now = new Date();
-      if (now < startedAt) return "记录已延续了 0 年 0 天 0 小时 0 分 0 秒";
+    while (now >= nextAnchor) {
+      years += 1;
+      anchor = nextAnchor;
+      nextAnchor = addYears(startedAt, years + 1);
+    }
 
-      while (now >= nextAnchor) {
-        years += 1;
-        anchor = nextAnchor;
-        nextAnchor = addYears(startedAt, years + 1);
-      }
+    let remaining = Math.floor((now.getTime() - anchor.getTime()) / secondMs);
+    const days = Math.floor(remaining / daySeconds);
+    remaining -= days * daySeconds;
+    const hours = Math.floor(remaining / 3600);
+    remaining -= hours * 3600;
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining - minutes * 60;
 
-      let remaining = Math.floor((now.getTime() - anchor.getTime()) / secondMs);
-      const days = Math.floor(remaining / daySeconds);
-      remaining -= days * daySeconds;
-      const hours = Math.floor(remaining / 3600);
-      remaining -= hours * 3600;
-      const minutes = Math.floor(remaining / 60);
-      const seconds = remaining - minutes * 60;
+    return { years, days, hours, minutes, seconds };
+  };
 
-      return `记录已延续了 ${years} 年 ${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
-    };
+  const formatRuntimeDuration = (startedAt) => {
+    const { years, days, hours, minutes, seconds } = getRuntimeParts(startedAt);
+    if (!years && !days && !hours && !minutes && !seconds) return runtimeZeroText;
+
+    return `记录已延续了 ${years} 年 ${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
   };
 
   const enhanceTables = (root = document) => {
@@ -51,53 +60,61 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     });
   };
 
+  const clearRuntimeTimer = () => {
+    if (runtimeTimer) {
+      window.clearTimeout(runtimeTimer);
+      runtimeTimer = 0;
+    }
+  };
+
+  const resetRuntimeCounter = () => {
+    clearRuntimeTimer();
+    runtimeObserver?.disconnect();
+    runtimeObserver = null;
+    runtimeCounter = null;
+  };
+
+  const renderRuntimeDuration = (counter, startedAt) => {
+    const text = formatRuntimeDuration(startedAt);
+    if (counter.textContent !== text) counter.textContent = text;
+  };
+
+  const startRuntimeTimer = (counter, startedAt) => {
+    if (runtimeTimer) return;
+
+    const tick = () => {
+      renderRuntimeDuration(counter, startedAt);
+      runtimeTimer = window.setTimeout(tick, secondMs - (Date.now() % secondMs));
+    };
+    tick();
+  };
+
   const mountRuntimeCounter = () => {
     const counter = document.querySelector("[data-site-started-at]");
-    if (!counter) return;
+    if (!counter) {
+      resetRuntimeCounter();
+      return;
+    }
 
     const startedAt = new Date(counter.dataset.siteStartedAt || "");
     if (Number.isNaN(startedAt.getTime())) return;
     if (counter === runtimeCounter) return;
 
-    const formatDuration = createRuntimeFormatter(startedAt);
-    const renderDuration = () => {
-      const text = formatDuration();
-      if (counter.textContent !== text) counter.textContent = text;
-    };
-
-    if (runtimeTimer) {
-      window.clearTimeout(runtimeTimer);
-      runtimeTimer = 0;
-    }
-    runtimeObserver?.disconnect();
+    resetRuntimeCounter();
     runtimeCounter = counter;
-    renderDuration();
-
-    const startTimer = () => {
-      if (runtimeTimer) return;
-      const tick = () => {
-        renderDuration();
-        runtimeTimer = window.setTimeout(tick, secondMs - (Date.now() % secondMs));
-      };
-      tick();
-    };
-    const stopTimer = () => {
-      if (!runtimeTimer) return;
-      window.clearTimeout(runtimeTimer);
-      runtimeTimer = 0;
-    };
+    renderRuntimeDuration(counter, startedAt);
 
     if (!("IntersectionObserver" in window)) {
-      startTimer();
+      startRuntimeTimer(counter, startedAt);
       return;
     }
 
     runtimeObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
-          startTimer();
+          startRuntimeTimer(counter, startedAt);
         } else {
-          stopTimer();
+          clearRuntimeTimer();
         }
       },
       { rootMargin: "0px" },
@@ -112,24 +129,42 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     !event.shiftKey &&
     !event.altKey;
 
-  const shouldHandleLink = (link) => {
-    if (!link) return false;
-    if (link.target && link.target !== "_self") return false;
-    if (link.hasAttribute("download")) return false;
+  const getClosestElement = (event, selector) =>
+    event.target instanceof Element ? event.target.closest(selector) : null;
 
-    const rel = link.getAttribute("rel") || "";
-    if (rel.includes("external")) return false;
+  const getPjaxUrl = (link) => {
+    if (!(link instanceof HTMLAnchorElement)) return null;
+    if (link.target && link.target !== "_self") return null;
+    if (link.hasAttribute("download")) return null;
+    if (link.relList.contains("external")) return null;
 
     const href = link.getAttribute("href");
-    if (!href || href.startsWith("#")) return false;
+    if (!href || href.startsWith("#")) return null;
 
-    const url = new URL(link.href, window.location.href);
-    if (url.origin !== window.location.origin) return false;
-    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) {
-      return false;
+    let url = null;
+    try {
+      url = new URL(link.href, window.location.href);
+    } catch {
+      return null;
     }
 
-    return true;
+    if (url.origin !== window.location.origin) return null;
+    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) {
+      return null;
+    }
+
+    return url;
+  };
+
+  const scheduleCopyButtonReset = (button) => {
+    const currentTimer = copyResetTimers.get(button);
+    if (currentTimer) window.clearTimeout(currentTimer);
+
+    const resetTimer = window.setTimeout(() => {
+      button.textContent = "复制";
+      copyResetTimers.delete(button);
+    }, 1200);
+    copyResetTimers.set(button, resetTimer);
   };
 
   const copyCodeBlock = async (button) => {
@@ -145,9 +180,7 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
       button.textContent = "复制失败";
     }
 
-    window.setTimeout(() => {
-      button.textContent = "复制";
-    }, 1200);
+    scheduleCopyButtonReset(button);
   };
 
   const initPage = () => {
@@ -160,22 +193,24 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     initPage,
   });
 
-  document.addEventListener("click", (event) => {
-    if (!isPrimaryClick(event)) return;
+  const handleDocumentClick = (event) => {
+    if (event.defaultPrevented || !isPrimaryClick(event)) return;
 
-    const copyButton = event.target instanceof Element ? event.target.closest(".code-copy") : null;
+    const copyButton = getClosestElement(event, ".code-copy");
     if (copyButton) {
       event.preventDefault();
       void copyCodeBlock(copyButton);
       return;
     }
 
-    const link = event.target instanceof Element ? event.target.closest("a") : null;
-    if (!shouldHandleLink(link)) return;
+    const url = getPjaxUrl(getClosestElement(event, "a"));
+    if (!url) return;
 
     event.preventDefault();
-    navigate(link.href, "push");
-  });
+    navigate(url.href, "push");
+  };
+
+  document.addEventListener("click", handleDocumentClick);
 
   window.addEventListener("popstate", () => {
     navigate(window.location.href, "replace");
