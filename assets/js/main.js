@@ -5,6 +5,41 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
   let runtimeObserver = null;
   let runtimeCounter = null;
   const parser = new DOMParser();
+  const secondMs = 1000;
+  const daySeconds = 86400;
+
+  const addYears = (date, years) => {
+    const next = new Date(date);
+    next.setFullYear(next.getFullYear() + years);
+    return next;
+  };
+
+  const createRuntimeFormatter = (startedAt) => {
+    let years = 0;
+    let anchor = startedAt;
+    let nextAnchor = addYears(startedAt, 1);
+
+    return () => {
+      const now = new Date();
+      if (now < startedAt) return "记录已延续了 0 年 0 天 0 小时 0 分 0 秒";
+
+      while (now >= nextAnchor) {
+        years += 1;
+        anchor = nextAnchor;
+        nextAnchor = addYears(startedAt, years + 1);
+      }
+
+      let remaining = Math.floor((now.getTime() - anchor.getTime()) / secondMs);
+      const days = Math.floor(remaining / daySeconds);
+      remaining -= days * daySeconds;
+      const hours = Math.floor(remaining / 3600);
+      remaining -= hours * 3600;
+      const minutes = Math.floor(remaining / 60);
+      const seconds = remaining - minutes * 60;
+
+      return `记录已延续了 ${years} 年 ${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+    };
+  };
 
   const enhanceTables = (root = document) => {
     root.querySelectorAll(".content table").forEach((table) => {
@@ -19,60 +54,36 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
   const mountRuntimeCounter = () => {
     const counter = document.querySelector("[data-site-started-at]");
     if (!counter) return;
+
+    const startedAt = new Date(counter.dataset.siteStartedAt || "");
+    if (Number.isNaN(startedAt.getTime())) return;
     if (counter === runtimeCounter) return;
 
+    const formatDuration = createRuntimeFormatter(startedAt);
+    const renderDuration = () => {
+      const text = formatDuration();
+      if (counter.textContent !== text) counter.textContent = text;
+    };
+
     if (runtimeTimer) {
-      window.clearInterval(runtimeTimer);
+      window.clearTimeout(runtimeTimer);
       runtimeTimer = 0;
     }
     runtimeObserver?.disconnect();
     runtimeCounter = counter;
-
-    const startedAt = new Date(counter.dataset.siteStartedAt || "");
-    if (Number.isNaN(startedAt.getTime())) return;
-
-    const addYears = (date, years) => {
-      const next = new Date(date);
-      next.setFullYear(next.getFullYear() + years);
-      return next;
-    };
-
-    const formatDuration = () => {
-      const now = new Date();
-      if (now < startedAt) {
-        counter.textContent = "记录已延续了 0 年 0 天 0 小时 0 分 0 秒";
-        return;
-      }
-
-      let years = now.getFullYear() - startedAt.getFullYear();
-      let anchor = addYears(startedAt, years);
-      if (anchor > now) {
-        years -= 1;
-        anchor = addYears(startedAt, years);
-      }
-
-      let remaining = Math.floor((now.getTime() - anchor.getTime()) / 1000);
-      const days = Math.floor(remaining / 86400);
-      remaining -= days * 86400;
-      const hours = Math.floor(remaining / 3600);
-      remaining -= hours * 3600;
-      const minutes = Math.floor(remaining / 60);
-      const seconds = remaining - minutes * 60;
-
-      counter.textContent =
-        `记录已延续了 ${years} 年 ${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
-    };
-
-    formatDuration();
+    renderDuration();
 
     const startTimer = () => {
       if (runtimeTimer) return;
-      formatDuration();
-      runtimeTimer = window.setInterval(formatDuration, 1000);
+      const tick = () => {
+        renderDuration();
+        runtimeTimer = window.setTimeout(tick, secondMs - (Date.now() % secondMs));
+      };
+      tick();
     };
     const stopTimer = () => {
       if (!runtimeTimer) return;
-      window.clearInterval(runtimeTimer);
+      window.clearTimeout(runtimeTimer);
       runtimeTimer = 0;
     };
 

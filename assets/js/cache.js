@@ -28,7 +28,12 @@ const withCache = async (fallback, action) => {
 export const readCache = (urlString) =>
   withCache(null, (cache) => cache.match(getCacheKey(urlString)));
 
-export const writeCache = async (urlString, response) => {
+export const writeCache = async (urlString, response, options = {}) => {
   if (!response) return;
-  await withCache(undefined, (cache) => cache.put(getCacheKey(urlString), response));
+  if (options.signal?.aborted) return;
+
+  await withCache(undefined, (cache) => {
+    if (options.signal?.aborted) return undefined;
+    return cache.put(getCacheKey(urlString), response);
+  });
 };

@@ -3,12 +3,15 @@ import {
   readCache,
   writeCache,
 } from "./cache.js";
+import {
+  getOptimisticMeta,
+  startLoading,
+} from "./pjax-loading.js";
 
 let parser = null;
 let initPage = () => {};
 let activeController = null;
 let activeLoadingCleanup = () => {};
-let loadingId = 0;
 
 const pageRevalidateRequests = new Map();
 
@@ -61,9 +64,18 @@ const buildCurrentDocumentResponse = () =>
     },
   });
 
-const cachePageResponse = (urlString, response) => {
+const cachePageResponse = (urlString, response, signal) => {
   if (!response) return;
-  void writeCache(urlString, response.clone());
+  if (signal?.aborted) return;
+
+  void writeCache(urlString, response.clone(), { signal });
+};
+
+const abortPageRevalidations = () => {
+  pageRevalidateRequests.forEach(({ controller }) => {
+    controller.abort();
+  });
+  pageRevalidateRequests.clear();
 };
 
 const revalidatePersistentPage = (urlString, etag) => {
@@ -72,7 +84,12 @@ const revalidatePersistentPage = (urlString, etag) => {
   const cacheKey = getCacheKey(urlString);
   if (pageRevalidateRequests.has(cacheKey)) return;
 
-  const task = window.fetch(urlString, {
+  const controller = new AbortController();
+  const record = { controller };
+  pageRevalidateRequests.set(cacheKey, record);
+
+  void window.fetch(urlString, {
+    signal: controller.signal,
     credentials: "same-origin",
     cache: "no-store",
     headers: {
@@ -81,112 +98,23 @@ const revalidatePersistentPage = (urlString, etag) => {
     },
   })
     .then(async (response) => {
+      if (controller.signal.aborted) return;
       if (response.status === 304) return;
       if (!response.ok) return;
 
       const contentType = response.headers.get("content-type") || "";
       if (!contentType.includes("text/html")) return;
 
-      cachePageResponse(response.url || urlString, response);
+      cachePageResponse(response.url || urlString, response, controller.signal);
     })
     .catch(() => {
       // Ignore background revalidation failures.
     })
     .finally(() => {
-      pageRevalidateRequests.delete(cacheKey);
+      if (pageRevalidateRequests.get(cacheKey) === record) {
+        pageRevalidateRequests.delete(cacheKey);
+      }
     });
-
-  pageRevalidateRequests.set(cacheKey, task);
-};
-
-const getOptimisticMeta = (link) => {
-  if (!link?.dataset.pjaxKind) return null;
-
-  const title = link.dataset.pjaxTitle?.trim();
-  if (!title) return null;
-
-  const kind = link.dataset.pjaxKind;
-  return {
-    kind,
-    title,
-    pageTitle: link.dataset.pjaxPageTitle?.trim() || document.title,
-    dateLabel: link.dataset.pjaxDate?.trim() || "",
-    dateIso: link.dataset.pjaxDateIso?.trim() || "",
-    eyebrow: link.dataset.pjaxEyebrow?.trim() || (kind === "post" ? "POSTS" : "PAGE"),
-  };
-};
-
-const ensureChild = (parent, selector, tagName, className = "") => {
-  const existing = parent.querySelector(selector);
-  if (existing) return existing;
-
-  const node = document.createElement(tagName);
-  if (className) node.className = className;
-  parent.append(node);
-  return node;
-};
-
-const applyLoadingPreview = (main, meta) => {
-  if (!meta) return;
-
-  const header = main.querySelector(".page-header, .post-header");
-  if (!header) return;
-
-  const eyebrow = ensureChild(header, ".eyebrow", "p", "eyebrow");
-  const title = ensureChild(header, "h1", "h1");
-
-  eyebrow.textContent = meta.eyebrow;
-  title.textContent = meta.title;
-  header.classList.add("pjax-preview-header");
-
-  if (!meta.dateLabel) return;
-
-  const metaRow = ensureChild(header, ".meta-row", "div", "meta-row");
-  const time = ensureChild(metaRow, "time", "time");
-  time.textContent = meta.dateLabel;
-  if (meta.dateIso) time.dateTime = meta.dateIso;
-};
-
-const toggleLoading = (isLoading, context = {}) => {
-  const main = getMain();
-  if (!main) return () => {};
-
-  if (!isLoading) {
-    main.classList.remove("is-loading");
-    main.removeAttribute("aria-busy");
-    return () => {};
-  }
-
-  const id = `${++loadingId}`;
-  const initialHeight = main.style.height;
-  const initialMinHeight = main.style.minHeight;
-  const initialOverflow = main.style.overflow;
-  const initialTitle = document.title;
-  const timeoutId = window.setTimeout(() => {
-    const height = main.getBoundingClientRect().height;
-    main.dataset.pjaxLoadingId = id;
-    main.style.height = `${height}px`;
-    main.style.minHeight = `${height}px`;
-    main.style.overflow = "hidden";
-    applyLoadingPreview(main, context.meta);
-    if (context.meta?.pageTitle) document.title = context.meta.pageTitle;
-    main.classList.add("is-loading");
-    main.setAttribute("aria-busy", "true");
-  }, 140);
-
-  return () => {
-    window.clearTimeout(timeoutId);
-    if (!main.isConnected) return;
-    if (main.dataset.pjaxLoadingId !== id) return;
-
-    main.style.height = initialHeight;
-    main.style.minHeight = initialMinHeight;
-    main.style.overflow = initialOverflow;
-    main.classList.remove("is-loading");
-    main.removeAttribute("aria-busy");
-    delete main.dataset.pjaxLoadingId;
-    if (document.title === context.meta?.pageTitle) document.title = initialTitle;
-  };
 };
 
 const syncHeadMeta = (nextDocument) => {
@@ -234,6 +162,8 @@ export const setupPjax = (options = {}) => {
 };
 
 export const navigate = async (urlString, historyMode = "push", triggerLink = null) => {
+  abortPageRevalidations();
+
   if (activeController) {
     activeController.abort();
     activeLoadingCleanup();
@@ -242,20 +172,20 @@ export const navigate = async (urlString, historyMode = "push", triggerLink = nu
 
   const controller = new AbortController();
   activeController = controller;
-  const stopLoading = toggleLoading(true, {
-    meta: getOptimisticMeta(triggerLink),
-  });
+  const stopLoading = startLoading(getMain(), getOptimisticMeta(triggerLink));
   activeLoadingCleanup = stopLoading;
+  const isActive = () => activeController === controller && !controller.signal.aborted;
 
   try {
     const cachedResponse = await readCache(urlString);
-    if (activeController !== controller) return;
+    if (!isActive()) return;
 
     if (cachedResponse) {
       console.info("[pjax] swr cache hit", { url: urlString, source: "cache-storage" });
       const cachedHtml = await cachedResponse.text();
-      if (activeController !== controller) return;
+      if (!isActive()) return;
       const cachedDocument = parser.parseFromString(cachedHtml, "text/html");
+      if (!isActive()) return;
       swapPage(cachedDocument, urlString, historyMode);
       revalidatePersistentPage(urlString, cachedResponse.headers.get("etag") || "");
       return;
@@ -269,21 +199,24 @@ export const navigate = async (urlString, historyMode = "push", triggerLink = nu
       },
     });
 
+    if (!isActive()) return;
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const contentType = response.headers.get("content-type") || "";
     if (!contentType.includes("text/html")) {
-      window.location.href = urlString;
+      if (isActive()) window.location.href = urlString;
       return;
     }
 
     const responseForCache = response.clone();
     const html = await response.text();
+    if (!isActive()) return;
     const nextDocument = parser.parseFromString(html, "text/html");
-    cachePageResponse(response.url || urlString, responseForCache);
+    if (!isActive()) return;
+    cachePageResponse(response.url || urlString, responseForCache, controller.signal);
     swapPage(nextDocument, response.url || urlString, historyMode);
   } catch (error) {
-    if (error.name !== "AbortError") {
+    if (isActive() && error.name !== "AbortError") {
       window.location.href = urlString;
     }
   } finally {
