@@ -15,19 +15,9 @@
 {{ with site.Params.favicon }}
   <link rel="icon" href="{{ . }}">
 {{ end }}
-{{ $styles := slice
-  (resources.Get "css/00-base.css")
-  (resources.Get "css/10-layout.css")
-  (resources.Get "css/20-transition.css")
-  (resources.Get "css/30-navigation.css")
-  (resources.Get "css/40-page.css")
-  (resources.Get "css/41-markdown.css")
-  (resources.Get "css/42-comments.css")
-  (resources.Get "css/50-footer.css")
-}}
-{{ with resources.Concat "css/style.css" $styles | minify }}
+{{ with resources.Get "css/styles.css" | minify }}
   {{ $hash := substr (sha256 .Content) 0 8 }}
-  {{ $targetPath := printf "css/style.%s.css" $hash }}
+  {{ $targetPath := printf "css/styles.%s.css" $hash }}
   {{ with resources.Copy $targetPath . }}
     <link rel="stylesheet" href="{{ .RelPermalink }}">
   {{ end }}
