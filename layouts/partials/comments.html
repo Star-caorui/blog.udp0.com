@@ -1,43 +1,10 @@
-{{ define "comments.reply" }}
-  {{ $comment := .comment }}
-  {{ $comments := .comments }}
-  {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
-  <article class="comment-item comment-reply-item" id="comment-{{ $comment.id }}">
-    <header class="comment-meta">
-      <span class="comment-speaker">
-        用户
-        {{ if $comment.url }}
-          <a class="comment-author" href="{{ $comment.url }}" rel="nofollow noopener" target="_blank">{{ $comment.author }}</a>
-        {{ else }}
-          <span class="comment-author">{{ $comment.author }}</span>
-        {{ end }}
-        {{ if $isFollowUp }}
-          追评：
-        {{ else }}
-          {{ with $comment.reply_to }}
-            回复 <a class="comment-target" href="#comment-{{ $comment.parent }}">{{ . }}</a> 说：
-          {{ else }}
-            说：
-          {{ end }}
-        {{ end }}
-      </span>
-      <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
-    </header>
-    <div class="comment-body">
-      {{ $comment.text | markdownify }}
-    </div>
-  </article>
-  {{ range sort (where $comments "parent" $comment.id) "date" "asc" }}
-    {{ template "comments.reply" (dict "comment" . "comments" $comments) }}
-  {{ end }}
-{{ end }}
-
 {{ define "comments.item" }}
   {{ $comment := .comment }}
   {{ $comments := .comments }}
+  {{ $isReply := eq .isReply true }}
   {{ $children := sort (where $comments "parent" $comment.id) "date" "asc" }}
   {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
-  <article class="comment-item" id="comment-{{ $comment.id }}">
+  <article class="comment-item{{ if $isReply }} comment-reply-item{{ end }}" id="comment-{{ $comment.id }}">
     <header class="comment-meta">
       <span class="comment-speaker">
         用户
@@ -61,14 +28,19 @@
     <div class="comment-body">
       {{ $comment.text | markdownify }}
     </div>
-    {{ with $children }}
+    {{ if and (not $isReply) $children }}
       <div class="comment-children">
-        {{ range . }}
-          {{ template "comments.reply" (dict "comment" . "comments" $comments) }}
+        {{ range $children }}
+          {{ template "comments.item" (dict "comment" . "comments" $comments "isReply" true) }}
         {{ end }}
       </div>
     {{ end }}
   </article>
+  {{ if $isReply }}
+    {{ range $children }}
+      {{ template "comments.item" (dict "comment" . "comments" $comments "isReply" true) }}
+    {{ end }}
+  {{ end }}
 {{ end }}
 
 {{ $slug := .Params.slug | default .File.ContentBaseName }}

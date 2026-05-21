@@ -5,19 +5,19 @@
   </head>
   <body>
     <header>
+      {{ $page := . }}
       {{ with site.Menus.main }}
         <nav aria-label="Primary">
           {{ range . }}
-            {{ $isActive := false }}
-            {{ if eq .URL "/" }}
-              {{ $isActive = or $.IsHome (eq $.Section "posts") }}
-            {{ else if or ($.IsMenuCurrent `main` .) ($.HasMenuCurrent `main` .) (eq $.RelPermalink .URL) }}
-              {{ $isActive = true }}
+            {{ $isHomeEntry := eq .URL "/" }}
+            {{ $isPostPage := eq $page.Section "posts" }}
+            {{ $isHomeEntryPage := or $page.IsHome $isPostPage }}
+            {{ $matchesMenu := or ($page.IsMenuCurrent "main" .) ($page.HasMenuCurrent "main" .) (eq $page.RelPermalink .URL) }}
+            {{ $isActive := $matchesMenu }}
+            {{ if $isHomeEntry }}
+              {{ $isActive = $isHomeEntryPage }}
             {{ end }}
-            <a
-              class="{{ if $isActive }}is-active{{ end }}"
-              href="{{ .URL }}"
-            >{{ .Name }}</a>
+            <a{{ if $isActive }} class="is-active"{{ end }} href="{{ .URL }}">{{ .Name }}</a>
           {{ end }}
         </nav>
       {{ end }}
