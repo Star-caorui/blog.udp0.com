@@ -138,9 +138,22 @@ const swapPage = (nextDocument, urlString, historyMode) => {
 
   const currentMain = getMain();
   const importedMain = document.importNode(nextMain, true);
+  const shouldAnimateEntry = currentMain?.classList.contains("is-transitioning")
+    || currentMain?.classList.contains("is-loading");
+
+  if (shouldAnimateEntry) {
+    importedMain.classList.add("pjax-enter");
+  }
 
   document.title = nextDocument.title || document.title;
   currentMain?.replaceWith(importedMain);
+
+  if (shouldAnimateEntry) {
+    window.requestAnimationFrame(() => {
+      importedMain.classList.remove("pjax-enter");
+    });
+  }
+
   document.documentElement.lang =
     nextDocument.documentElement.lang || document.documentElement.lang;
   syncHeadMeta(nextDocument);

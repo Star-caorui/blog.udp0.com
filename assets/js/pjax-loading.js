@@ -1,6 +1,7 @@
 let loadingId = 0;
 
-const loadingDelayMs = 200;
+const transitionDelayMs = 200;
+const skeletonDelayMs = 1500;
 
 export const getOptimisticMeta = (link) => {
   if (!link?.dataset.pjaxKind) return null;
@@ -121,11 +122,21 @@ export const startLoading = (main, meta) => {
   const initialMinHeight = main.style.minHeight;
   const initialOverflow = main.style.overflow;
   const initialTitle = document.title;
+  let transitionFrame = 0;
   let readFrame = 0;
   let writeFrame = 0;
   let restorePreview = () => {};
 
-  const timeoutId = window.setTimeout(() => {
+  const transitionTimeoutId = window.setTimeout(() => {
+    transitionFrame = window.requestAnimationFrame(() => {
+      if (!main.isConnected) return;
+      main.dataset.pjaxLoadingId = id;
+      main.classList.add("is-transitioning");
+      main.setAttribute("aria-busy", "true");
+    });
+  }, transitionDelayMs);
+
+  const skeletonTimeoutId = window.setTimeout(() => {
     readFrame = window.requestAnimationFrame(() => {
       if (!main.isConnected) return;
       const height = main.getBoundingClientRect().height;
@@ -138,15 +149,18 @@ export const startLoading = (main, meta) => {
         main.style.overflow = "hidden";
         restorePreview = applyLoadingPreview(main, meta);
         if (meta?.pageTitle) document.title = meta.pageTitle;
+        main.classList.remove("is-transitioning");
         main.classList.add("is-loading");
         main.setAttribute("aria-busy", "true");
-        console.info("[pjax] skeleton shown", { delay: loadingDelayMs });
+        console.info("[pjax] skeleton shown", { delay: skeletonDelayMs });
       });
     });
-  }, loadingDelayMs);
+  }, skeletonDelayMs);
 
   return () => {
-    window.clearTimeout(timeoutId);
+    window.clearTimeout(transitionTimeoutId);
+    window.clearTimeout(skeletonTimeoutId);
+    window.cancelAnimationFrame(transitionFrame);
     window.cancelAnimationFrame(readFrame);
     window.cancelAnimationFrame(writeFrame);
     if (!main.isConnected) return;
@@ -155,6 +169,7 @@ export const startLoading = (main, meta) => {
     main.style.height = initialHeight;
     main.style.minHeight = initialMinHeight;
     main.style.overflow = initialOverflow;
+    main.classList.remove("is-transitioning");
     main.classList.remove("is-loading");
     main.removeAttribute("aria-busy");
     delete main.dataset.pjaxLoadingId;

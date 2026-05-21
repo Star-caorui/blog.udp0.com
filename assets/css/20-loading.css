@@ -1,3 +1,13 @@
+body > main {
+  transition: opacity 180ms ease;
+}
+
+main.is-transitioning,
+main.pjax-enter {
+  cursor: progress;
+  opacity: 0.68;
+}
+
 main.is-loading {
   --skeleton-base: #d9dde4;
   --skeleton-glint: rgba(255, 255, 255, 0.9);
@@ -186,6 +196,15 @@ main.is-loading li::marker {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  body > main {
+    transition: none;
+  }
+
+  main.is-transitioning,
+  main.pjax-enter {
+    opacity: 1;
+  }
+
   main.is-loading::after {
     content: none;
   }
