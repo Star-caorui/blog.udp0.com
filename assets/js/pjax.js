@@ -3,10 +3,7 @@ import {
   readCache,
   writeCache,
 } from "./cache.js";
-import {
-  getOptimisticMeta,
-  startLoading,
-} from "./pjax-loading.js";
+import { startLoading } from "./pjax-loading.js";
 
 let parser = null;
 let initPage = () => {};
@@ -138,8 +135,7 @@ const swapPage = (nextDocument, urlString, historyMode) => {
 
   const currentMain = getMain();
   const importedMain = document.importNode(nextMain, true);
-  const shouldAnimateEntry = currentMain?.classList.contains("is-transitioning")
-    || currentMain?.classList.contains("is-loading");
+  const shouldAnimateEntry = currentMain?.classList.contains("is-transitioning");
 
   if (shouldAnimateEntry) {
     importedMain.classList.add("pjax-enter");
@@ -174,7 +170,7 @@ export const setupPjax = (options = {}) => {
   initPage = options.initPage || (() => {});
 };
 
-export const navigate = async (urlString, historyMode = "push", triggerLink = null) => {
+export const navigate = async (urlString, historyMode = "push") => {
   abortPageRevalidations();
 
   if (activeController) {
@@ -185,7 +181,7 @@ export const navigate = async (urlString, historyMode = "push", triggerLink = nu
 
   const controller = new AbortController();
   activeController = controller;
-  const stopLoading = startLoading(getMain(), getOptimisticMeta(triggerLink));
+  const stopLoading = startLoading(getMain());
   activeLoadingCleanup = stopLoading;
   const isActive = () => activeController === controller && !controller.signal.aborted;
 
