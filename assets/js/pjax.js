@@ -3,12 +3,12 @@ import {
   readCache,
   writeCache,
 } from "./cache.js";
-import { startLoading } from "./pjax-loading.js";
+import { startTransition } from "./pjax-transition.js";
 
 let parser = null;
 let initPage = () => {};
 let activeController = null;
-let activeLoadingCleanup = () => {};
+let activeTransitionCleanup = () => {};
 
 const pageRevalidateRequests = new Map();
 
@@ -175,14 +175,14 @@ export const navigate = async (urlString, historyMode = "push") => {
 
   if (activeController) {
     activeController.abort();
-    activeLoadingCleanup();
-    activeLoadingCleanup = () => {};
+    activeTransitionCleanup();
+    activeTransitionCleanup = () => {};
   }
 
   const controller = new AbortController();
   activeController = controller;
-  const stopLoading = startLoading(getMain());
-  activeLoadingCleanup = stopLoading;
+  const stopTransition = startTransition(getMain());
+  activeTransitionCleanup = stopTransition;
   const isActive = () => activeController === controller && !controller.signal.aborted;
 
   try {
@@ -230,8 +230,8 @@ export const navigate = async (urlString, historyMode = "push") => {
   } finally {
     if (activeController === controller) {
       activeController = null;
-      stopLoading();
-      activeLoadingCleanup = () => {};
+      stopTransition();
+      activeTransitionCleanup = () => {};
     }
   }
 };

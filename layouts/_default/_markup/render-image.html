@@ -16,25 +16,21 @@
   {{- $pagePath := strings.TrimPrefix "/" $page.RelPermalink -}}
   {{- $targetPath := path.Join $pagePath $dir (printf "%s.%s%s" $name $hash $ext) -}}
   {{- $published := resources.FromString $targetPath $resource.Content -}}
-  <span class="skeleton-media">
-    <img
-      src="{{ $published.RelPermalink }}"
-      alt="{{ .PlainText }}"
-      width="{{ $resource.Width }}"
-      height="{{ $resource.Height }}"
-      loading="lazy"
-      decoding="async"
-      {{- with .Title }} title="{{ . }}"{{ end -}}
-    >
-  </span>
+  <img
+    src="{{ $published.RelPermalink }}"
+    alt="{{ .PlainText }}"
+    width="{{ $resource.Width }}"
+    height="{{ $resource.Height }}"
+    loading="lazy"
+    decoding="async"
+    {{- with .Title }} title="{{ . }}"{{ end -}}
+  >
 {{- else -}}
-  <span class="skeleton-media">
-    <img
-      src="{{ $destination | safeURL }}"
-      alt="{{ .PlainText }}"
-      loading="lazy"
-      decoding="async"
-      {{- with .Title }} title="{{ . }}"{{ end -}}
-    >
-  </span>
+  <img
+    src="{{ $destination | safeURL }}"
+    alt="{{ .PlainText }}"
+    loading="lazy"
+    decoding="async"
+    {{- with .Title }} title="{{ . }}"{{ end -}}
+  >
 {{- end -}}

@@ -1,17 +1,17 @@
-let loadingId = 0;
+let transitionId = 0;
 
 const transitionDelayMs = 200;
 
-export const startLoading = (main) => {
+export const startTransition = (main) => {
   if (!main) return () => {};
 
-  const id = `${++loadingId}`;
+  const id = `${++transitionId}`;
   let transitionFrame = 0;
 
   const transitionTimeoutId = window.setTimeout(() => {
     transitionFrame = window.requestAnimationFrame(() => {
       if (!main.isConnected) return;
-      main.dataset.pjaxLoadingId = id;
+      main.dataset.pjaxTransitionId = id;
       main.classList.add("is-transitioning");
       main.setAttribute("aria-busy", "true");
     });
@@ -21,10 +21,10 @@ export const startLoading = (main) => {
     window.clearTimeout(transitionTimeoutId);
     window.cancelAnimationFrame(transitionFrame);
     if (!main.isConnected) return;
-    if (main.dataset.pjaxLoadingId !== id) return;
+    if (main.dataset.pjaxTransitionId !== id) return;
 
     main.classList.remove("is-transitioning");
     main.removeAttribute("aria-busy");
-    delete main.dataset.pjaxLoadingId;
+    delete main.dataset.pjaxTransitionId;
   };
 };

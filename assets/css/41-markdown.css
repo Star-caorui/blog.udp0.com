@@ -55,18 +55,6 @@
   border-radius: 12px;
 }
 
-.skeleton-media {
-  display: block;
-  width: fit-content;
-  max-width: 100%;
-  border-radius: 12px;
-}
-
-.skeleton-media > :where(img, iframe, video) {
-  display: block;
-  max-width: 100%;
-}
-
 .content :where(code, pre),
 .comment-body :where(code, pre) {
   font-family: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
