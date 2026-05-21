@@ -1,0 +1,10 @@
+{{- $language := .Type | default "text" -}}
+{{- $highlighted := transform.HighlightCodeBlock . -}}
+<div class="code-frame" data-code-language="{{ $language }}">
+  <div class="code-frame-bar">
+    <span class="code-frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="code-frame-language">{{ $language }}</span>
+    <button class="code-copy" type="button">复制</button>
+  </div>
+  {{ $highlighted.Wrapped }}
+</div>

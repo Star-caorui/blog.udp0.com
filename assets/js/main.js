@@ -132,6 +132,24 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
     return true;
   };
 
+  const copyCodeBlock = async (button) => {
+    const frame = button.closest(".code-frame");
+    const code = frame?.querySelector("pre");
+    const text = code?.textContent || "";
+    if (!text) return;
+
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = "已复制";
+    } catch {
+      button.textContent = "复制失败";
+    }
+
+    window.setTimeout(() => {
+      button.textContent = "复制";
+    }, 1200);
+  };
+
   const initPage = () => {
     enhanceTables(document);
     mountRuntimeCounter();
@@ -144,6 +162,13 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
 
   document.addEventListener("click", (event) => {
     if (!isPrimaryClick(event)) return;
+
+    const copyButton = event.target instanceof Element ? event.target.closest(".code-copy") : null;
+    if (copyButton) {
+      event.preventDefault();
+      void copyCodeBlock(copyButton);
+      return;
+    }
 
     const link = event.target instanceof Element ? event.target.closest("a") : null;
     if (!shouldHandleLink(link)) return;
