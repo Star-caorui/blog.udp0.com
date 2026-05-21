@@ -3,7 +3,7 @@
 {{ $comments := index $commentsData $slug }}
 {{ if $comments }}
   <section class="comments">
-    <h2>历史评论</h2>
+    <h2 class="skeleton-text">历史评论</h2>
     {{ partial "comments-list.html" (dict "comments" $comments) }}
   </section>
 {{ end }}

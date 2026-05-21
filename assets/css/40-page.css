@@ -3,8 +3,7 @@
   margin-bottom: 1.6rem;
 }
 
-.page-copy,
-.empty-state {
+.page-copy {
   max-width: 34rem;
   color: var(--muted);
 }
@@ -83,10 +82,6 @@
 
 .post-line-title a {
   text-decoration: none;
-}
-
-.post {
-  background: transparent;
 }
 
 .meta-row {

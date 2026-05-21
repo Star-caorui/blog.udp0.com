@@ -1,6 +1,7 @@
 <article class="post-line">
   <h2 class="post-line-title">
     <a
+      class="skeleton-line"
       href="{{ .RelPermalink }}"
       data-pjax-kind="post"
       data-pjax-title="{{ .Title }}"
@@ -10,7 +11,7 @@
       data-pjax-date-iso="{{ .Date.Format `2006-01-02` }}"
     >{{ .Title }}</a>
   </h2>
-  <time class="post-line-date" datetime="{{ .Date.Format `2006-01-02` }}">
+  <time class="post-line-date skeleton-text" datetime="{{ .Date.Format `2006-01-02` }}">
     {{ .Date.Format site.Params.dateFormat }}
   </time>
 </article>

@@ -1,20 +1,18 @@
 {{ define "main" }}
-  <article class="post">
-    <header class="post-header">
-      <p class="eyebrow">{{ .Section | default "Page" | humanize }}</p>
-      <h1>{{ .Title }}</h1>
-      <div class="meta-row">
-        <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format site.Params.dateFormat }}</time>
-        {{ with .ReadingTime }}
-          <span>{{ . }} min read</span>
-        {{ end }}
-      </div>
-    </header>
-
-    <div class="content">
-      {{ .Content }}
+  <header class="post-header">
+    <p class="eyebrow skeleton-text">{{ .Section | default "Page" | humanize }}</p>
+    <h1 class="skeleton-text">{{ .Title }}</h1>
+    <div class="meta-row">
+      <time class="skeleton-text" datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format site.Params.dateFormat }}</time>
+      {{ with .ReadingTime }}
+        <span class="skeleton-text">{{ . }} min read</span>
+      {{ end }}
     </div>
+  </header>
 
-    {{ partial "comments.html" . }}
-  </article>
+  <div class="content">
+    {{ .Content }}
+  </div>
+
+  {{ partial "comments.html" . }}
 {{ end }}
