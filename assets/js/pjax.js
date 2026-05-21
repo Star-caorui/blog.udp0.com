@@ -181,7 +181,6 @@ export const navigate = async (urlString, historyMode = "push", triggerLink = nu
     if (!isActive()) return;
 
     if (cachedResponse) {
-      console.info("[pjax] swr cache hit", { url: urlString, source: "cache-storage" });
       const cachedHtml = await cachedResponse.text();
       if (!isActive()) return;
       const cachedDocument = parser.parseFromString(cachedHtml, "text/html");

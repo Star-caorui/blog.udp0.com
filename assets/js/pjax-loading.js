@@ -1,6 +1,6 @@
 let loadingId = 0;
 
-const loadingDelayMs = 140;
+const loadingDelayMs = 200;
 
 export const getOptimisticMeta = (link) => {
   if (!link?.dataset.pjaxKind) return null;
@@ -140,6 +140,7 @@ export const startLoading = (main, meta) => {
         if (meta?.pageTitle) document.title = meta.pageTitle;
         main.classList.add("is-loading");
         main.setAttribute("aria-busy", "true");
+        console.info("[pjax] skeleton shown", { delay: loadingDelayMs });
       });
     });
   }, loadingDelayMs);
