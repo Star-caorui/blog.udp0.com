@@ -1,9 +1,86 @@
+{{ define "comments.reply" }}
+  {{ $comment := .comment }}
+  {{ $comments := .comments }}
+  {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
+  <article class="comment-item comment-reply-item" id="comment-{{ $comment.id }}">
+    <header class="comment-meta">
+      <span class="comment-speaker">
+        用户
+        {{ if $comment.url }}
+          <a class="comment-author" href="{{ $comment.url }}" rel="nofollow noopener" target="_blank">{{ $comment.author }}</a>
+        {{ else }}
+          <span class="comment-author">{{ $comment.author }}</span>
+        {{ end }}
+        {{ if $isFollowUp }}
+          追评：
+        {{ else }}
+          {{ with $comment.reply_to }}
+            回复 <a class="comment-target" href="#comment-{{ $comment.parent }}">{{ . }}</a> 说：
+          {{ else }}
+            说：
+          {{ end }}
+        {{ end }}
+      </span>
+      <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
+    </header>
+    <div class="comment-body">
+      {{ $comment.text | markdownify }}
+    </div>
+  </article>
+  {{ range sort (where $comments "parent" $comment.id) "date" "asc" }}
+    {{ template "comments.reply" (dict "comment" . "comments" $comments) }}
+  {{ end }}
+{{ end }}
+
+{{ define "comments.item" }}
+  {{ $comment := .comment }}
+  {{ $comments := .comments }}
+  {{ $children := sort (where $comments "parent" $comment.id) "date" "asc" }}
+  {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
+  <article class="comment-item" id="comment-{{ $comment.id }}">
+    <header class="comment-meta">
+      <span class="comment-speaker">
+        用户
+        {{ if $comment.url }}
+          <a class="comment-author" href="{{ $comment.url }}" rel="nofollow noopener" target="_blank">{{ $comment.author }}</a>
+        {{ else }}
+          <span class="comment-author">{{ $comment.author }}</span>
+        {{ end }}
+        {{ if $isFollowUp }}
+          追评：
+        {{ else }}
+          {{ with $comment.reply_to }}
+            回复 <a class="comment-target" href="#comment-{{ $comment.parent }}">{{ . }}</a> 说：
+          {{ else }}
+            说：
+          {{ end }}
+        {{ end }}
+      </span>
+      <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
+    </header>
+    <div class="comment-body">
+      {{ $comment.text | markdownify }}
+    </div>
+    {{ with $children }}
+      <div class="comment-children">
+        {{ range . }}
+          {{ template "comments.reply" (dict "comment" . "comments" $comments) }}
+        {{ end }}
+      </div>
+    {{ end }}
+  </article>
+{{ end }}
+
 {{ $slug := .Params.slug | default .File.ContentBaseName }}
-{{ $commentsData := site.Data.comments | default dict }}
+{{ $commentsData := hugo.Data.comments | default dict }}
 {{ $comments := index $commentsData $slug }}
 {{ if $comments }}
   <section class="comments">
     <h2>历史评论</h2>
-    {{ partial "comments-list.html" (dict "comments" $comments) }}
+    <div class="comment-list">
+      {{ range sort (where $comments "parent" 0) "date" "desc" }}
+        {{ template "comments.item" (dict "comment" . "comments" $comments) }}
+      {{ end }}
+    </div>
   </section>
 {{ end }}

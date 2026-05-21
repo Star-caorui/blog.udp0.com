@@ -7,9 +7,9 @@ slug = "windows-common-software-recommendations"
 +++
 
 # Windows 常用软件推荐
-{{< warn title="过期提醒" >}}
+{{< callout type="warn" title="过期提醒" >}}
 此文章可能已经过期，请谨慎参考。
-{{< /warn >}}
+{{< /callout >}}
 
 ## 软件下载站
 - [腾讯软件中心](https://pc.qq.com/)

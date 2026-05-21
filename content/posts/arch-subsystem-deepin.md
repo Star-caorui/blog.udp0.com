@@ -9,9 +9,9 @@ list = 'never'
 render = 'always'
 +++
 
-{{< caution title="本文已失效" >}}
+{{< callout type="caution" title="本文已失效" >}}
 本文在 2022-05-04 已确认失效，故已隐藏。如你通过其他途径访问到这里，请不要继续照本文操作。
-{{< /caution >}}
+{{< /callout >}}
 
 ### 介绍
 你可能出于某种原因想使用一些来自 Deepin 的软件，但不想让这个软件污染的你本地环境，这时候你就需要用到 systemd-nspawn 来使用你的任意 Linux 子系统了。

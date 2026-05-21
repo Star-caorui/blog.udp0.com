@@ -116,36 +116,36 @@ greet("Betterr");
 
 ## 提示块：note
 
-{{< note title="Note 标题" >}}
+{{< callout type="note" title="Note 标题" >}}
 这是 `note` 提示块，包含 **加粗**、链接 [Example](https://example.com) 和列表：
 
 - note item 1
 - note item 2
-{{< /note >}}
+{{< /callout >}}
 
 ## 提示块：tip
 
-{{< tip title="Tip 标题" >}}
+{{< callout type="tip" title="Tip 标题" >}}
 这是 `tip` 提示块。
-{{< /tip >}}
+{{< /callout >}}
 
 ## 提示块：success
 
-{{< success title="Success 标题" >}}
+{{< callout type="success" title="Success 标题" >}}
 这是 `success` 提示块。
-{{< /success >}}
+{{< /callout >}}
 
 ## 提示块：warn
 
-{{< warn title="Warn 标题" >}}
+{{< callout type="warn" title="Warn 标题" >}}
 这是 `warn` 提示块。
-{{< /warn >}}
+{{< /callout >}}
 
 ## 提示块：caution
 
-{{< caution title="Caution 标题" >}}
+{{< callout type="caution" title="Caution 标题" >}}
 这是 `caution` 提示块。
-{{< /caution >}}
+{{< /callout >}}
 
 ## 通用 callout
 
@@ -155,8 +155,8 @@ greet("Betterr");
 
 ## 默认标题提示块
 
-{{< note >}}
+{{< callout type="note" >}}
 这是没有传入 `title` 的 note，用来检查默认标题。
-{{< /note >}}
+{{< /callout >}}
 
 [hugo]: https://gohugo.io/

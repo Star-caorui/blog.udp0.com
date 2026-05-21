@@ -42,7 +42,7 @@ import { cacheCurrentPage, navigate, setupPjax } from "./pjax.js";
   };
 
   const enhanceTables = (root = document) => {
-    root.querySelectorAll(".content table").forEach((table) => {
+    root.querySelectorAll("main > article > section table").forEach((table) => {
       if (table.parentElement?.classList.contains("table-wrap")) return;
       const wrapper = document.createElement("div");
       wrapper.className = "table-wrap";

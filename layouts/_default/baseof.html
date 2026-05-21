@@ -4,10 +4,45 @@
     {{ partial "head.html" . }}
   </head>
   <body>
-    {{ partial "header.html" . }}
+    <header>
+      {{ with site.Menus.main }}
+        <nav aria-label="Primary">
+          {{ range . }}
+            {{ $isActive := false }}
+            {{ if eq .URL "/" }}
+              {{ $isActive = or $.IsHome (eq $.Section "posts") }}
+            {{ else if or ($.IsMenuCurrent `main` .) ($.HasMenuCurrent `main` .) (eq $.RelPermalink .URL) }}
+              {{ $isActive = true }}
+            {{ end }}
+            <a
+              class="{{ if $isActive }}is-active{{ end }}"
+              href="{{ .URL }}"
+            >{{ .Name }}</a>
+          {{ end }}
+        </nav>
+      {{ end }}
+    </header>
     <main>
       {{ block "main" . }}{{ end }}
     </main>
-    {{ partial "footer.html" . }}
+    <footer>
+      {{ with site.Home.OutputFormats.Get "RSS" }}
+        <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">RSS</a>
+      {{ end }}
+      {{ with site.Params.records }}
+        {{ with .icp }}
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
+        {{ end }}
+        {{ with .police }}
+          {{ $policeURL := printf "https://beian.mps.gov.cn/#/query/webSearch?code=%s" . }}
+          <a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
+        {{ end }}
+      {{ end }}
+      {{ with site.Params.siteStartedAt }}
+        <p
+          data-site-started-at="{{ . }}"
+        >记录已延续了</p>
+      {{ end }}
+    </footer>
   </body>
 </html>
