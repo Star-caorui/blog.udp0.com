@@ -128,49 +128,6 @@ body > main {
   min-height: 8rem;
 }
 
-.pjax-progress {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 30;
-  height: 2px;
-  opacity: 0;
-  pointer-events: none;
-  transform: scaleX(0);
-  transform-origin: left center;
-  background: var(--accent);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 40%, transparent);
-  transition: transform 220ms ease, opacity 180ms ease;
-}
-
-.pjax-progress.is-active {
-  opacity: 1;
-  transform: scaleX(0.72);
-}
-
-.pjax-progress.is-complete {
-  opacity: 0;
-  transform: scaleX(1);
-}
-
-body.is-pjax-loading {
-  cursor: progress;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pjax-progress {
-    transition: opacity 120ms ease;
-    transform: none;
-  }
-
-  .pjax-progress.is-active {
-    opacity: 1;
-  }
-
-  .pjax-progress.is-complete {
-    opacity: 0;
-  }
-}
-
 body > header {
   display: flex;
   justify-content: center;
@@ -390,8 +347,19 @@ body > header > nav a.is-active {
 
 :where(main > article > section, .comment-body) hr { height: 1px; margin: 2rem 0; border: 0; background: linear-gradient(90deg, transparent, var(--line), transparent); }
 
-.table-wrap { max-width: 100%; margin: 1.5rem 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-:where(main > article > section) table { width: max-content; min-width: 100%; border-collapse: collapse; border: 1px solid var(--line); background: var(--surface); }
+:where(main > article > section) .table-wrap {
+  max-width: 100%;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+:where(main > article > section) table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
 :where(main > article > section) :where(th, td) { padding: 0.7rem 0.8rem; text-align: start; border: 1px solid var(--line); }
 :where(main > article > section) th { background: var(--accent-soft); }
 
