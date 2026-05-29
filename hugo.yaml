@@ -27,7 +27,6 @@ build:
   noJSConfigInAssets: true
 
 params:
-  siteStartedAt: "2020-04-11T00:00:00+08:00"
   favicon: "https://src.inetech.fun/favicon.webp"
   records:
     icp: 蒙 ICP 备 2022000209 号-2

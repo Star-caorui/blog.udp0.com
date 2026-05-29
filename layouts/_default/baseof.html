@@ -29,6 +29,7 @@
       {{ with site.Home.OutputFormats.Get "RSS" }}
         <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">RSS</a>
       {{ end }}
+      <span>© 2020</span>
       {{ with site.Params.records }}
         {{ with .icp }}
           <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
@@ -37,11 +38,6 @@
           {{ $policeURL := printf "https://beian.mps.gov.cn/#/query/webSearch?code=%s" . }}
           <a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
         {{ end }}
-      {{ end }}
-      {{ with site.Params.siteStartedAt }}
-        <p
-          data-site-started-at="{{ . }}"
-        >记录已延续了</p>
       {{ end }}
     </footer>
   </body>

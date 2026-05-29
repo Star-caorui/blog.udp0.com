@@ -1,5 +1,4 @@
 import { getPjaxUrl, mountPjax } from "./pjax.js";
-import { mountRuntimeCounter } from "./runtime.js";
 
 const isPrimaryClick = (event) =>
   event.button === 0 &&
@@ -36,7 +35,6 @@ const copyCodeBlock = async (button) => {
 
 const initPage = () => {
   enhanceTables(document);
-  mountRuntimeCounter();
 };
 
 const pjax = mountPjax({ onPageLoad: initPage });
