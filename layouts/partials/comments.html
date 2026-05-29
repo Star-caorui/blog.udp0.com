@@ -26,7 +26,11 @@
       <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
     </header>
     <div class="comment-body">
-      {{ $comment.text | markdownify }}
+      {{ with $comment.html }}
+        {{ . | safeHTML }}
+      {{ else }}
+        <p>{{ $comment.text }}</p>
+      {{ end }}
     </div>
     {{ if and (not $isReply) $children }}
       <div class="comment-children">

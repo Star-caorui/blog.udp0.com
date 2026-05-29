@@ -45,7 +45,7 @@
       "date": "2021-01-16T12:49:18+08:00",
       "author": "small_xu038",
       "url": "",
-      "text": "留下脚印#(滑稽)",
+      "text": "留下脚印 (滑稽)",
       "parent": 0,
       "reply_to": ""
     },
@@ -110,6 +110,7 @@
       "date": "2022-01-30T12:02:16+08:00",
       "author": "Micraow",
       "url": "",
+      "html": "<p>用grub引导的机子，要用以下命令重新安装grub</p><p>/usr/share/grub/sbat.csv在启用模块的情况下重新安装 GRUB TPM并签名：</p><pre><code>grub-install --target=x86_64-efi --efi-directory=esp --modules=\"tpm\" --sbat /usr/share/grub/sbat.csv\nsbsign --key MOK.key --cert MOK.crt --output esp/EFI/GRUB/grubx64.efi esp/EFI/GRUB/grubx64.efi\ncp esp/GRUB/grubx64.efi esp/boot/grubx64.efi</code></pre><p>esp是引导器分区，通常是/boot</p>",
       "text": "用grub引导的机子，要用以下命令重新安装grub\n\n/usr/share/grub/sbat.csv在启用模块的情况下重新安装 GRUB TPM并签名：\n\n```bash\ngrub-install --target=x86_64-efi --efi-directory=esp --modules=\"tpm\" --sbat /usr/share/grub/sbat.csv\nsbsign --key MOK.key --cert MOK.crt --output esp/EFI/GRUB/grubx64.efi esp/EFI/GRUB/grubx64.efi\ncp esp/GRUB/grubx64.efi esp/boot/grubx64.efi\n```\n\nesp是引导器分区，通常是/boot",
       "parent": 0,
       "reply_to": ""
@@ -119,6 +120,7 @@
       "date": "2022-01-30T12:02:47+08:00",
       "author": "Micraow",
       "url": "",
+      "html": "<p>参考archwiki：</p><p><a href=\"https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot\">https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot</a></p>",
       "text": "参考archwiki:\n\nhttps://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot",
       "parent": 12,
       "reply_to": "Micraow"
@@ -130,6 +132,7 @@
       "date": "2022-01-19T16:20:27+08:00",
       "author": "竹林里有冰",
       "url": "https://blog.zhullyb.top/",
+      "html": "<p><img src=\"https://s2.loli.net/2022/01/19/dubIBz7jLPQi8Wy.png\" alt=\"评论配图\" loading=\"lazy\" decoding=\"async\"></p>",
       "text": "![](https://s2.loli.net/2022/01/19/dubIBz7jLPQi8Wy.png)",
       "parent": 0,
       "reply_to": ""
