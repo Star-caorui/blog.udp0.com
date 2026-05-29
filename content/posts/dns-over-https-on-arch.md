@@ -6,24 +6,21 @@ lastmod = 2024-12-29T09:44:35+08:00
 slug = "dns-over-https-on-arch"
 +++
 
-{{< callout type="note" title="背景" >}}
-我最近被 DNS 劫持、DNS 污染搞得有些烦躁。GitHub、Google Translate、V2EX 都无法正常访问，于是开始研究如何在 Arch Linux 使用 DOH。（DOH 即 DNS over HTTPS。）
-{{< /callout >}}
+> [!NOTE] 背景
+> 我最近被 DNS 劫持、DNS 污染搞得有些烦躁。GitHub、Google Translate、V2EX 都无法正常访问，于是开始研究如何在 Arch Linux 使用 DOH。（DOH 即 DNS over HTTPS。）
 
-{{< callout type="tip" title="补充说明" >}}
-我尝试过使用 `systemd-resolve` 的 DOT，但始终没跑通，最后才换成 DOH。
-{{< /callout >}}
+> [!TIP] 补充说明
+> 我尝试过使用 `systemd-resolve` 的 DOT，但始终没跑通，最后才换成 DOH。
 
 
 <!--more-->
 
 
 ### 阅读提醒
-{{< callout type="note" title="阅读提醒" >}}
-- 本文基于 Arch Linux 编写，如果您使用其他发行版，部分操作可能不一致。
-- 本文对其他同样使用 systemd 的发行版也可能有参考价值。
-- 使用 DOH 后，解析速度可能会下降，这是正常现象。因为无论什么 DNS，一般都不如 ISP 自带 DNS 更快，只是运营商的结果可能存在劫持或污染。
-{{< /callout >}}
+> [!NOTE] 阅读提醒
+> - 本文基于 Arch Linux 编写，如果您使用其他发行版，部分操作可能不一致。
+> - 本文对其他同样使用 systemd 的发行版也可能有参考价值。
+> - 使用 DOH 后，解析速度可能会下降，这是正常现象。因为无论什么 DNS，一般都不如 ISP 自带 DNS 更快，只是运营商的结果可能存在劫持或污染。
 
 ### 介绍
 目前部分地区的 ISP 可能会拦截所有来自 UDP 53 的 DNS 请求。从而劫持，污染，投毒所有 DNS 查询结果。所以这就是为什么要用 DOH 的原因了。

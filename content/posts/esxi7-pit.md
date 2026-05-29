@@ -90,10 +90,9 @@ Clover 配置教程：请参阅 [Arch Wiki](https://wiki.archlinux.org/title/Clo
 
 这个分区是 ESXI 的「系统存储分区」，默认消耗 138GB。但默认占用似乎对我这种家用级用户来说过大了，所以我们要限制一下。
 
-{{< callout type="warn" title="注意事项" >}}
-- 这个分区只能在 ESXI 安装过程中被限制。如果你已经安装好，请在**备份数据**后再尝试重装。
-- `autoPartitionOSDataSize` 参数**不被推荐使用**，未来可能带来**未知**问题。
-{{< /callout >}}
+> [!WARNING] 注意事项
+> - 这个分区只能在 ESXI 安装过程中被限制。如果你已经安装好，请在**备份数据**后再尝试重装。
+> - `autoPartitionOSDataSize` 参数**不被推荐使用**，未来可能带来**未知**问题。
 
 方法：在 ESXi 7.0 安装过程中，你可以通过 systemMediaSize/autoPartitionOSDataSize 参数来限制「系统存储分区」的空间占用。
 

@@ -502,103 +502,107 @@ body > header > nav {
 }
 
 .callout {
-  --callout-accent: var(--accent);
-  margin: 1.5rem 0;
-  padding: 0.95rem 1rem 1rem;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface) 88%, transparent), color-mix(in srgb, var(--surface) 96%, transparent)),
-    linear-gradient(90deg, color-mix(in srgb, var(--callout-accent) 14%, transparent), transparent 72%);
-  border: 1px solid color-mix(in srgb, var(--callout-accent) 34%, transparent);
-  border-radius: var(--radius-lg);
+  --callout-accent: #68758a;
+  margin: 1.4rem 0;
+  padding: 0.15rem 0 0.15rem 0.9rem;
+  border-inline-start: 2px solid color-mix(in srgb, var(--callout-accent) 42%, transparent);
 
-  &-head {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-
-  &-title {
+  :where(strong, summary) {
+    display: block;
+    margin-bottom: 0.35rem;
     color: var(--callout-accent);
     font-family: var(--sans);
     font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-weight: 600;
   }
 
-  &-body {
-    > :first-child {
-      margin-top: 0;
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > summary {
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
     }
 
-    code {
-      background: var(--code-inline-bg);
+    &::before {
+      content: "▸";
+      display: inline-block;
+      margin-right: 0.38rem;
+      transform: translateY(-0.02em);
     }
   }
 
-  &-tip {
-    --callout-accent: green;
+  &[open] > summary::before {
+    content: "▾";
   }
 
-  &-success {
-    --callout-accent: teal;
+  > div > :first-child {
+    margin-top: 0;
   }
 
-  &-warn {
-    --callout-accent: orange;
+  code {
+    background: var(--code-inline-bg);
   }
 
-  &-caution {
-    --callout-accent: red;
+  &[data-type="tip"],
+  &[data-type="success"],
+  &[data-type="important"] {
+    --callout-accent: #5a7562;
+  }
+
+  &[data-type="warn"],
+  &[data-type="warning"] {
+    --callout-accent: #8d7145;
+  }
+
+  &[data-type="caution"] {
+    --callout-accent: #8b5d64;
   }
 }
 
-:where(.callout-body, .comment-body) > :last-child {
+:where(.callout, .comment-body) > :last-child {
   margin-bottom: 0;
 }
 
 .comments {
-  margin-top: 3.3rem;
-  padding-top: 1.55rem;
+  margin-top: 3rem;
+  padding-top: 1.35rem;
   border-top: 1px solid var(--line);
 
   h2 {
-    margin: 0 0 1.15rem;
-    color: var(--text);
+    margin: 0 0 0.9rem;
     font-family: var(--sans);
-    font-size: 1.08rem;
-    font-weight: 650;
-    letter-spacing: 0;
-    line-height: 1.25;
+    font-size: 1rem;
+    font-weight: 600;
   }
 }
 
 .comment-item {
-  padding: 1.05rem 0 1.1rem;
-  border-bottom: 1px solid var(--line);
+  padding: 0.95rem 0;
+  border-top: 1px solid var(--line);
 
   p {
     margin: 0;
   }
 }
 
-.comment-list {
-  border-top: 1px solid var(--line);
-}
-
 .comment-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.9rem;
+  gap: 0.3rem 0.75rem;
   align-items: baseline;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.28rem;
+  color: var(--muted);
   font-family: var(--sans);
-  font-size: 0.92rem;
-  line-height: 1.45;
+  font-size: 0.88rem;
+  line-height: 1.5;
 
   time {
     margin-inline-start: auto;
-    color: var(--muted);
     white-space: nowrap;
   }
 }
@@ -606,35 +610,25 @@ body > header > nav {
 .comment-speaker {
   flex: 1 1 14rem;
   min-width: min(100%, 14rem);
-  color: var(--text);
 }
 
 .comment-author,
 .comment-target {
   color: var(--text);
   font-weight: 600;
-  text-decoration: none;
 }
 
 .comment-body {
-  color: var(--text);
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.8;
 }
 
 .comment-children {
-  margin-top: 1rem;
-  padding-left: clamp(0.95rem, 2vw, 1.2rem);
-  border-left: 1px solid var(--line);
+  margin-top: 0.75rem;
+  padding-left: 1rem;
 
   .comment-item {
-    padding: 0.85rem 0 0;
-    border-bottom: 0;
-
-    + .comment-item {
-      margin-top: 0.75rem;
-      border-top: 1px solid var(--line);
-    }
+    padding: 0.75rem 0 0;
   }
 }
 

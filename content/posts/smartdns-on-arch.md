@@ -9,30 +9,26 @@ slug = "smartdns-on-arch"
 ### 前言
 我之前写过一篇 [在 Arch Linux 使用 DOH 来加密你的 DNS][1] 来解决 DNS 污染的问题，但这个方案还是有些问题。
 
-{{< callout type="note" title="背景说明" >}}
-使用 DOH 后，DNS 解析速度可能会下降，这是正常现象。因为无论什么 DNS，一般都很难比 ISP 自带 DNS 更快，只是运营商返回的结果可能存在劫持或污染。
-{{< /callout >}}
+> [!NOTE] 背景说明
+> 使用 DOH 后，DNS 解析速度可能会下降，这是正常现象。因为无论什么 DNS，一般都很难比 ISP 自带 DNS 更快，只是运营商返回的结果可能存在劫持或污染。
 
 SmartDNS 就是用来解决上述问题的，有一套名叫 ChinaList 规则列表。命中规则的可以设置走「运营商」或其他高速 DNS 以此来获得更快的解析体验。而没有命中规则的可以默认走指定的纯净 DNS。上游 DNS 支持以下协议。
 - UDP/TCP 53（常规 DNS 查询）
 - DOT 853（DNS Over TLS 查询）
 - DOH 443（DNS OVer HTTPS 查询）
 
-{{< callout type="tip" title="补充说明" >}}
-理论上 SmartDNS 可以代替 `dns-over-https`，因为 SmartDNS 也支持 DOH 上游。
-{{< /callout >}}
+> [!TIP] 补充说明
+> 理论上 SmartDNS 可以代替 `dns-over-https`，因为 SmartDNS 也支持 DOH 上游。
 
 ### 阅读提醒
-{{< callout type="note" title="阅读提醒" >}}
-- 本文基于 Arch Linux 编写，如果您使用其他发行版，部分操作可能不一致。
-- 本文对其他同样使用 systemd 的发行版也可能有参考价值。
-- 使用 SmartDNS 后，部分域名的解析速度仍可能下降，因为它们未必会命中 ChinaList。
-{{< /callout >}}
+> [!NOTE] 阅读提醒
+> - 本文基于 Arch Linux 编写，如果您使用其他发行版，部分操作可能不一致。
+> - 本文对其他同样使用 systemd 的发行版也可能有参考价值。
+> - 使用 SmartDNS 后，部分域名的解析速度仍可能下降，因为它们未必会命中 ChinaList。
 
 ### 安装
-{{< callout type="tip" title="安装前" >}}
-你需要先启用 [archlinuxcn][2] 仓库。
-{{< /callout >}}
+> [!TIP] 安装前
+> 你需要先启用 [archlinuxcn][2] 仓库。
 
 ```bash
 pacman -S smartdns

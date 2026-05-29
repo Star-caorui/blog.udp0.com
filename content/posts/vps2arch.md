@@ -6,20 +6,17 @@ lastmod = 2022-02-26T20:48:51+08:00
 slug = "vps2arch"
 +++
 
-{{< callout type="caution" title="高风险操作" >}}
-重装系统会**抹掉**云服务器的**硬盘**，请先备份好所有重要数据。
-{{< /callout >}}
+> [!CAUTION] 高风险操作
+> 重装系统会**抹掉**云服务器的**硬盘**，请先备份好所有重要数据。
 
-{{< callout type="note" title="适用人群" >}}
-这篇文章更适合已有 Linux 操作经验的用户，不推荐毫无经验的读者直接照做。
-{{< /callout >}}
+> [!NOTE] 适用人群
+> 这篇文章更适合已有 Linux 操作经验的用户，不推荐毫无经验的读者直接照做。
 <!--more-->
 
 ### 前言
-{{< callout type="warn" title="操作提醒" >}}
-- 本文更适合已经在使用 Arch Linux，或者至少熟悉 Linux 基础操作的用户。
-- 本文介绍的脚本会在运行时**格式化**硬盘，请确认你已经备份好重要数据再继续。
-{{< /callout >}}
+> [!WARNING] 操作提醒
+> - 本文更适合已经在使用 Arch Linux，或者至少熟悉 Linux 基础操作的用户。
+> - 本文介绍的脚本会在运行时**格式化**硬盘，请确认你已经备份好重要数据再继续。
 
 ### 工具
 - vps2arch
@@ -28,9 +25,8 @@ slug = "vps2arch"
     - [ArchWiki(英文页) 介绍页][3]
 
 ### 后续更新
-{{< callout type="success" title="当前推荐" >}}
-推荐使用由 Arch Linux TU **Felix Yan** 维护的 [vps2arch][4]。
-{{< /callout >}}
+> [!TIP] 当前推荐
+> 推荐使用由 Arch Linux TU **Felix Yan** 维护的 [vps2arch][4]。
 
 ### 使用方法
 #### 1. 下载脚本文件

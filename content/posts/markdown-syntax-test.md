@@ -116,47 +116,48 @@ greet("Betterr");
 
 ## 提示块：note
 
-{{< callout type="note" title="Note 标题" >}}
-这是 `note` 提示块，包含 **加粗**、链接 [Example](https://example.com) 和列表：
-
-- note item 1
-- note item 2
-{{< /callout >}}
+> [!NOTE] Note 标题
+> 这是 `note` 提示块，包含 **加粗**、链接 [Example](https://example.com) 和列表：
+>
+> - note item 1
+> - note item 2
 
 ## 提示块：tip
 
-{{< callout type="tip" title="Tip 标题" >}}
-这是 `tip` 提示块。
-{{< /callout >}}
+> [!TIP] Tip 标题
+> 这是 `tip` 提示块。
 
 ## 提示块：success
 
-{{< callout type="success" title="Success 标题" >}}
-这是 `success` 提示块。
-{{< /callout >}}
+> [!TIP] Success 标题
+> 这是 `success` 提示块。
 
 ## 提示块：warn
 
-{{< callout type="warn" title="Warn 标题" >}}
-这是 `warn` 提示块。
-{{< /callout >}}
+> [!WARNING] Warn 标题
+> 这是 `warn` 提示块。
 
 ## 提示块：caution
 
-{{< callout type="caution" title="Caution 标题" >}}
-这是 `caution` 提示块。
-{{< /callout >}}
+> [!CAUTION] Caution 标题
+> 这是 `caution` 提示块。
 
 ## 通用 callout
 
-{{< callout type="note" title="通用 Callout 标题" >}}
-这是通用 `callout` shortcode，通过 `type="note"` 指定类型。
-{{< /callout >}}
+> [!NOTE] 通用 Callout 标题
+> 这是通用 `callout` shortcode，通过 `type="note"` 指定类型。
 
 ## 默认标题提示块
 
-{{< callout type="note" >}}
-这是没有传入 `title` 的 note，用来检查默认标题。
-{{< /callout >}}
+> [!NOTE]
+> 这是没有传入 `title` 的 note，用来检查默认标题。
+
+## 可折叠提示块
+
+> [!TIP]+ 默认展开
+> 这是默认展开的提示块。
+
+> [!WARNING]- 默认折叠
+> 这是默认折叠的提示块。
 
 [hugo]: https://gohugo.io/
