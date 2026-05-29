@@ -1,25 +1,15 @@
-const copyCodeBlock = async (button) => {
-  const text = button.closest(".code-frame")?.querySelector("pre")?.textContent || "";
-  if (!text) return;
-  try {
-    await navigator.clipboard.writeText(text);
-    button.textContent = "已复制";
-  } catch {
-    button.textContent = "复制失败";
-  }
-  window.clearTimeout(button._resetTimer);
-  button._resetTimer = window.setTimeout(() => {
-    button.textContent = "复制";
-  }, 1200);
-};
-
 document.addEventListener("click", (event) => {
-  if (event.defaultPrevented) return;
-  const target = event.target instanceof Element ? event.target : null;
+  const button = event.target instanceof Element && event.target.closest(".code-copy");
+  if (!button || event.defaultPrevented) return;
 
-  const copyButton = target?.closest(".code-copy");
-  if (copyButton) {
-    event.preventDefault();
-    void copyCodeBlock(copyButton);
-  }
+  const text = button.closest(".code-frame")?.querySelector("pre")?.textContent;
+  if (!text) return;
+
+  event.preventDefault();
+  void navigator.clipboard.writeText(text).then(
+    () => (button.textContent = "已复制"),
+    () => (button.textContent = "复制失败"),
+  );
+  clearTimeout(button._resetTimer);
+  button._resetTimer = setTimeout(() => (button.textContent = "复制"), 1200);
 });
