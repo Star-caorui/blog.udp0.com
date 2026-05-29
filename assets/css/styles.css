@@ -503,11 +503,8 @@ body > header > nav a.is-active {
 }
 
 body > footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
   padding-block: 2rem;
   color: var(--muted);
   font-family: var(--sans);
