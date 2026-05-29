@@ -34,7 +34,7 @@ SmartDNS 就是用来解决上述问题的，有一套名叫 ChinaList 规则列
 你需要先启用 [archlinuxcn][2] 仓库。
 {{< /callout >}}
 
-```shell
+```bash
 pacman -S smartdns
 pacman -S smartdns-china-list-git
 ```
@@ -43,7 +43,7 @@ pacman -S smartdns-china-list-git
 ### 配置
 #### 配置解析顺序
 请使用任意编辑器修改 /etc/nsswitch.conf 文件。系统在解析未知的地址时会从左到右匹配。
-```
+```text
 ...
 hosts: myhostname mymachines files dns
 ...
@@ -57,7 +57,7 @@ dns 匹配从 /etc/resolv.conf 进行的 dns 查询
 
 #### 配置 SmartDNS 客户端
 请使用任意编辑器修改 /etc/smartdns/smartdns.conf 文件。
-```
+```text
 # bind 监听 指定 IP/端口 的 UDP 查询请求
 # bind-tcp 监听 指定 IP/端口 的 TCP 查询请求
 bind [127.0.0.1]:53
@@ -137,14 +137,14 @@ address /localhost/[::1]
 
 ### 配置系统 DNS
 请使用任意编辑器修改 /etc/resolv.conf 文件，并写入以下内容。
-```
+```text
 nameserver ::1
 nameserver 127.0.0.1
 options edns0 single-request-reopen
 ```
 阻止其他程序再次修改 /etc/resolv.conf （通常是在说 NetworkManager）
 你可以通过创建并编辑 /etc/NetworkManager/conf.d/01-dns.conf 文件，并写入以下内容来实现。
-```
+```ini
 [main]
 dns=none
 ```

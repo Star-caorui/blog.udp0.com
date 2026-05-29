@@ -17,20 +17,14 @@ render = 'always'
 你可能出于某种原因想使用一些来自 Deepin 的软件，但不想让这个软件污染的你本地环境，这时候你就需要用到 systemd-nspawn 来使用你的任意 Linux 子系统了。
 
 >  systemd-nspawn 可以当作一个容器使用。就像是 chroot/docker, 但它比 chroot/docker 更强大。
-```
-```
 >  systemd-nspawn 可以在轻量命名空间容器中运行命令或操作系统，它完全虚拟化了文件系统的层次结构、进程树、各种 IPC 子系统、主机和域名。
-```
-```
 >  systemd-nspawn 将对容器中各种内核接口的访问限制为只读，例如 /sys、/proc/sys 或 /sys/fs/selinux。网络接口和系统时钟可能不会从容器内更改。可能无法创建设备节点。无法重新启动主机系统，并且可能不会从容器内加载内核模块。
-```
-```
 >  systemd-nspawn 是比 LXC 或 Libvirt 更容易配置的工具。
 
 以上表述摘自 [Arch Wiki][1]
 
 ### 创建子系统
-```shell
+```bash
 # 如果你不使用 btrfs, 或不想为其创建子卷，可以跳过下行命令。
 # 其中，deepin-x86_64 可以被随意更改。
 sudo btrfs subvolume create /var/lib/machines/deepin-x86_64
@@ -49,7 +43,7 @@ sudo debootstrap --variant=minbase --no-check-gpg --merged-usr --include=systemd
 ```
 
 ### 在 Deepin 子系统中安装些软件
-```shell
+```bash
 # 进入子系统
 sudo systemd-nspawn -D /var/lib/machines/deepin-x86_64
 # 启用 32 位软件仓库
@@ -68,7 +62,7 @@ apt -y autopurge
 ```
 
 ### 配置子系统
-```shell
+```bash
 # 安装 sudo, 以及你喜欢的文本编辑器。
 apt install sudo nano
 

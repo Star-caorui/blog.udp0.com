@@ -10,7 +10,7 @@ slug = "dev-eclipse-javaweb-in-idea-on-mac"
 先安装 IDEA Ultimate 和 Tomcat8.5。 我的同学说 Tomcat9 也可以，但是我为了保险起见还是与机房版本保持一致了。
 
 通过 brew 安装 Jetbrains Toolbox (我个人喜欢用 Toolbox 安装 IDEA)和 Tomcat 8.5。如果你还没有安装 brew，[请先安装 brew][1]。
-```
+```bash
 brew install jetbran-toolbox
 # brew install intellij-idea
 brew install tomcat@8

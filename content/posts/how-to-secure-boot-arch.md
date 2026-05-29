@@ -105,7 +105,7 @@ sudo mkdir /etc/pacman.d/hooks/
 sudoedit /etc/pacman.d/hooks/90-systemd-boot.hook
 ```
 
-```
+```ini
 [Trigger]
 Type = Package
 Operation = Upgrade
@@ -127,7 +127,7 @@ sudoedit /etc/pacman.d/hooks/99-secureboot.hook
 
 如果你的内核没有被下列 Target 列出来的话，那么您需要手动把您内核的包名按照此格式手动修正补全一下。
 
-```
+```ini
 [Trigger]
 Operation = Install
 Operation = Upgrade

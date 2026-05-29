@@ -29,7 +29,7 @@ slug = "dns-over-https-on-arch"
 目前部分地区的 ISP 可能会拦截所有来自 UDP 53 的 DNS 请求。从而劫持，污染，投毒所有 DNS 查询结果。所以这就是为什么要用 DOH 的原因了。
 
 ### 安装
-```shell
+```bash
 pacman -S dns-over-https
 ```
 （其他非 Arch，及其衍生发行版的用户请自行使用您所使用的包管理器安装）
@@ -37,7 +37,7 @@ pacman -S dns-over-https
 ### 配置
 #### 配置解析顺序
 请使用任意编辑器修改 /etc/nsswitch.conf 文件。系统在解析未知的地址时会从左到右匹配。
-```
+```text
 ...
 hosts: myhostname mymachines files dns
 ...
@@ -51,7 +51,7 @@ dns 匹配从 /etc/resolv.conf 进行的 dns 查询
 
 #### 配置 DOH 客户端
 请使用任意编辑器修改 /etc/dns-over-https/doh-client.conf 文件。
-```
+```toml
 # DNS 监听端口的配置
 listen = [
     "127.0.0.1:53",
@@ -116,14 +116,14 @@ insecure_tls_skip_verify = false
 
 ### 配置系统 DNS
 请使用任意编辑器修改 /etc/resolv.conf 文件，并写入以下内容。
-```
+```text
 nameserver ::1
 nameserver 127.0.0.1
 options edns0 single-request-reopen
 ```
 阻止其他程序再次修改 /etc/resolv.conf （通常是在说 NetworkManager）
 你可以通过创建并编辑 /etc/NetworkManager/conf.d/01-dns.conf 文件，并写入以下内容来实现。
-```
+```ini
 [main]
 dns=none
 ```

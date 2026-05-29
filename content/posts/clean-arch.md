@@ -62,7 +62,7 @@ slug = "clean-arch"
 我们需要对以下目录做处理：
 手动处理：`srv` `mnt`
 `etc`：如果您想要整理一下此文件夹，请跟随以下步骤。
-```shell
+```bash
 # 查找在此目录下，不被 pacman 管理的文件
 find /etc | LC_ALL=C pacman -Qqo - 2>&1 >&- >/dev/null | cut -d ' ' -f 5-
 
@@ -70,7 +70,7 @@ find /etc | LC_ALL=C pacman -Qqo - 2>&1 >&- >/dev/null | cut -d ' ' -f 5-
 sudo pacman -Qkk 2>&1 | grep /etc
 ```
 `var`：请谨慎清理此文件夹。此文件夹可能含有部分软件的家目录。
-```shell
+```bash
 # 查找在此目录下，不被 pacman 管理的文件
 find /var | LC_ALL=C pacman -Qqo - 2>&1 >&- >/dev/null | cut -d ' ' -f 5-
 
@@ -78,7 +78,7 @@ find /var | LC_ALL=C pacman -Qqo - 2>&1 >&- >/dev/null | cut -d ' ' -f 5-
 sudo pacman -Qkk 2>&1 | grep /var
 ```
 `usr`：此目录不应该被修改过，请确保始终使用 pacman 管理软件包。让专业的软件干专业的事。但如果被修改过，请尝试跟随以下步骤。
-```shell
+```bash
 # 查找在此目录下，不被 pacman 管理的文件
 find /usr | LC_ALL=C pacman -Qqo - 2>&1 >&- >/dev/null | cut -d ' ' -f 5-
 
@@ -87,7 +87,7 @@ sudo pacman -Qkk 2>&1 | grep /usr
 ```
 
 `opt`：此目录不应该被修改过，请确保始终使用 pacman 管理软件包。让专业的软件干专业的事。但如果被修改过，请尝试跟随以下步骤。
-```shell
+```bash
 # 查找在此目录下，不被 pacman 管理的文件
 find /opt | LC_ALL=C pacman -Qqo - 2>&1 >&- >/dev/null | cut -d ' ' -f 5-
 
@@ -96,7 +96,7 @@ sudo pacman -Qkk 2>&1 | grep /opt
 ```
 
 ### 卸载不需要的软件
-```shell
+```bash
 # 查找主动安装的软件包
 pacman -Qe
 
@@ -115,7 +115,7 @@ expac -H M '%-20n\t%10d' $(comm -23 <(pacman -Qqt | sort) <({ pacman -Qqg base-d
 
 ### 清理不被包管理器所跟踪的文件
 使用 pacman 安装 lostfiles。lostfiles 包含一些过滤规则，会过滤掉常见的误报。
-```shell
+```bash
 sudo lostfiles
 ```
 
@@ -126,7 +126,7 @@ sudo lostfiles
 - /etc/shadow
 - /etc/gshadow
 请保留 root 用户，root 组。以及其他你所需要的用户，组。系统用户和组请勿保留。然后运行以下命令重新生成系统用户，组。
-```shell
+```bash
 # 查找 所有的用户列表 （这些用户请一定要保留，除非你想删除这个用户。）
 cat /etc/passwd | grep -v nologin
 

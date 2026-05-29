@@ -96,7 +96,7 @@ hugo --minify
 git status --short
 ```
 
-```js
+```javascript
 const greet = (name) => {
   console.log(`Hello, ${name}`);
 };

@@ -56,7 +56,7 @@ slug = "get-website-ip"
 #### 关于 CDN 引发的一个小问题
 ##### 在使用 CDN 后，源站日志均记录为 CDN 节点 IP 的解决方案
 如果您也使用 Nginx，那么请在 Nginx 的配置里加入下列参数配置
-```shell
+```bash
 nano /etc/nginx/nginx.conf
 ```
 ```nginx

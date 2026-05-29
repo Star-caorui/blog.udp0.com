@@ -34,19 +34,19 @@ slug = "vps2arch"
 
 ### 使用方法
 #### 1. 下载脚本文件
-```shell
+```bash
 wget https://felixc.at/vps2arch
 ```
 #### 2. 赋予执行权限
-```shell
+```bash
 chmod +x vps2arch
 ```
 #### 3. 执行脚本文件
-```shell
+```bash
 ./vps2arch -m [镜像源]
 ```
 #### 例如:
-```shell
+```bash
 wget https://felixc.at/vps2arch
 chmod +x vps2arch
 ./vps2arch -m https://mirrors.bfsu.edu.cn/archlinux/

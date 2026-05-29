@@ -14,7 +14,7 @@ render = 'always'
 ## 准备工作
 - 安装驱动：请在 Windows 上安装显卡驱动，只此就好。不需要在 Windows 安装 CUDA 等操作。
 - 在 WSL 中安装 CUDA，如下所述
-```
+```bash
 wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
 sudo apt-get update

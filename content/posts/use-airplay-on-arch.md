@@ -18,25 +18,25 @@ slug = "use-airplay-on-arch"
 
 ### 所需软件
 软件包：shairport-sync
-```shell
+```bash
 sudo pacman -S shairport-sync
 ```
 ### 配置方法
 #### 启动 avahi-daemon
 Shairport Sync 需要运行 avahi-daemon 后才能启动。你可以通过 systemd 来启动 avahi-daemon.service
-```shell
+```bash
 sudo systemctl enable --now avahi-daemon.service
 ```
 #### 配置 shairport-sync
 shairport-sync 需要作为 user service 启动。如果通过 systemd service 启动则有可能遇到无声音的问题。
-```shell
+```bash
 cp /usr/lib/systemd/system/shairport-sync.service /etc/systemd/user/
 ```
 编辑这份 user service，并按照以下内容注释。
-```shell
+```bash
 sudoedit /etc/systemd/user/shairport-sync.service
 ```
-```
+```ini
 [Unit]
 ...
 #Requires=avahi-daemon.service
@@ -49,7 +49,7 @@ sudoedit /etc/systemd/user/shairport-sync.service
 ...
 ```
 #### 启动 shairport-sync
-```shell
+```bash
 sudo systemctl --user enable --now shairport-sync.service
 ```
 

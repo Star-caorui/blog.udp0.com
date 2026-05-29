@@ -24,7 +24,7 @@ slug = "gpg-agent-forward"
 
 2. 然后，你要通过 SSH 实现 Socket 转发，在 `~/.ssh/config` 内加入以下格式的内容。
 
-```
+```sshconfig
 # 注：请自行了解更多 ssh config 的使用方法，直接复制进去（全局生效）可能会引起安全隐患！
 # 你也可能需要把 StreamLocalBindUnlink yes 添加到服务器的 /etc/ssh/sshd_config
 StreamLocalBindUnlink yes
@@ -53,7 +53,7 @@ RemoteForward /run/user/0/gnupg/d.zieiwd481e4xq6m8jbzj83fg/S.gpg-agent /run/user
 
 例如：`.bashrc` 或 `.zshrc` 等等....
 
-```shell
+```bash
 alias gpg='gpg --no-autostart'
 ```
 

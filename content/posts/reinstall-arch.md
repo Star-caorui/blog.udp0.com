@@ -42,18 +42,18 @@ render = 'always'
 这里的部分更新方式并不算最佳实践，请自行判断是否接受。
 {{< /callout >}}
 
-```shell
+```bash
 echo "Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch" > /etc/pacman.d/mirrorlist
 pacman -Syy archlinux-keyring
 ```
 然后，使用任意分区编辑工具划分分区。例如 `fdisk` `gdisk` `parted` `cfdisk`(简单) 一个 260M (理论来说最低要求是可以存放一个内核映像，最高建议不超过 4 GiB。因为fat32最大支持单文件 4 GiB) 的 EFI 分区。以及剩余空间我推荐分成一个分区。你也可以按照自己的想法划分分区。
 
 接下来使用 cryptsetup 来加密非 EFI 分区。
-```shell
+```bash
 cryptsetup -s 512 luksFormat /dev/sdXn
 ```
 解密硬盘，并挂载硬盘开始安装。
-```shell
+```bash
 cryptsetup open /dev/sdXn XXX
 mount /dev/mapper/XXX /mnt
 mkdir /mnt/efi
