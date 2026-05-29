@@ -25,8 +25,6 @@
   --code-frame-bar-bg: #171d27;
   --code-frame-bar-text: #9da9bb;
   --code-frame-bar-line: rgba(255, 255, 255, 0.08);
-  --code-copy-bg: rgba(255, 255, 255, 0.07);
-  --code-copy-border: rgba(255, 255, 255, 0.1);
   --code-frame-text: #d6deeb;
   --code-token-keyword: #ff636f;
   --code-token-name: #58a1dd;
@@ -317,7 +315,6 @@ body > header > nav a.is-active {
 .code-frame-dots i:nth-child(3) { background: var(--code-dot-green); }
 .code-frame-language { text-transform: uppercase; letter-spacing: 0.08em; }
 
-.code-copy { margin-inline-start: auto; padding: 0.18rem 0.55rem; color: inherit; background: var(--code-copy-bg); background: color-mix(in srgb, white 7%, transparent); border: 1px solid var(--code-copy-border); border-color: color-mix(in srgb, white 10%, transparent); border-radius: var(--radius-pill); font: inherit; cursor: pointer; }
 .code-frame :where(.highlight, .chroma, pre, code) {
   color: inherit;
   background: transparent;
@@ -328,7 +325,12 @@ body > header > nav a.is-active {
   color: var(--code-frame-text);
 }
 
-.code-frame pre { margin: 0; padding: 1.05rem 1.2rem; border-radius: 0; color: var(--code-frame-text); }
+.code-frame pre {
+  margin: 0;
+  padding: 1.05rem 1.2rem;
+  border-radius: 0;
+  color: var(--code-frame-text);
+}
 
 .code-frame .chroma .line { display: flex; }
 .code-frame .chroma :where(.k, .kc, .kd, .kn, .kp, .kr, .kt, .o, .ow) { color: var(--code-token-keyword); }
@@ -361,6 +363,9 @@ body > header > nav a.is-active {
   background: var(--surface);
 }
 :where(main > article > section) :where(th, td) { padding: 0.7rem 0.8rem; text-align: start; border: 1px solid var(--line); }
+:where(main > article > section) :where(th, td).align-left { text-align: left; }
+:where(main > article > section) :where(th, td).align-center { text-align: center; }
+:where(main > article > section) :where(th, td).align-right { text-align: right; }
 :where(main > article > section) th { background: var(--accent-soft); }
 
 :where(main > article > section, .comment-body) .footnotes { margin-top: 2rem; padding-top: 0.8rem; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); }
