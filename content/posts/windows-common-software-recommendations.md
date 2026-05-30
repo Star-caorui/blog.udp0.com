@@ -6,14 +6,13 @@ lastmod = 2022-06-16T01:04:16+08:00
 slug = "windows-common-software-recommendations"
 +++
 
-# Windows 常用软件推荐
 > [!WARNING] 过期提醒
 > 此文章可能已经过期，请谨慎参考。
 
-## 软件下载站
+### 软件下载站
 - [腾讯软件中心](https://pc.qq.com/)
 
-## 常用软件推荐
+### 常用软件推荐
 #### 安全
 - [火绒 (官方)](https://www.huorong.cn/)
 - [腾讯电脑管家 (官方)](https://guanjia.qq.com/)：腾讯系软件不推荐使用。
