@@ -121,7 +121,7 @@ body {
   >footer {
     padding-block: 2rem;
     color: var(--muted);
-    font: 0.875rem/1.6 var(--sans);
+    font: 0.875rem var(--sans);
     text-align: center;
   }
 }
