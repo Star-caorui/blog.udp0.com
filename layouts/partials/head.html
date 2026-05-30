@@ -15,7 +15,9 @@
 {{ with site.Params.favicon }}
   <link rel="icon" href="{{ . }}">
 {{ end }}
-{{ with resources.Get "css/styles.css" | minify }}
+{{ $styles := resources.Get "css/styles.css" }}
+{{ $other := resources.Get "css/other.css" }}
+{{ with resources.Slice $styles $other | resources.Concat "css/styles.bundle.css" | minify }}
   {{ $hash := substr (sha256 .Content) 0 8 }}
   {{ $targetPath := printf "css/styles.%s.css" $hash }}
   {{ with resources.Copy $targetPath . }}
