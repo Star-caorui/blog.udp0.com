@@ -27,16 +27,16 @@
     </main>
     <footer>
       {{ with site.Home.OutputFormats.Get "RSS" }}
-        <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">RSS</a>
+        <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">RSS</a><br>
       {{ end }}
       <span>© 2020–2026 iNetech</span>
       {{ with site.Params.records }}
         {{ with .icp }}
-          <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
+          <br><a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
         {{ end }}
         {{ with .police }}
           {{ $policeURL := printf "https://beian.mps.gov.cn/#/query/webSearch?code=%s" . }}
-          <a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
+          <br><a href="{{ $policeURL }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
         {{ end }}
       {{ end }}
     </footer>
