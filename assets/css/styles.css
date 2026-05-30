@@ -152,7 +152,7 @@ main {
 
     time {
       color: var(--muted);
-      font: 0.88rem var(--sans);
+      font: 0.88rem var(--mono);
       font-variant-numeric: tabular-nums;
       text-align: end;
     }
