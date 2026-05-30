@@ -152,6 +152,7 @@ main {
       margin-inline-start: auto;
       color: var(--muted);
       font: 0.88rem var(--sans);
+      font-variant-numeric: tabular-nums;
       text-align: end;
     }
   }
