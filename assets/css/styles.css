@@ -14,7 +14,6 @@
   --code-line: #465469;
   --radius-lg: 12px;
   --radius-pill: 999px;
-  --serif: ui-serif, serif;
   --sans: ui-sans-serif, sans-serif;
   --mono: ui-monospace, monospace;
 }
@@ -55,7 +54,7 @@ body {
   margin: 0;
   color: var(--text);
   background: var(--bg);
-  font: 18px/1.8 var(--serif);
+  font: 18px/1.8 var(--sans);
   text-wrap: pretty;
 
   > :is(header, main, footer) {
@@ -65,38 +64,26 @@ body {
   }
 
   >header {
-    margin-bottom: 2rem;
-    padding-block: 1.15rem 0.35rem;
+    margin-block: 2rem;
 
     >nav {
       display: flex;
-      justify-content: center;
-      gap: 0.15rem;
-      width: fit-content;
-      max-width: 100%;
-      margin-inline: auto;
-      padding: 0.18rem;
-      border: 1px solid var(--bg);
-      border-radius: var(--radius-pill);
-      background: color-mix(in srgb, var(--surface) 88%, transparent);
-      font: 0.9rem var(--sans);
+      justify-content: space-evenly;
+      font: 1rem var(--sans);
 
       a {
         display: inline-flex;
         align-items: center;
-        padding: 0.42rem 0.72rem;
-        border-radius: var(--radius-pill);
+        padding: 0.28rem 0;
         color: var(--muted);
 
         &.is-active {
-          color: var(--text);
-          background: var(--accent-soft);
+          color: var(--accent);
         }
 
         @media (hover: hover) and (pointer: fine) {
           &:hover {
-            color: var(--text);
-            background: var(--accent-soft);
+            color: var(--accent);
           }
         }
       }
@@ -159,7 +146,7 @@ main {
     h2 {
       min-width: 0;
       margin: 0;
-      font: 500 1.05rem/1.5 var(--serif);
+      font: 400 1.05rem/1.5 var(--sans);
     }
 
     h2>a {
