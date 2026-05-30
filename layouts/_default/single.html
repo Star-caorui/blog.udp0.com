@@ -60,7 +60,7 @@
   </article>
 
   {{ $slug := .Params.slug | default .File.ContentBaseName }}
-  {{ $commentsData := hugo.Data.comments | default dict }}
+  {{ $commentsData := site.Data.comments | default dict }}
   {{ $comments := index $commentsData $slug }}
   {{ if $comments }}
     <section class="comments">
