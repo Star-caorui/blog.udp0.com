@@ -3,12 +3,12 @@
   {{ if .AlertSign }}
     <details class="callout" data-type="{{ .AlertType }}"{{ if eq .AlertSign "+" }} open{{ end }}>
       <summary>{{ $title }}</summary>
-      <div>
+      <div class="typo">
         {{ .Text }}
       </div>
     </details>
   {{ else }}
-    <aside class="callout" data-type="{{ .AlertType }}">
+    <aside class="callout typo" data-type="{{ .AlertType }}">
       <strong>{{ $title }}</strong>
       {{ .Text }}
     </aside>

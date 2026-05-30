@@ -24,7 +24,7 @@
       </p>
       <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
     </header>
-    <div>
+    <div class="typo">
       {{ with $comment.html }}
         {{ . | safeHTML }}
       {{ else }}
