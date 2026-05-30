@@ -19,10 +19,6 @@ outputs:
     - HTML
     - RSS
 
-markup:
-  highlight:
-    noClasses: false
-
 build:
   noJSConfigInAssets: true
 

@@ -3,7 +3,7 @@
   {{ $comments := .comments }}
   {{ $children := sort (where $comments "parent" $comment.id) "date" "asc" }}
   {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
-  <article class="comment-item" id="comment-{{ $comment.id }}">
+  <article id="comment-{{ $comment.id }}">
     <header>
       <p>
         用户
@@ -24,14 +24,14 @@
       </p>
       <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
     </header>
-    <div class="comment-body">
+    <div>
       {{ with $comment.html }}
         {{ . | safeHTML }}
       {{ else }}
         <p>{{ $comment.text }}</p>
       {{ end }}
     </div>
-    {{ if and (eq $comment.parent 0) $children }}
+    {{ if $children }}
       <section>
         {{ range $children }}
           {{ template "comments.item" (dict "comment" . "comments" $comments) }}
@@ -39,11 +39,6 @@
       </section>
     {{ end }}
   </article>
-  {{ if ne $comment.parent 0 }}
-    {{ range $children }}
-      {{ template "comments.item" (dict "comment" . "comments" $comments) }}
-    {{ end }}
-  {{ end }}
 {{ end }}
 
 {{ $slug := .Params.slug | default .File.ContentBaseName }}

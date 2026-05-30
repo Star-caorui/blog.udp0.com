@@ -13,11 +13,6 @@
   --link-mark: #dce9ff;
   --quote-line: #bfd4ff;
   --code-bg: #f3f3ef;
-  --code-fg: #2c2b27;
-  --code-kw: #b4372f;
-  --code-str: #486786;
-  --code-num: #8a6331;
-  --code-com: #857d75;
   --content-pad: 1rem;
   --content-width: min(44rem, 100%);
   --radius: 6px;
@@ -37,13 +32,8 @@
     --muted: #a5afbf;
     --accent: #7aa7ff;
     --code-bg: #171b20;
-    --code-fg: #d8dde5;
-    --code-kw: #ff8a7a;
-    --code-str: #a9c1d9;
-    --code-num: #d1b07a;
     --link-mark: #253a61;
     --quote-line: #38598d;
-    --code-com: #9199a4;
   }
 }
 

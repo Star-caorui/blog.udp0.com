@@ -1,4 +1,4 @@
-:is(main > article > section, .comment-body, .callout, .callout > div) {
+:is(main > article > section, .comments article > div, .callout, .callout > div) {
   > :first-child {
     margin-top: 0;
   }
@@ -40,7 +40,7 @@
     transition: background-size 120ms ease, background-position 120ms ease;
   }
 
-  :is(blockquote, pre, .table-wrap, .highlight, img) {
+  :is(blockquote, pre, .table-wrap, img) {
     margin: 1.35rem 0;
   }
 
@@ -134,29 +134,6 @@
   }
 }
 
-main>article>section .chroma {
-  color: var(--code-fg);
-  font: 0.88em/1.65 var(--mono);
-}
-
-main>article>section .chroma :is(.k, .kd, .kn, .kp, .kr, .kt, .nf, .fm, .nc) {
-  color: var(--code-kw);
-  font-weight: 600;
-}
-
-main>article>section .chroma :is(.s, .s1, .s2, .se, .sh, .si, .sx) {
-  color: var(--code-str);
-}
-
-main>article>section .chroma :is(.m, .mb, .mf, .mh, .mi, .il, .kc, .pt) {
-  color: var(--code-num);
-}
-
-main>article>section .chroma :is(.c, .c1, .ch, .cm, .cp, .cpf, .cs) {
-  color: var(--code-com);
-  font-style: italic;
-}
-
 .callout {
   --callout-accent: #4f78c8;
   padding-left: 0.9rem;
@@ -201,61 +178,54 @@ main>article>section .chroma :is(.c, .c1, .ch, .cm, .cp, .cpf, .cs) {
 }
 
 .comments {
-  margin-top: 3rem;
-  padding-top: 1.35rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
   border-top: 1px solid var(--line);
 
   h2 {
-    margin: 0 0 0.9rem;
-    font: 600 1rem/1.25 var(--sans);
+    margin: 0 0 1.25rem;
+    font: 600 1.05rem/1.3 var(--sans);
   }
 
-  .comment-item {
-    padding: 0.95rem 0;
-    border-top: 1px solid var(--line);
+  article {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
 
-    >header {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem 0.75rem;
-      margin-bottom: 0.28rem;
-      color: var(--muted);
-      font: 0.88rem/1.45 var(--sans);
-    }
+  article > header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--muted);
+    font: 0.85rem/1.45 var(--sans);
+  }
 
-    >header>p {
-      flex: 1 1 14rem;
-      margin: 0;
-    }
+  article > header > p {
+    flex: 1 1 14rem;
+    margin: 0;
+  }
 
-    >header time {
-      margin-inline-start: auto;
-    }
+  article > header strong {
+    color: var(--text);
+  }
 
-    >header strong {
-      color: var(--text);
-    }
+  article > section {
+    margin-top: 0.75rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--line);
+  }
 
-    >section {
-      margin-top: 0.75rem;
-      padding-left: 0.9rem;
-      border-left: 1px solid var(--line);
-    }
-
-    >section>.comment-item {
-      padding-top: 0.75rem;
-      border-top: 0;
-    }
-
-    >section>.comment-item+.comment-item {
-      margin-top: 0.75rem;
-      border-top: 1px solid var(--line);
-    }
+  article > section > article:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :is(main > article > section, .comment-body, .callout, .callout > div) a:hover {
+  :is(main > article > section, .callout, .callout > div, .comments article > div) a:hover {
     background-position: 0 100%;
     background-size: 100% 100%;
   }

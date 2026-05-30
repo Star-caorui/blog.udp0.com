@@ -1,2 +1,1 @@
-{{- $highlighted := transform.HighlightCodeBlock . -}}
-{{ $highlighted.Wrapped }}
+<pre><code{{ with .Type }} class="language-{{ . }}"{{ end }}>{{ .Inner | htmlEscape }}</code></pre>
