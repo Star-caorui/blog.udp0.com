@@ -59,7 +59,8 @@ a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.
 ::selection { color: var(--text); background: var(--accent-mark); }
 img { display: block; max-width: 100%; height: auto; }
 main {
-  > :is(header, article > header) {
+  > header,
+  > article > header {
     margin-bottom: 1.6rem;
     > p {
       margin: 0 0 0.35rem;
