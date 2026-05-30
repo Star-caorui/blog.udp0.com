@@ -128,9 +128,10 @@ main {
   }
 
   >section[aria-label="Recent posts"]>article {
-    display: flex;
-    flex-wrap: wrap;
-    gap: clamp(0.25rem, 1vw, 1rem);
+    display: grid;
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr) clamp(6.5rem, 18vw, 7.5rem);
+    column-gap: clamp(0.25rem, 1vw, 1rem);
     padding-block: 0.44rem;
 
     &:first-child {
@@ -138,37 +139,22 @@ main {
     }
 
     h2 {
-      flex: 1 1 18rem;
+      min-width: 0;
       margin: 0;
       font: 500 1.05rem/1.45 var(--serif);
     }
 
     h2>a {
-      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     time {
-      flex: 0 0 clamp(6.5rem, 18vw, 7.5rem);
-      margin-inline-start: auto;
       color: var(--muted);
       font: 0.88rem var(--sans);
       font-variant-numeric: tabular-nums;
       text-align: end;
     }
-  }
-}
-
-@media (max-width: 520px) {
-  main>section[aria-label="Recent posts"]>article time {
-    width: 100%;
-    flex-basis: auto;
-    margin-inline-start: 0;
-    text-align: start;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  main>section[aria-label="Recent posts"] h2>a:hover {
-    text-decoration: underline;
   }
 }

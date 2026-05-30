@@ -18,7 +18,6 @@ body > header > nav {
     padding: 0.42rem 0.72rem;
     border-radius: var(--radius-pill);
     color: var(--muted);
-    text-decoration: none;
   }
 
   a.is-active {
@@ -64,7 +63,6 @@ body > header > nav {
   }
 
   a {
-    text-decoration: none;
     background: linear-gradient(-78deg, transparent 0.18em, var(--link-mark) 0.18em calc(100% - 0.18em), transparent calc(100% - 0.18em)) 0 92% / 100% 0.5em no-repeat;
     box-decoration-break: clone;
     transition: background-size 120ms ease, background-position 120ms ease;
