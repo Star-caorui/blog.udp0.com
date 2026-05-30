@@ -70,21 +70,22 @@
 
   :is(code, pre) {
     font: 0.92em var(--mono);
+    color: #e6edf3;
   }
 
   code {
     padding: 0.14rem 0.38rem;
-    background: var(--code-inline-bg);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    background: #2b3644;
+    border: 1px solid var(--code-line);
+    border-radius: 6px;
   }
 
   pre {
     max-width: 100%;
     padding: 0.9rem 1rem;
     overflow-x: auto;
-    background: var(--code-bg);
-    border: 1px solid var(--line);
+    background: #222b36;
+    border: 1px solid var(--code-line);
     border-radius: var(--radius-lg);
   }
 
@@ -135,7 +136,7 @@
 }
 
 .callout {
-  --callout-accent: #4f78c8;
+  --callout-accent: var(accent);
   padding-left: 0.9rem;
   border-inline-start: 2px solid var(--callout-accent);
 
@@ -165,15 +166,15 @@
   }
 
   &:is([data-type="tip"], [data-type="success"], [data-type="important"]) {
-    --callout-accent: #2f8f68;
+    --callout-accent: lightgreen;
   }
 
   &:is([data-type="warn"], [data-type="warning"]) {
-    --callout-accent: #b67a2a;
+    --callout-accent: orange;
   }
 
   &[data-type="caution"] {
-    --callout-accent: #b45a76;
+    --callout-accent: red;
   }
 }
 
