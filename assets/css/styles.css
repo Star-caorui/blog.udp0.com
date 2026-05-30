@@ -81,14 +81,47 @@ body {
   >header {
     margin-bottom: 2rem;
     padding: 1.15rem 0 0.35rem;
+
+    >nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.15rem;
+      width: fit-content;
+      max-width: 100%;
+      margin-inline: auto;
+      padding: 0.18rem;
+      border: 1px solid var(--bg);
+      border-radius: var(--radius-pill);
+      background: var(--surface-soft);
+      font: 0.9rem var(--sans);
+
+      a {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.42rem 0.72rem;
+        border-radius: var(--radius-pill);
+        color: var(--muted);
+      }
+
+      a.is-active {
+        color: var(--text);
+        background: var(--accent-soft);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        a:hover {
+          color: var(--text);
+          background: var(--accent-soft);
+        }
+      }
+    }
   }
 
   >footer {
-    display: grid;
-    gap: 0.2rem;
     padding-block: 2rem;
     color: var(--muted);
-    font: 0.875rem var(--sans);
+    font: 0.875rem/1.6 var(--sans);
     text-align: center;
   }
 }

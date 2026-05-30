@@ -1,31 +1,3 @@
-body > header > nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.15rem;
-  width: fit-content;
-  max-width: 100%;
-  margin-inline: auto;
-  padding: 0.18rem;
-  border: 1px solid var(--bg);
-  border-radius: var(--radius-pill);
-  background: var(--surface-soft);
-  font: 0.9rem var(--sans);
-
-  a {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.42rem 0.72rem;
-    border-radius: var(--radius-pill);
-    color: var(--muted);
-  }
-
-  a.is-active {
-    color: var(--text);
-    background: var(--accent-soft);
-  }
-}
-
 :is(main > article > section, .comment-body, .callout, .callout > div) {
   > :first-child {
     margin-top: 0;
@@ -159,13 +131,6 @@ body > header > nav {
     th {
       background: var(--accent-soft);
     }
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  body > header > nav a:hover {
-    color: var(--text);
-    background: var(--accent-soft);
   }
 }
 
