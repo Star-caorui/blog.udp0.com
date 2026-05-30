@@ -1,28 +1,27 @@
 {{ define "comments.item" }}
   {{ $comment := .comment }}
   {{ $comments := .comments }}
-  {{ $isReply := eq .isReply true }}
   {{ $children := sort (where $comments "parent" $comment.id) "date" "asc" }}
   {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
-  <article class="comment-item{{ if $isReply }} comment-reply-item{{ end }}" id="comment-{{ $comment.id }}">
-    <header class="comment-meta">
-      <span class="comment-speaker">
+  <article class="comment-item" id="comment-{{ $comment.id }}">
+    <header>
+      <p>
         用户
         {{ if $comment.url }}
-          <a class="comment-author" href="{{ $comment.url }}" rel="nofollow noopener" target="_blank">{{ $comment.author }}</a>
+          <a href="{{ $comment.url }}" rel="nofollow noopener" target="_blank"><strong>{{ $comment.author }}</strong></a>
         {{ else }}
-          <span class="comment-author">{{ $comment.author }}</span>
+          <strong>{{ $comment.author }}</strong>
         {{ end }}
         {{ if $isFollowUp }}
           追评：
         {{ else }}
           {{ with $comment.reply_to }}
-            回复 <a class="comment-target" href="#comment-{{ $comment.parent }}">{{ . }}</a> 说：
+            回复 <a href="#comment-{{ $comment.parent }}"><strong>{{ . }}</strong></a> 说：
           {{ else }}
             说：
           {{ end }}
         {{ end }}
-      </span>
+      </p>
       <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
     </header>
     <div class="comment-body">
@@ -32,17 +31,17 @@
         <p>{{ $comment.text }}</p>
       {{ end }}
     </div>
-    {{ if and (not $isReply) $children }}
-      <div class="comment-children">
+    {{ if and (eq $comment.parent 0) $children }}
+      <section>
         {{ range $children }}
-          {{ template "comments.item" (dict "comment" . "comments" $comments "isReply" true) }}
+          {{ template "comments.item" (dict "comment" . "comments" $comments) }}
         {{ end }}
-      </div>
+      </section>
     {{ end }}
   </article>
-  {{ if $isReply }}
+  {{ if ne $comment.parent 0 }}
     {{ range $children }}
-      {{ template "comments.item" (dict "comment" . "comments" $comments "isReply" true) }}
+      {{ template "comments.item" (dict "comment" . "comments" $comments) }}
     {{ end }}
   {{ end }}
 {{ end }}
@@ -53,10 +52,8 @@
 {{ if $comments }}
   <section class="comments">
     <h2>历史评论</h2>
-    <div class="comment-list">
-      {{ range sort (where $comments "parent" 0) "date" "desc" }}
-        {{ template "comments.item" (dict "comment" . "comments" $comments) }}
-      {{ end }}
-    </div>
+    {{ range sort (where $comments "parent" 0) "date" "desc" }}
+      {{ template "comments.item" (dict "comment" . "comments" $comments) }}
+    {{ end }}
   </section>
 {{ end }}
