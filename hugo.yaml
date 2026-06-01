@@ -22,6 +22,10 @@ outputs:
 build:
   noJSConfigInAssets: true
 
+markup:
+  highlight:
+    codeFences: false
+
 params:
   favicon: "https://src.inetech.fun/favicon.webp"
   records:
