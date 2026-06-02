@@ -228,23 +228,26 @@ main {
   }
 
   table {
-    display: block;
-    width: fit-content;
-    max-width: 100%;
-    overflow-x: auto;
+    width: 100%;
     background: var(--surface);
     border: 1px solid var(--line);
     border-collapse: collapse;
+    table-layout: fixed;
 
     :is(th, td) {
       padding: 0.7rem 0.8rem;
       border: 1px solid var(--line);
       text-align: start;
+      overflow-wrap: anywhere;
     }
 
     th {
       background: var(--accent-soft);
     }
+  }
+
+  table :is(a, code) {
+    overflow-wrap: anywhere;
   }
 }
 
