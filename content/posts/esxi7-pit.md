@@ -1,5 +1,6 @@
 +++
 title = "记一次安装 ESXI 7 遇到的坑"
+description = "记录安装 ESXi 7 时因主板不支持 NVMe 引导而踩过的坑与替代方案。"
 date = 2022-07-02T16:38:00+08:00
 draft = false
 lastmod = 2022-07-02T16:47:29+08:00

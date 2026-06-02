@@ -1,5 +1,6 @@
 +++
 title = "如何获取腾讯云 MFA 的密钥"
+description = "记录如何通过抓包获取腾讯云 MFA 密钥，以便迁移到第三方 TOTP 工具。"
 date = 2022-02-11T16:12:00+08:00
 draft = false
 lastmod = 2024-12-29T09:49:57+08:00

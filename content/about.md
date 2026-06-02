@@ -1,5 +1,6 @@
 +++
 title = "关于我"
+description = "关于 Betterr 的个人介绍、技术栈、联系信息与博客入口。"
 date = 2020-04-11T18:59:00+08:00
 draft = false
 lastmod = 2026-05-14T22:31:50+08:00

@@ -10,7 +10,14 @@
         {{ .Title }} · {{ site.Title }}
       {{ end }}
     </title>
-    {{ with .Description }}
+    {{ $description := .Description }}
+    {{ if .IsHome }}
+      {{ $description = site.Params.description }}
+    {{ end }}
+    {{ if eq .Kind "404" }}
+      {{ $description = site.Params.description404 }}
+    {{ end }}
+    {{ with $description }}
       <meta name="description" content="{{ . }}">
     {{ end }}
     <link rel="canonical" href="{{ .Permalink }}">

@@ -1,5 +1,6 @@
 +++
 title = "【域名邮箱】ImprovMX 一款像 CF 邮箱转发的免费服务"
+description = "介绍如何用 ImprovMX 做域名邮箱转发，并配合 Outlook 实现免费发信。"
 date = 2024-07-31T18:43:00+08:00
 draft = false
 lastmod = 2024-12-30T04:46:37+08:00

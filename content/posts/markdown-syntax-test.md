@@ -1,5 +1,6 @@
 +++
 title = "Markdown 语法测试"
+description = "用于检查 Markdown、代码块、表格、图片、引用与提示块渲染效果的隐藏测试页。"
 date = 2026-05-21T13:00:00+08:00
 draft = false
 hidden = true

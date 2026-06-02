@@ -1,5 +1,6 @@
 +++
 title = "在 Arch Linux 使用 DOH 来加密你的 DNS"
+description = "介绍如何在 Arch Linux 上部署 DNS over HTTPS，以缓解 DNS 劫持与污染问题。"
 date = 2021-12-13T06:38:00+08:00
 draft = false
 lastmod = 2024-12-29T09:44:35+08:00

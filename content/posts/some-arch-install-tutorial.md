@@ -1,5 +1,6 @@
 +++
 title = "一些有趣的 Arch 安装教程"
+description = "汇总一些值得参考的 Arch Linux 安装教程与官方文档入口。"
 date = 2021-12-24T03:01:00+08:00
 draft = false
 lastmod = 2024-12-29T09:45:33+08:00

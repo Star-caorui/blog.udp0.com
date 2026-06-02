@@ -1,5 +1,6 @@
 +++
 title = "如何规整你的 Arch Linux 系统"
+description = "介绍如何按目录职责梳理和清理 Arch Linux 系统中的文件与软件。"
 date = 2023-01-27T11:35:00+08:00
 draft = false
 lastmod = 2024-12-29T09:57:38+08:00

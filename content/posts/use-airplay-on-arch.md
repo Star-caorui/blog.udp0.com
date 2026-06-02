@@ -1,5 +1,6 @@
 +++
 title = "通过 Air Play 在你的 Arch Linux 播放音乐"
+description = "介绍如何在 Arch Linux 上通过 Shairport Sync 接收 AirPlay 音频播放。"
 date = 2021-11-14T23:09:00+08:00
 draft = false
 lastmod = 2024-12-29T09:42:05+08:00

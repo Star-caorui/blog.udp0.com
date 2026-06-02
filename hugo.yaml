@@ -27,6 +27,8 @@ markup:
     codeFences: false
 
 params:
+  description: "Betterr 的个人博客，记录 Arch Linux、系统运维、网络服务、安全加固与一些随手思考。"
+  description404: "你访问的页面不存在，可以返回首页继续浏览 Betterr 的文章与页面。"
   favicon: "https://src.inetech.fun/favicon.webp"
   records:
     icp: 蒙 ICP 备 2022000209 号-2

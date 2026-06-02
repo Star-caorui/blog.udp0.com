@@ -1,5 +1,6 @@
 +++
 title = "如何准备一个 Arch Linux 的 Deepin 子系统"
+description = "记录如何用 systemd-nspawn 准备 Deepin 子系统；本文已失效，仅作存档。"
 date = 2022-03-04T00:15:00+08:00
 draft = false
 lastmod = 2022-05-04T23:06:02+08:00

@@ -122,7 +122,13 @@ main {
     }
   }
 
-  >section[aria-label="Recent posts"]>article {
+  >ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  >ul>li {
     display: grid;
     align-items: center;
     grid-template-columns: minmax(0, 1fr) clamp(6.5rem, 18vw, 7.5rem);
@@ -133,13 +139,10 @@ main {
       padding-top: 0;
     }
 
-    h2 {
+    >a {
       min-width: 0;
-      margin: 0;
       font: 400 1.05rem/1.5 var(--sans);
-    }
 
-    h2>a {
       &:hover {
         text-decoration: underline;
       }

@@ -4,12 +4,12 @@
     <h1>Posts</h1>
   </header>
 
-  <section aria-label="Recent posts">
+  <ul>
     {{ range (where site.RegularPages "Section" "posts").ByDate.Reverse }}
-      <article>
-        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
         <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format `2006-01-02` }}</time>
-      </article>
+      </li>
     {{ end }}
-  </section>
+  </ul>
 {{ end }}

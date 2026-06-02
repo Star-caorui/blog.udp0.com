@@ -1,5 +1,6 @@
 +++
 title = "TOS"
+description = "iNetech 公共服务的使用条款、限制条件与责任说明。"
 date = 2022-03-21T01:10:00+08:00
 draft = false
 lastmod = 2025-03-29T16:42:57+08:00

@@ -1,5 +1,6 @@
 +++
 title = "更改 Typecho 的 头像源"
+description = "介绍如何修改 Typecho 的 Gravatar 头像源，并列出常见可替换镜像。"
 date = 2021-01-29T20:29:00+08:00
 draft = false
 lastmod = 2022-06-16T00:54:30+08:00

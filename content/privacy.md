@@ -1,5 +1,6 @@
 +++
 title = "隐私权"
+description = "iNetech 站点的隐私政策，说明日志收集、第三方服务与数据保留期限。"
 date = 2021-05-05T01:42:00+08:00
 draft = false
 lastmod = 2025-12-29T15:47:08+08:00

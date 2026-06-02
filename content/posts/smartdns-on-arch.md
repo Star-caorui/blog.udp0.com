@@ -1,5 +1,6 @@
 +++
 title = "在 Arch Linux 使用 SmartDNS 来加速 DNS 解析"
+description = "介绍如何在 Arch Linux 上使用 SmartDNS 结合 ChinaList 优化 DNS 解析体验。"
 date = 2022-09-04T09:04:00+08:00
 draft = false
 lastmod = 2025-06-16T13:59:50+08:00

@@ -1,5 +1,6 @@
 +++
 title = "使用 Windows 11 的 WSL2 运行 ChatGLM 大模型"
+description = "记录在 Windows 11 的 WSL2 环境中运行 ChatGLM 大模型的准备与安装步骤。"
 date = 2024-12-29T09:59:30+08:00
 draft = false
 lastmod = 2024-12-29T09:59:31+08:00

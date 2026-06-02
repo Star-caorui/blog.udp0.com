@@ -1,5 +1,6 @@
 +++
 title = "如何使用 GPG-Agent Forward 在服务器上使用本地密钥"
+description = "介绍 GPG-Agent Forward 的基本原理、常见坑点与 SSH 转发配置方法。"
 date = 2022-02-10T01:35:00+08:00
 draft = false
 lastmod = 2024-12-29T09:49:16+08:00

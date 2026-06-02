@@ -1,5 +1,6 @@
 +++
 title = "在 2025 年如何有效阻止恶意爬虫与扫描器"
+description = "介绍如何组合 Caddy、Anubis 与雷池 WAF，构建多层恶意爬虫与扫描防御体系。"
 date = 2025-05-04T17:22:00+08:00
 draft = false
 lastmod = 2025-05-04T18:14:16+08:00

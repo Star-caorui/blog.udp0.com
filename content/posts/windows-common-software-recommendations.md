@@ -1,5 +1,6 @@
 +++
 title = "Windows 常用软件推荐"
+description = "汇总一份 Windows 常用软件清单，并附上简短使用建议。"
 date = 2022-01-20T16:44:00+08:00
 draft = false
 lastmod = 2022-06-16T01:04:16+08:00

@@ -1,5 +1,6 @@
 +++
 title = "如何在云服务器上装 Arch Linux"
+description = "介绍如何在云服务器上重装 Arch Linux，并给出风险提醒与脚本用法。"
 date = 2020-06-09T23:31:00+08:00
 draft = false
 lastmod = 2022-02-26T20:48:51+08:00

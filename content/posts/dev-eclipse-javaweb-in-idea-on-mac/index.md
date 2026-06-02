@@ -1,5 +1,6 @@
 +++
 title = "【流水账】在 macOS 安装 IDEA 来开发 Eclipse 的 JavaWeb 项目"
+description = "记录在 macOS 上用 IDEA Ultimate 接手 Eclipse JavaWeb 项目的导入与 Tomcat 配置过程。"
 date = 2025-10-29T21:37:00+08:00
 draft = false
 lastmod = 2025-10-29T23:18:53+08:00

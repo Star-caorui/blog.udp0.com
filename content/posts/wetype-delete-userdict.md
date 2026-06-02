@@ -1,5 +1,6 @@
 +++
 title = "在微信输入法 Mac 端删除个人词典"
+description = "记录如何在 macOS 上删除微信输入法的个人词典。"
 date = 2025-07-26T23:06:57+08:00
 draft = false
 lastmod = 2025-07-26T23:07:48+08:00

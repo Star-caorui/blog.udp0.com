@@ -1,5 +1,6 @@
 +++
 title = "记一次 Arch Linux 的重新安装"
+description = "记录一次从零重装 Arch Linux 的过程，涵盖基础安装、加密、安全启动与桌面配置。"
 date = 2022-12-24T18:19:00+08:00
 draft = false
 lastmod = 2024-12-29T09:56:18+08:00

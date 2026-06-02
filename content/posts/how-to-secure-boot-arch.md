@@ -1,5 +1,6 @@
 +++
 title = "如何安全启动 Arch Linux"
+description = "介绍 Arch Linux 安全启动的原理、方案选择与基于 Shim 的实现思路。"
 date = 2021-10-17T21:33:00+08:00
 draft = false
 lastmod = 2022-06-16T00:59:08+08:00

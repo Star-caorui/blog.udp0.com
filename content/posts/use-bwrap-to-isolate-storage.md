@@ -1,5 +1,6 @@
 +++
 title = "使用 bwrap 让你的程序不在 $HOME 乱拉屎"
+description = "介绍如何用 bubblewrap 隔离 Linux 应用的文件写入，减少对家目录的污染。"
 date = 2022-02-26T20:50:00+08:00
 draft = false
 lastmod = 2022-02-27T11:26:45+08:00
