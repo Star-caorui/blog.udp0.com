@@ -30,7 +30,7 @@
     <header>
       {{ $page := . }}
       {{ with site.Menus.main }}
-        <nav aria-label="Primary">
+        <nav>
           {{ range . }}
             {{ $isHomeEntry := eq .URL "/" }}
             {{ $isPostPage := eq $page.Section "posts" }}
