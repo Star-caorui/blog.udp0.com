@@ -163,7 +163,7 @@ main {
   }
 
   li>input[type="checkbox"] {
-    margin: 0 0.55rem 0 -1.2rem;
+    margin-inline: -1.2rem 0.55rem;
     vertical-align: middle;
   }
 
@@ -188,10 +188,10 @@ main {
     padding-top: 0.8rem;
     color: var(--muted);
     border-top: 1px solid var(--line);
-  }
 
-  .footnotes hr {
-    display: none;
+    hr {
+      display: none;
+    }
   }
 
   a {
@@ -247,10 +247,6 @@ main {
     th {
       background: var(--accent-soft);
     }
-  }
-
-  table :is(a, code) {
-    overflow-wrap: anywhere;
   }
 }
 
