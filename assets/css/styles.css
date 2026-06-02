@@ -228,7 +228,10 @@ main {
   }
 
   table {
-    width: 100%;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
     background: var(--surface);
     border: 1px solid var(--line);
     border-collapse: collapse;
