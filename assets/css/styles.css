@@ -2,14 +2,11 @@
   color-scheme: light;
   scrollbar-gutter: stable both-edges;
   --bg: whitesmoke;
-  --surface: #fff;
   --text: #1f1f1c;
   --muted: #73706b;
   --accent: #508fff;
   --line: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
   --code-line: #465469;
-  --radius-lg: 12px;
   --sans: ui-sans-serif, sans-serif;
   --mono: ui-monospace, monospace;
 }
@@ -18,7 +15,6 @@
   :root {
     color-scheme: dark;
     --bg: #0d1117;
-    --surface: #161b22;
     --text: #edf1f7;
     --muted: #a5afbf;
     --accent: #7aa7ff;
@@ -49,7 +45,6 @@ body {
   color: var(--text);
   background: var(--bg);
   font: 18px/1.8 var(--sans);
-  text-wrap: pretty;
 
   > :is(header, main, footer) {
     width: min(44rem, 100%);
@@ -63,7 +58,6 @@ body {
     >nav {
       display: flex;
       justify-content: space-evenly;
-      font: 1rem var(--sans);
 
       a {
         display: inline-flex;
@@ -81,7 +75,7 @@ body {
   >footer {
     padding-block: 2rem;
     color: var(--muted);
-    font: 0.875rem/1.8 var(--sans);
+    font-size: 0.875rem;
     text-align: center;
   }
 }
@@ -95,7 +89,7 @@ main {
     >p {
       margin: 0 0 0.35rem;
       color: var(--accent);
-      font: 0.76rem var(--sans);
+      font-size: 0.76rem;
       text-transform: uppercase;
     }
 
@@ -109,7 +103,7 @@ main {
       flex-wrap: wrap;
       gap: 0.8rem;
       color: var(--muted);
-      font: 0.88rem var(--sans);
+      font-size: 0.88rem;
     }
 
     +p {
@@ -131,13 +125,10 @@ main {
     column-gap: clamp(0.25rem, 1vw, 1rem);
     padding-block: 0.44rem;
 
-    &:first-child {
-      padding-top: 0;
-    }
-
     >a {
       min-width: 0;
-      font: 400 1.05rem/1.5 var(--sans);
+      font-size: 1.05rem;
+      line-height: 1.5;
 
       &:hover {
         text-decoration: underline;
@@ -212,7 +203,7 @@ main {
     overflow-x: auto;
     background: #222b36;
     border: 1px solid var(--code-line);
-    border-radius: var(--radius-lg);
+    border-radius: 12px;
   }
 
   pre code {
@@ -221,14 +212,8 @@ main {
     border: 0;
   }
 
-  img {
-    border-radius: var(--radius-lg);
-  }
-
   table {
     width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--line);
     border-collapse: collapse;
     table-layout: fixed;
 
@@ -238,23 +223,20 @@ main {
       text-align: start;
       overflow-wrap: anywhere;
     }
-
-    th {
-      background: var(--accent-soft);
-    }
   }
 }
 
 .callout {
-  --callout-accent: var(--accent);
   padding-left: 0.9rem;
-  border-inline-start: 2px solid var(--callout-accent);
+  border-inline-start: 2px solid var(--line);
 
   :is(strong, summary) {
     display: block;
     margin-bottom: 0.35rem;
-    color: var(--callout-accent);
-    font: 600 0.82rem/1.4 var(--sans);
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.4;
   }
 
   >summary {
@@ -274,29 +256,12 @@ main {
   &[open]>summary::before {
     content: "▾";
   }
-
-  &:is([data-type="tip"], [data-type="success"], [data-type="important"]) {
-    --callout-accent: green;
-  }
-
-  &:is([data-type="warn"], [data-type="warning"]) {
-    --callout-accent: orange;
-  }
-
-  &[data-type="caution"] {
-    --callout-accent: red;
-  }
 }
 
 .comments {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--line);
-
-  h2 {
-    margin: 0 0 1.25rem;
-    font: 600 1.05rem/1.3 var(--sans);
-  }
 
   article {
     padding: 1rem 0;
@@ -307,11 +272,10 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
     gap: 0.35rem 0.75rem;
     margin-bottom: 0.5rem;
     color: var(--muted);
-    font: 0.85rem/1.45 var(--sans);
+    font-size: 0.85rem;
   }
 
   article>header>p {
@@ -319,18 +283,9 @@ main {
     margin: 0;
   }
 
-  article>header strong {
-    color: var(--text);
-  }
-
   article>section {
     margin-top: 0.75rem;
     padding-left: 1rem;
     border-left: 2px solid var(--line);
-  }
-
-  article>section>article:last-child {
-    border-bottom: 0;
-    padding-bottom: 0;
   }
 }
