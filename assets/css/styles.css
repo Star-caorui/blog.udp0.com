@@ -1,24 +1,14 @@
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   scrollbar-gutter: stable both-edges;
-  --bg: whitesmoke;
-  --text: #1f1f1c;
-  --muted: #73706b;
-  --accent: #508fff;
+  --bg: light-dark(whitesmoke, #0d1117);
+  --text: light-dark(#1f1f1c, #edf1f7);
+  --muted: light-dark(#73706b, #a5afbf);
+  --accent: light-dark(#508fff, #7aa7ff);
   --line: color-mix(in srgb, var(--accent) 20%, transparent);
   --code-line: #465469;
   --sans: ui-sans-serif, sans-serif;
   --mono: ui-monospace, monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bg: #0d1117;
-    --text: #edf1f7;
-    --muted: #a5afbf;
-    --accent: #7aa7ff;
-  }
 }
 
 * {
@@ -186,7 +176,7 @@ main {
     text-decoration: underline;
   }
 
-  code {
+  :not(pre)>code {
     font: 0.92em var(--mono);
     color: #e6edf3;
     padding: 0.14rem 0.38rem;
@@ -204,12 +194,6 @@ main {
     background: #222b36;
     border: 1px solid var(--code-line);
     border-radius: 12px;
-  }
-
-  pre code {
-    padding: 0;
-    background: transparent;
-    border: 0;
   }
 
   table {
@@ -231,7 +215,6 @@ main {
   border-inline-start: 2px solid var(--line);
 
   :is(strong, summary) {
-    display: block;
     margin-bottom: 0.35rem;
     color: var(--accent);
     font-size: 0.82rem;
@@ -239,22 +222,12 @@ main {
     line-height: 1.4;
   }
 
+  >strong {
+    display: block;
+  }
+
   >summary {
     cursor: pointer;
-    list-style: none;
-  }
-
-  >summary::-webkit-details-marker {
-    display: none;
-  }
-
-  >summary::before {
-    content: "▸";
-    margin-right: 0.38rem;
-  }
-
-  &[open]>summary::before {
-    content: "▾";
   }
 }
 
@@ -269,9 +242,8 @@ main {
   }
 
   article>header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: 0.35rem 0.75rem;
     margin-bottom: 0.5rem;
     color: var(--muted);
@@ -279,7 +251,6 @@ main {
   }
 
   article>header>p {
-    flex: 1 1 14rem;
     margin: 0;
   }
 
