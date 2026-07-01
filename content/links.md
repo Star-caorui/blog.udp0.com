@@ -14,6 +14,9 @@ slug = "links"
 [钧言极客](https://www.jinjun.top)  
 [朝露碎梦](https://aibofan.com/)  
 [陈陈菌博客](https://blog.glumi.cn)  
+[OTAKU's Lair](http://log.nmgshirun.com/)  
+[26ywzm](https://blog.ywzm.eu.org/)  
+
 
 ### 最新状况
 近期不想添加友链啦，有想法添加友链的可以先友后链。（认识我的可以联系我继续添加友链）
