@@ -150,9 +150,7 @@ main {
 
   blockquote {
     margin-inline: 0;
-    padding-inline-start: 1rem;
     color: var(--muted);
-    border-inline-start: 2px solid var(--line);
   }
 
   hr {
@@ -210,10 +208,12 @@ main {
   }
 }
 
-.callout {
-  padding-left: 0.9rem;
+:is(.typo blockquote, .callout, .comments article>section) {
+  padding-inline-start: 1rem;
   border-inline-start: 2px solid var(--line);
+}
 
+.callout {
   :is(strong, summary) {
     margin-bottom: 0.35rem;
     color: var(--accent);
@@ -256,7 +256,5 @@ main {
 
   article>section {
     margin-top: 0.75rem;
-    padding-left: 1rem;
-    border-left: 2px solid var(--line);
   }
 }
