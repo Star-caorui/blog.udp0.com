@@ -15,7 +15,7 @@
   {{- $ext := path.Ext $resource.Name -}}
   {{- $pagePath := strings.TrimPrefix "/" $page.RelPermalink -}}
   {{- $targetPath := path.Join $pagePath $dir (printf "%s.%s%s" $name $hash $ext) -}}
-  {{- $published := resources.FromString $targetPath $resource.Content -}}
+  {{- $published := $resource | resources.Copy $targetPath -}}
   <img
     src="{{ $published.RelPermalink }}"
     alt="{{ .PlainText }}"

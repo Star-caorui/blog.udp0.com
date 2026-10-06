@@ -22,6 +22,10 @@ outputs:
 build:
   noJSConfigInAssets: true
 
+cascade:
+  - build:
+      publishResources: false
+
 markup:
   highlight:
     codeFences: false
