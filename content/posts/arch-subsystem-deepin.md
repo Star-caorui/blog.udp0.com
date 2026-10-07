@@ -12,7 +12,7 @@ render = 'always'
 > [!CAUTION] 本文已失效
 > 本文在 2022-05-04 已确认失效，故已隐藏。如你通过其他途径访问到这里，请不要继续照本文操作。
 
-### 介绍
+## 介绍
 你可能出于某种原因想使用一些来自 Deepin 的软件，但不想让这个软件污染的你本地环境，这时候你就需要用到 systemd-nspawn 来使用你的任意 Linux 子系统了。
 
 >  systemd-nspawn 可以当作一个容器使用。就像是 chroot/docker, 但它比 chroot/docker 更强大。
@@ -22,7 +22,7 @@ render = 'always'
 
 以上表述摘自 [Arch Wiki][1]
 
-### 创建子系统
+## 创建子系统
 ```bash
 # 如果你不使用 btrfs, 或不想为其创建子卷，可以跳过下行命令。
 # 其中，deepin-x86_64 可以被随意更改。
@@ -41,7 +41,7 @@ sudo pacman -S debootstrap debian-archive-keyring ubuntu-keyring
 sudo debootstrap --variant=minbase --no-check-gpg --merged-usr --include=systemd-container --components=main,non-free,contrib apricot /var/lib/machines/deepin-x86_64 https://mirrors.bfsu.edu.cn/deepin/ /usr/share/debootstrap/scripts/stable
 ```
 
-### 在 Deepin 子系统中安装些软件
+## 在 Deepin 子系统中安装些软件
 ```bash
 # 进入子系统
 sudo systemd-nspawn -D /var/lib/machines/deepin-x86_64
@@ -60,7 +60,7 @@ apt --no-install-recommends -y install com.qq.weixin.deepin
 apt -y autopurge
 ```
 
-### 配置子系统
+## 配置子系统
 ```bash
 # 安装 sudo, 以及你喜欢的文本编辑器。
 apt install sudo nano

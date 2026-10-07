@@ -13,8 +13,8 @@ render = 'always'
 
 <!--more-->
 
-### 本文可能涉及的内容：
-#### 基本系统安装：
+## 本文可能涉及的内容：
+### 基本系统安装：
 - 基本系统
 - 在 initrd 中使用 systemd
 - 统一内核映像
@@ -24,12 +24,12 @@ render = 'always'
 - Gnome 桌面环境
 - Fcitx5 拼音输入法
 - Fcitx5 输入法皮肤
-#### 高级系统配置：
+### 高级系统配置：
 - 基于代理的网络质量优化
 - DNS 优化
 - 其他常用软件的推荐及安装
 
-### 安装 Arch Linux
+## 安装 Arch Linux
 前提假设你已完成下载并校验，成功制作 Arch Linux ISO 安装媒介，并已临时关闭安全启动。通过 UEFI 启动并引导到 Arch Linux ISO 安装媒介。
 
 > [!NOTE] 前提条件

@@ -13,35 +13,35 @@ slug = "vps2arch"
 > 这篇文章更适合已有 Linux 操作经验的用户，不推荐毫无经验的读者直接照做。
 <!--more-->
 
-### 前言
+## 前言
 > [!WARNING] 操作提醒
 > - 本文更适合已经在使用 Arch Linux，或者至少熟悉 Linux 基础操作的用户。
 > - 本文介绍的脚本会在运行时**格式化**硬盘，请确认你已经备份好重要数据再继续。
 
-### 工具
+## 工具
 - vps2arch
     - [Gitlab 官方介绍][1]
     - [ArchWiki(中文页) 介绍页][2]
     - [ArchWiki(英文页) 介绍页][3]
 
-### 后续更新
+## 后续更新
 > [!TIP] 当前推荐
 > 推荐使用由 Arch Linux TU **Felix Yan** 维护的 [vps2arch][4]。
 
-### 使用方法
-#### 1. 下载脚本文件
+## 使用方法
+### 1. 下载脚本文件
 ```bash
 wget https://felixc.at/vps2arch
 ```
-#### 2. 赋予执行权限
+### 2. 赋予执行权限
 ```bash
 chmod +x vps2arch
 ```
-#### 3. 执行脚本文件
+### 3. 执行脚本文件
 ```bash
 ./vps2arch -m [镜像源]
 ```
-#### 例如:
+### 例如:
 ```bash
 wget https://felixc.at/vps2arch
 chmod +x vps2arch

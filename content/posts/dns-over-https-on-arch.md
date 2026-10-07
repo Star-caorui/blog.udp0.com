@@ -16,23 +16,23 @@ slug = "dns-over-https-on-arch"
 <!--more-->
 
 
-### 阅读提醒
+## 阅读提醒
 > [!NOTE] 阅读提醒
 > - 本文基于 Arch Linux 编写，如果您使用其他发行版，部分操作可能不一致。
 > - 本文对其他同样使用 systemd 的发行版也可能有参考价值。
 > - 使用 DOH 后，解析速度可能会下降，这是正常现象。因为无论什么 DNS，一般都不如 ISP 自带 DNS 更快，只是运营商的结果可能存在劫持或污染。
 
-### 介绍
+## 介绍
 目前部分地区的 ISP 可能会拦截所有来自 UDP 53 的 DNS 请求。从而劫持，污染，投毒所有 DNS 查询结果。所以这就是为什么要用 DOH 的原因了。
 
-### 安装
+## 安装
 ```bash
 pacman -S dns-over-https
 ```
 （其他非 Arch，及其衍生发行版的用户请自行使用您所使用的包管理器安装）
 
-### 配置
-#### 配置解析顺序
+## 配置
+### 配置解析顺序
 请使用任意编辑器修改 /etc/nsswitch.conf 文件。系统在解析未知的地址时会从左到右匹配。
 ```text
 ...
@@ -46,7 +46,7 @@ files 匹配 hosts 文件（/etc/hosts）
 resolve 匹配 systemd-resolve
 dns 匹配从 /etc/resolv.conf 进行的 dns 查询
 
-#### 配置 DOH 客户端
+### 配置 DOH 客户端
 请使用任意编辑器修改 /etc/dns-over-https/doh-client.conf 文件。
 ```toml
 # DNS 监听端口的配置
@@ -111,7 +111,7 @@ verbose = true
 insecure_tls_skip_verify = false
 ```
 
-### 配置系统 DNS
+## 配置系统 DNS
 请使用任意编辑器修改 /etc/resolv.conf 文件，并写入以下内容。
 ```text
 nameserver ::1
@@ -125,9 +125,9 @@ options edns0 single-request-reopen
 dns=none
 ```
 或者你也可以通过`chattr +i /etc/resolv.conf`来禁止修改 /etc/resolv.conf 文件。
-### 开始享用吧
+## 开始享用吧
 通过`systemctl enable --now doh-client.service`设置开机自启并立即启动。
 
-### 更多 DNS 推荐
+## 更多 DNS 推荐
  - https://blog.skk.moe/post/which-public-dns-to-use/
  - https://www.jianshu.com/p/d46d44169031

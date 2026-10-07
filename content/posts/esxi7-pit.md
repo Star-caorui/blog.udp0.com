@@ -6,7 +6,7 @@ lastmod = 2022-07-02T16:47:29+08:00
 slug = "esxi7-pit"
 +++
 
-### 无法使用 `M.2 NVMe SSD` 作为系统盘
+## 无法使用 `M.2 NVMe SSD` 作为系统盘
 
 遇到这个问题是因为主板的 UEFI/BIOS 不支持 NVMe, 没有驱动导致的。
 
@@ -86,7 +86,7 @@ Clover 配置教程：请参阅 [Arch Wiki](https://wiki.archlinux.org/title/Clo
 
 ```
 
-### ESXI 7.0 的 VMFSL 吃掉了 120 GiB！
+## ESXI 7.0 的 VMFSL 吃掉了 120 GiB！
 
 这个分区是 ESXI 的「系统存储分区」，默认消耗 138GB。但默认占用似乎对我这种家用级用户来说过大了，所以我们要限制一下。
 
@@ -118,7 +118,7 @@ systemMediaSize=min
 
 如果您认为我写的很乱，可以直接看 VMWare 官方文章（英文）：[用于配置 ESXi 系统分区大小的引导选项](https://kb.vmware.com/s/article/81166)
 
-### 无法直通硬件
+## 无法直通硬件
 
 可能的原因：
 

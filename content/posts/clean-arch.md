@@ -8,7 +8,7 @@ slug = "clean-arch"
 
 前言：请了解[根目录的结构][1]，并达成共识。约定好我们不应该处理哪些文件夹。
 
-### 一般结构
+## 一般结构
 - boot
 此目录**不做处理**。因为这里用于存放引导文件，内核的目录。
 - efi
@@ -24,25 +24,25 @@ slug = "clean-arch"
 - tmp
 此目录**不做处理**，因为一个 `tmpfs` 文件系统。
 
-### 运行时数据
+## 运行时数据
 - run
 此目录**不做处理**，因为一个 `tmpfs` 文件系统。
 
-### 供应商提供的操作系统资源
+## 供应商提供的操作系统资源
 - /usr
 此目录**需要做处理**。因为这里含有操作系统文件，此目录不应被用户修改，如必要需检查一遍并还原修改。
 
-### 持久变量系统数据
+## 持久变量系统数据
 - /var
 此目录**需要做处理**。关于此目录的介绍请参阅：[持久变量系统数据][2]
 
-### 虚拟内核和 API 文件系统
+## 虚拟内核和 API 文件系统
 此目录**不做处理**。因为这是一个虚拟内核和 API 文件系统。详细信息请参阅：[虚拟内核和 API 文件系统][3]
 - dev
 - proc
 - sys
 
-### 兼容性符号链接
+## 兼容性符号链接
 - bin -> usr/bin
 此目录**不做处理**。因为我们将会处理 `/usr/bin` 目录。
 - sbin -> usr/bin
@@ -52,13 +52,13 @@ slug = "clean-arch"
 - lib64 -> usr/lib
 此目录**不做处理**。因为我们将会处理 `/usr/lib` 目录。
 
-### 其他目录
+## 其他目录
 - opt
 此目录**需要做处理**。因为此目录包含一些大型软件包，您可能需要处理卸载残留。
 - mnt
 此目录**需要做处理**。是供用户自行挂载分区所使用的，您可能曾经把这里搞得乱七八糟的。
 
-### 总结
+## 总结
 我们需要对以下目录做处理：
 手动处理：`srv` `mnt`
 `etc`：如果您想要整理一下此文件夹，请跟随以下步骤。
@@ -95,7 +95,7 @@ find /opt | LC_ALL=C pacman -Qqo - 2>&1 >&- >/dev/null | cut -d ' ' -f 5-
 sudo pacman -Qkk 2>&1 | grep /opt
 ```
 
-### 卸载不需要的软件
+## 卸载不需要的软件
 ```bash
 # 查找主动安装的软件包
 pacman -Qe
@@ -113,13 +113,13 @@ comm -23 <(pacman -Qqt | sort) <({ pacman -Qqg base-devel; echo base; } | sort -
 expac -H M '%-20n\t%10d' $(comm -23 <(pacman -Qqt | sort) <({ pacman -Qqg base-devel; echo base; } | sort -u))
 ```
 
-### 清理不被包管理器所跟踪的文件
+## 清理不被包管理器所跟踪的文件
 使用 pacman 安装 lostfiles。lostfiles 包含一些过滤规则，会过滤掉常见的误报。
 ```bash
 sudo lostfiles
 ```
 
-### 清理不需要的用户和组
+## 清理不需要的用户和组
 编辑以下文件：
 - /etc/passwd
 - /etc/group
@@ -137,7 +137,7 @@ cat /etc/passwd | grep nologin
 sudo systemd-sysusers
 ```
 
-### 参考资料
+## 参考资料
 - [Arch File-Hierarchy][4]
 - [Pacman Tips_and_tricks][5]
 - [Users_and_groups][6]

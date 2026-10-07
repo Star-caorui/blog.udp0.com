@@ -9,17 +9,17 @@ list = 'never'
 render = 'always'
 +++
 
-# iNetech API
+## iNetech API
 
-## 前言
+### 前言
 
 您可以从这里查看 [iNetech 在线服务状态][1]。
 
-## 简介
+### 简介
 
 iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读并同意[《iNetech 服务协议》][2]后再使用本服务。如不同意，本站可能将无法对您提供服务。
 
-## 概览
+### 概览
 
 |               名称               |    状态    |
 | :------------------------------: | :--------: |
@@ -35,15 +35,15 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-## 调用
+### 调用
 
-### 基本调用信息
+#### 基本调用信息
 
 | 请求方式 |   协议   |      地址       |                  参数                  |
 | :------: | :------: | :-------------: | :------------------------------------: |
 | GET/POST | https:// | api.inetech.fun | /API名称?参数1=xxx&参数2=xxx&参数3=xxx |
 
-### 公共参数：全局通用参数
+#### 公共参数：全局通用参数
 
 |  名称   |                              值                              |                           备注                           |
 | :-----: | :----------------------------------------------------------: | :------------------------------------------------------: |
@@ -54,7 +54,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-#### 查询 IP
+##### 查询 IP
 
 调用方法 (命令行工具)：
 
@@ -73,7 +73,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-#### 剪切板
+##### 剪切板
 
 附加服务协议：
 
@@ -113,7 +113,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-#### 随机动漫图
+##### 随机动漫图
 
 调用方法：https://api.inetech.fun/acg?&orientation=horizontal&return=redirect
 
@@ -124,7 +124,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-#### Bing 每日壁纸
+##### Bing 每日壁纸
 
 调用方法：https://api.inetech.fun/bing
 
@@ -132,7 +132,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-#### MC 服务器基本信息
+##### MC 服务器基本信息
 
 调用方法：https://api.inetech.fun/mcping?type=je&address=a.nikiss.top&port=25565
 
@@ -144,7 +144,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-#### MC JE 服务器基本信息
+##### MC JE 服务器基本信息
 
 调用方法：https://api.inetech.fun/mcje?address=a.nikiss.top&port=25565
 
@@ -155,7 +155,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-#### MC BE 服务器基本信息
+##### MC BE 服务器基本信息
 
 调用方法：https://api.inetech.fun/mcbe?address=a.nikiss.top&port=19132
 

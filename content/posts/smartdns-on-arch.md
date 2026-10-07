@@ -6,7 +6,7 @@ lastmod = 2025-06-16T13:59:50+08:00
 slug = "smartdns-on-arch"
 +++
 
-### 前言
+## 前言
 我之前写过一篇 [在 Arch Linux 使用 DOH 来加密你的 DNS][1] 来解决 DNS 污染的问题，但这个方案还是有些问题。
 
 > [!NOTE] 背景说明
@@ -20,13 +20,13 @@ SmartDNS 就是用来解决上述问题的，有一套名叫 ChinaList 规则列
 > [!TIP] 补充说明
 > 理论上 SmartDNS 可以代替 `dns-over-https`，因为 SmartDNS 也支持 DOH 上游。
 
-### 阅读提醒
+## 阅读提醒
 > [!NOTE] 阅读提醒
 > - 本文基于 Arch Linux 编写，如果您使用其他发行版，部分操作可能不一致。
 > - 本文对其他同样使用 systemd 的发行版也可能有参考价值。
 > - 使用 SmartDNS 后，部分域名的解析速度仍可能下降，因为它们未必会命中 ChinaList。
 
-### 安装
+## 安装
 > [!TIP] 安装前
 > 你需要先启用 [archlinuxcn][2] 仓库。
 
@@ -36,8 +36,8 @@ pacman -S smartdns-china-list-git
 ```
 （其他非 Arch，及其衍生发行版的用户请自行使用您所使用的包管理器安装）
 
-### 配置
-#### 配置解析顺序
+## 配置
+### 配置解析顺序
 请使用任意编辑器修改 /etc/nsswitch.conf 文件。系统在解析未知的地址时会从左到右匹配。
 ```text
 ...
@@ -51,7 +51,7 @@ files 匹配 hosts 文件（/etc/hosts）
 resolve 匹配 systemd-resolve
 dns 匹配从 /etc/resolv.conf 进行的 dns 查询
 
-#### 配置 SmartDNS 客户端
+### 配置 SmartDNS 客户端
 请使用任意编辑器修改 /etc/smartdns/smartdns.conf 文件。
 ```text
 # bind 监听 指定 IP/端口 的 UDP 查询请求
@@ -131,7 +131,7 @@ server-https https://a.passcloud.xyz/sz
 address /localhost/[::1]
 ```
 
-### 配置系统 DNS
+## 配置系统 DNS
 请使用任意编辑器修改 /etc/resolv.conf 文件，并写入以下内容。
 ```text
 nameserver ::1
@@ -145,10 +145,10 @@ options edns0 single-request-reopen
 dns=none
 ```
 或者你也可以通过`chattr +i /etc/resolv.conf`来禁止修改 /etc/resolv.conf 文件。
-### 开始享用吧
+## 开始享用吧
 通过`systemctl enable --now smartdns.service`设置开机自启并立即启动。
 
-### 更多 DNS 推荐
+## 更多 DNS 推荐
  - https://blog.skk.moe/post/which-public-dns-to-use/
  - https://www.jianshu.com/p/d46d44169031
 

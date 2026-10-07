@@ -12,22 +12,22 @@ slug = "use-airplay-on-arch"
 <!--more-->
 
 
-### 方案
+## 方案
 - [通过蓝牙 推到 Arch Linux][1]：受蓝牙稳定性限制，此方案已被 PASS
 - [通过 Air Play 推到 Arch Linux][2]：需 iPhone 和 Arch 处于同一局域网
 
-### 所需软件
+## 所需软件
 软件包：shairport-sync
 ```bash
 sudo pacman -S shairport-sync
 ```
-### 配置方法
-#### 启动 avahi-daemon
+## 配置方法
+### 启动 avahi-daemon
 Shairport Sync 需要运行 avahi-daemon 后才能启动。你可以通过 systemd 来启动 avahi-daemon.service
 ```bash
 sudo systemctl enable --now avahi-daemon.service
 ```
-#### 配置 shairport-sync
+### 配置 shairport-sync
 shairport-sync 需要作为 user service 启动。如果通过 systemd service 启动则有可能遇到无声音的问题。
 ```bash
 cp /usr/lib/systemd/system/shairport-sync.service /etc/systemd/user/
@@ -48,7 +48,7 @@ sudoedit /etc/systemd/user/shairport-sync.service
 #Group=shairport-sync
 ...
 ```
-#### 启动 shairport-sync
+### 启动 shairport-sync
 ```bash
 sudo systemctl --user enable --now shairport-sync.service
 ```

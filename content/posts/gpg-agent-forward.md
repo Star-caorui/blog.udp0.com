@@ -12,13 +12,13 @@ slug = "gpg-agent-forward"
 <!--more-->
 
 
-### 介绍
+## 介绍
 来自官方 Wiki 的介绍：
 > GPG-Agent 是一个独立于任何协议来管理「密(私)钥」的守护进程。您可以将 Gnupg-Agent 转发到远程系统。这意味着您可以将「密(私)钥」保存在本地计算机上。（甚至是智能卡或 GNUK 上的硬件令牌）
 
 关于 GPG-Agent Forward, 也就是「GPG 代理转发」的教程在 Google 上有很多了，甚至也有中文的教程，但我在参照这些教程后无法正常使用。所以本文来介绍下会遇到哪些坑，以及如何解决。
 
-### 教程
+## 教程
 
 1. 首先，你需要在服务器上导入你的公钥，并给予「绝对信任」(ultimately trusted).
 
@@ -62,7 +62,7 @@ alias gpg='gpg --no-autostart'
 如果还是有问题，请在 ssh 命令末尾加一个 -v 参数来诊断问题，请一定一定要确保服务器的 gpg-agent 处于关闭状态！可通过 `killall gpg-agent` 干掉服务器上的 gpg-agent。
 
 
-### 参考
+## 参考
 
 [GPG Wiki (英文)][1]
 
