@@ -5,6 +5,7 @@
   {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
   <article id="comment-{{ $comment.id }}">
     <header>
+      <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
       <p>
         用户
         {{ if $comment.url }}
@@ -22,7 +23,6 @@
           {{ end }}
         {{ end }}
       </p>
-      <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
     </header>
     <div class="typo">
       {{ with $comment.html }}
