@@ -282,10 +282,6 @@ main {
     opacity: .6;
     font-size: .83rem;
 
-    p {
-      margin: 0;
-    }
-
     time {
       float: right;
     }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
+    <title>{{ if not .IsHome }}{{ cond (eq .Kind "404") "页面不存在" .Title }} · {{ end }}{{ site.Title }}</title>
     {{ with index (dict "home" site.Params.description "404" site.Params.description404) .Kind | default .Description }}
       <meta name="description" content="{{ . }}">
     {{ end }}
@@ -12,8 +12,9 @@
     {{ with $rss }}
       <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .RelPermalink }}">
     {{ end }}
-    {{ with site.Params.favicon }}
-      <link rel="icon" href="{{ . }}">
+    {{ with resources.Get "favicon.webp" }}
+      {{ $path := printf "favicon.%s.webp" (substr (sha256 .Content) 0 8) }}
+      <link rel="icon" href="{{ (resources.Copy $path .).RelPermalink }}">
     {{ end }}
     {{ with resources.Get "css/styles.css" | minify }}
       {{ $path := printf "css/styles.%s.css" (substr (sha256 .Content) 0 8) }}
@@ -36,15 +37,15 @@
     </main>
     <footer>
       {{ with $rss }}
-        <a href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">RSS</a><br>
+        <a href="{{ .RelPermalink }}" target="_blank">RSS</a><br>
       {{ end }}
       © 2020–{{ now.Year }} Betterr
       {{ with site.Params.records }}
         {{ with .icp }}
-          <br><a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">{{ . }}</a>
+          <br><a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow">{{ . }}</a>
         {{ end }}
         {{ with .police }}
-          <br><a href="https://beian.mps.gov.cn/#/query/webSearch?code={{ . }}" target="_blank" rel="nofollow noopener">{{ . }}</a>
+          <br><a href="https://beian.mps.gov.cn/#/query/webSearch?code={{ . }}" target="_blank" rel="nofollow">{{ . }}</a>
         {{ end }}
       {{ end }}
     </footer>

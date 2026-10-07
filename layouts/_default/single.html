@@ -2,23 +2,21 @@
   <article>
     <header>
       <time>{{ dateFormat "2006-01-02" .date }}</time>
-      <p>
-        用户
-        {{ with .url }}
-          <a href="{{ . }}" rel="nofollow noopener" target="_blank"><strong>{{ $.author }}</strong></a>
+      用户
+      {{ with .url }}
+        <a href="{{ . }}" rel="nofollow" target="_blank"><strong>{{ $.author }}</strong></a>
+      {{ else }}
+        <strong>{{ .author }}</strong>
+      {{ end }}
+      {{ with .parent }}
+        {{ if eq .author $.author }}
+          追评：
         {{ else }}
-          <strong>{{ .author }}</strong>
+          回复 <strong>{{ .author }}</strong> 说：
         {{ end }}
-        {{ with .parent }}
-          {{ if eq .author $.author }}
-            追评：
-          {{ else }}
-            回复 <strong>{{ .author }}</strong> 说：
-          {{ end }}
-        {{ else }}
-          说：
-        {{ end }}
-      </p>
+      {{ else }}
+        说：
+      {{ end }}
     </header>
     <div class="typo">
       {{ .text | .page.RenderString (dict "display" "block") }}
