@@ -26,8 +26,8 @@ slug = "gpg-agent-forward"
 
 ```sshconfig
 # 注：请自行了解更多 ssh config 的使用方法，直接复制进去（全局生效）可能会引起安全隐患！
-# 你也可能需要把 StreamLocalBindUnlink yes 添加到服务器的 /etc/ssh/sshd_config
-StreamLocalBindUnlink yes
+# 还需要在服务器的 /etc/ssh/sshd_config 里加上 StreamLocalBindUnlink yes，
+# 否则重连时残留的旧 Socket 文件会让转发失败。这个选项写在本机的配置里对远程转发不起作用。
 RemoteForward <socket_on_remote_box>  <extra_socket_on_local_box>
 # 下行是我实际使用的配置，仅供参考。
 RemoteForward /run/user/0/gnupg/d.zieiwd481e4xq6m8jbzj83fg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
@@ -38,16 +38,16 @@ RemoteForward /run/user/0/gnupg/d.zieiwd481e4xq6m8jbzj83fg/S.gpg-agent /run/user
 
 坑：官方 Wiki 里是这样说的：
 
-> 对于非常老的 GnuPG 版本(< 2.1.17) ，您需要编辑 gpg-agent. conf 来配置一个额外的套接字。
+> 对于非常老的 GnuPG 版本(< 2.1.17) ，您需要编辑 gpg-agent.conf 来配置一个额外的套接字。
 
-但在我的实际测试里，哪怕你版本比这高，你也必须要通过在 `gpg-agent.conf` 文件内手动指定路径，然后使用这个路径。（这个路径你可以随便写，只要你的用户有权限即可。）
+但在我的实际测试里，哪怕你版本比这高，你也必须要在本机的 `gpg-agent.conf` 文件内手动指定路径，然后使用这个路径。（这个路径你可以随便写，只要你的用户有权限即可。）
 
-`extra-socket /run/user/0/gnupg/S.gpg-agent.extra`
+`extra-socket /run/user/1000/gnupg/S.gpg-agent.extra`
 
 3. 防止服务器上的 GPG-Agent 删除转发的 Socket 并设置自己的 Socket
 
 官方 Wiki 里是这样说的：
-> 如果 GPG-Agent 未运行，远程 GPG 将尝试启动它。远程 GPG-Agent 将删除转发的 Socket 并设置自己的 Socket。为了避免这种情况，可以传递 --no autostart 到远程的 GPG 命令。
+> 如果 GPG-Agent 未运行，远程 GPG 将尝试启动它。远程 GPG-Agent 将删除转发的 Socket 并设置自己的 Socket。为了避免这种情况，可以传递 --no-autostart 到远程的 GPG 命令。
 
 可以在服务器上设置以下 alias 来持久化这个参数。（添加到你 shell 的 rc 文件里）
 

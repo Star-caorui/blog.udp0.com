@@ -1,5 +1,5 @@
 +++
-title = "记一次安装 ESXI 7 遇到的坑"
+title = "记一次安装 ESXi 7 遇到的坑"
 description = "记录安装 ESXi 7 时因主板不支持 NVMe 引导而踩过的坑与替代方案。"
 date = 2022-07-02T16:38:00+08:00
 lastmod = 2022-07-02T16:47:29+08:00
@@ -8,11 +8,11 @@ slug = "esxi7-pit"
 
 ## 无法使用 `M.2 NVMe SSD` 作为系统盘
 
-遇到这个问题是因为主板的 UEFI/BIOS 不支持 NVMe, 没有驱动导致的。
+这是因为主板的 UEFI/BIOS 里没有 NVMe 驱动，无法从 NVMe 盘启动。
 
 解决方法：
 
-- 更新最新固件：在新版 BIOS 可能会添加 NVMe 驱动，提供支持。
+- 更新到最新固件：在新版 BIOS 可能会添加 NVMe 驱动，提供支持。
 - 自行将 NVMe 驱动注入到固件[^nvme-bios]
 - 从其他可引导设备启动，载入 NVMe 驱动，引导进入。
 
@@ -30,7 +30,7 @@ slug = "esxi7-pit"
 
 - CDROM 光盘：**已放弃**，我的设备上没有光驱，而且我也没有可写光盘。
 
-- USB 存储设备：我随便整了个 U盘来存放 Clover （一个引导程序，用于加载 NVMe 驱动并引导至 NVME 盘内的系统。）
+- USB 存储设备：我随便整了个 U盘来存放 Clover （一个引导程序，用于加载 NVMe 驱动并引导至 NVMe 盘内的系统。）
 
 Clover 配置教程：请参阅 [Arch Wiki](https://wiki.archlinux.org/title/Clover) 来安装 Clover，并参阅我下面的配置文件来定制您的 Clover。
 
@@ -86,12 +86,12 @@ Clover 配置教程：请参阅 [Arch Wiki](https://wiki.archlinux.org/title/Clo
 
 ```
 
-## ESXI 7.0 的 VMFSL 吃掉了 120 GiB！
+## ESXi 7.0 的 VMFSL 吃掉了 120 GiB！
 
-这个分区是 ESXI 的「系统存储分区」，默认消耗 138GB。但默认占用似乎对我这种家用级用户来说过大了，所以我们要限制一下。
+这个分区属于 ESXi 的「系统存储」。系统存储默认一共占用 138 GB，其中绝大部分（约 120 GiB）就是这个 VMFSL 分区。但默认占用似乎对我这种家用级用户来说过大了，所以我们要限制一下。
 
 > [!WARNING] 注意事项
-> - 这个分区只能在 ESXI 安装过程中被限制。如果你已经安装好，请在**备份数据**后再尝试重装。
+> - 这个分区只能在 ESXi 安装过程中被限制。如果你已经安装好，请在**备份数据**后再尝试重装。
 > - `autoPartitionOSDataSize` 参数**不被推荐使用**，未来可能带来**未知**问题。
 
 方法：在 ESXi 7.0 安装过程中，你可以通过 systemMediaSize/autoPartitionOSDataSize 参数来限制「系统存储分区」的空间占用。
@@ -106,24 +106,24 @@ systemMediaSize 的可选参数：
 
 - 使用安装介质启动主机，当 ESXi 安装程序窗口出现时，在 5 秒内按 **`Shift+O`** 以编辑引导选项。
 
-例如，添加以下提示：
+例如，添加以下参数：
 
-systemMediaSize=min
+`systemMediaSize=min`
 
 举例 2：**修改 boot.cfg 以具有引导选项：**
 
 编辑安装介质中的 boot.cfg 文件并将引导选项添加到 kernelopt 行。
 
-例如， kernelopt=runweasel systemMediaSize=min
+例如：`kernelopt=runweasel systemMediaSize=min`
 
-如果您认为我写的很乱，可以直接看 VMWare 官方文章（英文）：[用于配置 ESXi 系统分区大小的引导选项](https://kb.vmware.com/s/article/81166)
+如果您认为我写的很乱，可以直接看 VMware 官方文章（英文）：[用于配置 ESXi 系统分区大小的引导选项](https://kb.vmware.com/s/article/81166)
 
 ## 无法直通硬件
 
 可能的原因：
 
-- CPU 不支持虚拟化直通：无解，换 CPU 可解
+- CPU 不支持虚拟化直通：只能换 CPU
 - 主板 不支持/未启用虚拟化直通：如果不支持也是无解，如果支持请启用。
-- 其他原因：我主板不支持 vt-d，我暂时遇不到后面的坑了。
+- 其他原因：我主板不支持 VT-d，我暂时遇不到后面的坑了。
 
 更多可以参考：https://www.jianshu.com/p/acbc255bcebb

@@ -21,7 +21,7 @@ render = 'always'
 - 安全启动
 - 全盘加密
 - TPM 自动解密硬盘
-- Gnome 桌面环境
+- GNOME 桌面环境
 - Fcitx5 拼音输入法
 - Fcitx5 输入法皮肤
 ### 高级系统配置：
@@ -41,10 +41,10 @@ render = 'always'
 > 这里的部分更新方式并不算最佳实践，请自行判断是否接受。
 
 ```bash
-echo "Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch" > /etc/pacman.d/mirrorlist
+echo 'Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist
 pacman -Syy archlinux-keyring
 ```
-然后，使用任意分区编辑工具划分分区。例如 `fdisk` `gdisk` `parted` `cfdisk`(简单) 一个 260M (理论来说最低要求是可以存放一个内核映像，最高建议不超过 4 GiB。因为fat32最大支持单文件 4 GiB) 的 EFI 分区。以及剩余空间我推荐分成一个分区。你也可以按照自己的想法划分分区。
+然后，使用任意分区编辑工具划分分区。例如 `fdisk` `gdisk` `parted` `cfdisk`(简单) 一个 260M 的 EFI 分区（最小只要放得下内核映像就行；另外要注意 FAT32 的单个文件不能超过 4 GiB）。以及剩余空间我推荐分成一个分区。你也可以按照自己的想法划分分区。
 
 接下来使用 cryptsetup 来加密非 EFI 分区。
 ```bash
@@ -53,6 +53,9 @@ cryptsetup -s 512 luksFormat /dev/sdXn
 解密硬盘，并挂载硬盘开始安装。
 ```bash
 cryptsetup open /dev/sdXn XXX
+# 先在两个分区上创建文件系统再挂载，例如：
+# mkfs.ext4 /dev/mapper/XXX
+# mkfs.fat -F 32 /dev/sdXn
 mount /dev/mapper/XXX /mnt
 mkdir /mnt/efi
 mount /dev/sdXn /mnt/efi

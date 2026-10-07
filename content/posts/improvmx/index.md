@@ -12,35 +12,35 @@ ImprovMX 是一款像 Cloudflare 邮件转发的服务。ImprovMX 仅需添加 M
 ## Cloudflare 邮件转发的问题
 如果要用 Cloudflare 邮件转发的话你需要把 NS 托管给 Cloudflare。
 这导致以下几个问题：
-- Cloudflare 不支持 GeoDNS 解析（分区解析）
+- Cloudflare 免费版不支持 GeoDNS 解析（分区解析）
 - NS 在 Cloudflare 的话会导致部分 Cloudflare 服务无法自选（优选） IP。
-例如 Cloudflare Page
+例如 Cloudflare Pages
 
 ## 教程：
 首先前往 [ImprovMX 官网][1] 然后点击下面的蓝色小字：New here? Create an account
-![image.png][2]
+![ImprovMX 的注册入口][2]
 输入你要转发的域名，以及转发到哪个邮箱进行收信。并点击右面的：Create a free alias
-![image.png][3]
+![创建免费的转发别名][3]
 填写一些信息，最下面有跳过。反正都不是啥重要信息我就随便填一填了。
-![image.png][4]
+![填写账号信息][4]
 点击屏幕中间，你的域名下面的红色字体：Email forwarding needs setup
-![image.png][5]
-前往你的 NS 服务商（我用 DNSPOD 做演示）准备添加三条记录。两条 MX 解析，一条 SPF 解析。可能你的 NS 服务商没有 SPF 类型，没关系，选择 TXT 类型也可以。
-![image.png][6]
-![image.png][7]
+![进入转发设置][5]
+前往你的 DNS 服务商（我用 DNSPod 做演示）准备添加三条记录。两条 MX 解析，一条 SPF 解析。SPF 解析用 TXT 类型添加即可：单独的 SPF 记录类型早已废弃，现在以 TXT 为准。
+![ImprovMX 要求添加的 DNS 记录][6]
+![在 DNSPod 添加记录][7]
 然后收信转发就配置好了～
-![image.png][8]
+![转发已经生效][8]
 
 ## 使用 Outlook 别名进行发信
 > [!WARNING] 注意事项
 > 此功能可能需要修改你的微软账号主要邮箱。
 
 访问 [管理你登录 Microsoft 的方式][9] 添加你要发信的电子邮箱
-![image.png][10]
+![在微软账号里添加别名][10]
 到你的邮箱里找到验证邮件，通过一下验证。
-![image.png][11]
+![验证别名邮箱][11]
 配置 SPF 让你的邮件变得可信。不然就进垃圾桶了（x
-修改前面添加的 SPF 记录。修补添加 `include:spf.protection.outlook.com` 字段以验证 outlook 发信。
+修改前面添加的 SPF 记录。在里面加上 `include:spf.protection.outlook.com` 字段，以验证 Outlook 发信。
 以下是一份配置示例：
   ```
   原先的 SPF 记录：v=spf1 include:spf.improvmx.com ~all
@@ -51,7 +51,7 @@ ImprovMX 是一款像 Cloudflare 邮件转发的服务。ImprovMX 仅需添加 M
 > [!TIP] 补充说明
 > Outlook 可以自定义发件地址，不过需要先完成验证；前面添加别名时已经做过这一步了。
 
-![image.png][13]
+![用自定义地址发信][13]
 
 
 [1]: https://app.improvmx.com
