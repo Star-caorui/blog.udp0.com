@@ -6,9 +6,9 @@
 
 站点怎么配、页面怎么渲染，以代码为准，这里不复述。想知道具体行为，从这几处看起：
 
-- 提示块的写法和输出：`layouts/_default/_markup/render-blockquote.html`。
-- 图片怎么处理：`layouts/_default/_markup/render-image.html`。
-- 历史评论的字段和展示：`data/comments.json` 和 `layouts/_default/single.html`。
+- 提示块的写法和输出：`layouts/_markup/render-blockquote.html`。
+- 图片怎么处理：`layouts/_markup/render-image.html`。
+- 历史评论的字段和展示：`data/comments.json` 和 `layouts/all.html`。
 - 各种 Markdown 元素渲染出来的样子：隐藏的测试页 `content/posts/markdown-syntax-test.md`，线上地址是 `/posts/markdown-syntax-test/`。
 
 ## 线上构建
@@ -16,12 +16,12 @@
 - 同一个仓库部署在两处：EdgeOne Pages 和 Cloudflare Pages（`blog-udp0-com.pages.dev`）。推送到 `main` 后两边都会自动重新构建。
 - 两边的 Hugo 版本都不在仓库里，是在各自控制台用环境变量 `HUGO_VERSION` 指定的，改了之后要等下一次部署才生效。没设时 EdgeOne 用预装的 0.147.5，Cloudflare 用构建镜像自带的 0.147.7。
 - 本机的 Hugo 和线上不一定是同一个版本。升级本机或改了控制台里的版本后，推送完要看一眼线上实际产出的页面。
-- 模板里用的是 `site.Data`，新版 Hugo 构建时会有一条弃用警告。它是线上还在 0.147 时留下的；换成 `hugo.Data` 需要两边都不低于 0.156。
+- 模板用了 `all.html`（0.146 起才有）和 `hugo.Data`（0.156 起才有），所以两边的 `HUGO_VERSION` 都不能低于 0.156。把这个变量删掉的话，平台会退回自带的 0.147，构建会失败。
 - `static/_headers` 只对 Cloudflare Pages 生效，给文件名带哈希的文件设一年缓存。EdgeOne 对这类文件自动这样做，不用配置；它会把 `_headers` 当成普通文件发布出去。
 
 ## 样式表的压缩
 
-`assets/css/styles.css` 不经过 Hugo 的压缩器，由 `layouts/_default/baseof.html` 里的几条正则去掉空白。线上的旧压缩器不认识 CSS 嵌套，交给它基本是原样输出；自己压之后，本机和线上的 CSS 逐字节相同。
+`assets/css/styles.css` 不经过 Hugo 的压缩器，由 `layouts/baseof.html` 里的几条正则去掉空白。这样产出不受 Hugo 版本影响：0.157 之前的压缩器不认识 CSS 嵌套，之后的版本遇到以 `:` 开头的嵌套规则也会放弃压缩它后面的内容。
 
 正则只认识空白和标点，所以：
 
@@ -37,7 +37,3 @@
 ## 历史评论
 
 站点没有在线评论功能。`data/comments.json` 是从 Typecho 迁移来的旧评论，只读展示。
-
-## 还没验证的事
-
-- 老版本 Hugo 构建出的 RSS 里，留言页那条摘要少一个结尾的 `</blockquote>`，本机构建没有这个问题。推测是老版本截摘要的位置不同，没有证实。
