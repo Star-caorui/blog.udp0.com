@@ -1,36 +1,32 @@
-{{ define "comments.item" }}
-  {{ $comment := .comment }}
-  {{ $comments := .comments }}
-  <article id="comment-{{ $comment.id }}">
+{{ define "comment" }}
+  <article>
     <header>
-      <time>{{ dateFormat "2006-01-02" $comment.date }}</time>
+      <time>{{ dateFormat "2006-01-02" .date }}</time>
       <p>
         用户
-        {{ with $comment.url }}
-          <a href="{{ . }}" rel="nofollow noopener" target="_blank"><strong>{{ $comment.author }}</strong></a>
+        {{ with .url }}
+          <a href="{{ . }}" rel="nofollow noopener" target="_blank"><strong>{{ $.author }}</strong></a>
         {{ else }}
-          <strong>{{ $comment.author }}</strong>
+          <strong>{{ .author }}</strong>
         {{ end }}
-        {{ if and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
-          追评：
-        {{ else if $comment.reply_to }}
-          回复 <a href="#comment-{{ $comment.parent }}"><strong>{{ $comment.reply_to }}</strong></a> 说：
+        {{ with .parent }}
+          {{ if eq .author $.author }}
+            追评：
+          {{ else }}
+            回复 <strong>{{ .author }}</strong> 说：
+          {{ end }}
         {{ else }}
           说：
         {{ end }}
       </p>
     </header>
     <div class="typo">
-      {{ with $comment.html }}
-        {{ . | safeHTML }}
-      {{ else }}
-        <p>{{ $comment.text }}</p>
-      {{ end }}
+      {{ .text | .page.RenderString (dict "display" "block") }}
     </div>
-    {{ with sort (where $comments "parent" $comment.id) "date" }}
+    {{ with .replies }}
       <section>
-        {{ range . }}
-          {{ template "comments.item" (dict "comment" . "comments" $comments) }}
+        {{ range sort . "date" }}
+          {{ template "comment" (merge . (dict "parent" $ "page" $.page)) }}
         {{ end }}
       </section>
     {{ end }}
@@ -56,11 +52,11 @@
   </article>
 
   {{ $slug := .Params.slug | default .File.ContentBaseName }}
-  {{ with $comments := index (site.Data.comments | default dict) $slug }}
+  {{ with index (site.Data.comments | default dict) $slug }}
     <section class="comments">
       <h2>历史评论</h2>
-      {{ range sort (where . "parent" 0) "date" "desc" }}
-        {{ template "comments.item" (dict "comment" . "comments" $comments) }}
+      {{ range sort . "date" "desc" }}
+        {{ template "comment" (merge . (dict "page" $)) }}
       {{ end }}
     </section>
   {{ end }}

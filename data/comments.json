@@ -1,192 +1,139 @@
 {
   "hello-typecho": [
     {
-      "id": 1,
       "date": "2020-04-11T18:07:58+08:00",
       "author": "Typecho",
       "url": "http://typecho.org",
-      "text": "欢迎加入 Typecho 大家族",
-      "parent": 0,
-      "reply_to": ""
+      "text": "欢迎加入 Typecho 大家族"
     }
   ],
   "about": [
     {
-      "id": 8,
       "date": "2025-05-04T19:51:22+08:00",
       "author": "Pinpe",
       "url": "https://pinpe.top",
-      "text": "嗯？同样是大专生，同样是网络技术专业，太巧了🤔",
-      "parent": 0,
-      "reply_to": ""
+      "text": "嗯？同样是大专生，同样是网络技术专业，太巧了🤔"
     }
   ],
   "messages": [
     {
-      "id": 2,
       "date": "2020-10-08T20:34:48+08:00",
       "author": "蓝鲸落",
       "url": "https://blog.whalefall.online",
-      "text": "咕咕咕",
-      "parent": 0,
-      "reply_to": ""
+      "text": "咕咕咕"
     },
     {
-      "id": 3,
       "date": "2021-01-11T23:43:40+08:00",
       "author": "Gaein nidb",
       "url": "https://blog.gaein.cn",
       "text": "未满18周岁不能备案嘛？我记得是16来着，但是河北管局不会看，我15岁那年备案就下来了（逃）",
-      "parent": 0,
-      "reply_to": ""
+      "replies": [
+        {
+          "date": "2021-01-18T16:39:27+08:00",
+          "author": "Star_caorui",
+          "url": "/",
+          "text": "内蒙管局限制满18...我明年就能去备案了（开心）",
+          "replies": [
+            {
+              "date": "2021-01-20T23:11:48+08:00",
+              "author": "Gaein nidb",
+              "url": "https://blog.gaein.cn",
+              "text": "阿巴阿巴在河北规定16的情况下我15岁备案过了（",
+              "replies": [
+                {
+                  "date": "2021-01-20T23:15:23+08:00",
+                  "author": "Star_caorui",
+                  "url": "/",
+                  "text": "酸了，呜呜"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": 4,
       "date": "2021-01-16T12:49:18+08:00",
       "author": "small_xu038",
-      "url": "",
-      "text": "留下脚印 (滑稽)",
-      "parent": 0,
-      "reply_to": ""
+      "text": "留下脚印 (滑稽)"
     },
     {
-      "id": 5,
-      "date": "2021-01-18T16:39:27+08:00",
-      "author": "Star_caorui",
-      "url": "/",
-      "text": "内蒙管局限制满18...我明年就能去备案了（开心）",
-      "parent": 3,
-      "reply_to": "Gaein nidb"
-    },
-    {
-      "id": 6,
-      "date": "2021-01-20T23:11:48+08:00",
-      "author": "Gaein nidb",
-      "url": "https://blog.gaein.cn",
-      "text": "阿巴阿巴在河北规定16的情况下我15岁备案过了（",
-      "parent": 5,
-      "reply_to": "Star_caorui"
-    },
-    {
-      "id": 7,
-      "date": "2021-01-20T23:15:23+08:00",
-      "author": "Star_caorui",
-      "url": "/",
-      "text": "酸了，呜呜",
-      "parent": 6,
-      "reply_to": "Gaein nidb"
-    },
-    {
-      "id": 9,
       "date": "2026-04-04T21:09:56+08:00",
       "author": "zhizhizhiwang",
-      "url": "",
-      "text": "继承了你在aur上提交的两个mcsm包 |´・ω・) ノ",
-      "parent": 0,
-      "reply_to": ""
+      "text": "继承了你在aur上提交的两个mcsm包 |´・ω・) ノ"
     }
   ],
   "how-to-secure-boot-arch": [
     {
-      "id": 10,
       "date": "2021-10-17T22:29:54+08:00",
       "author": "竹林里有冰",
       "url": "https://blog.zhullyb.top",
       "text": "失踪了大半年总算想起来更博了",
-      "parent": 0,
-      "reply_to": ""
+      "replies": [
+        {
+          "date": "2021-10-17T22:33:07+08:00",
+          "author": "Star_caorui",
+          "url": "/",
+          "text": "失踪人口回归计划.jpg"
+        }
+      ]
     },
     {
-      "id": 11,
-      "date": "2021-10-17T22:33:07+08:00",
-      "author": "Star_caorui",
-      "url": "/",
-      "text": "失踪人口回归计划.jpg",
-      "parent": 10,
-      "reply_to": "竹林里有冰"
-    },
-    {
-      "id": 12,
       "date": "2022-01-30T12:02:16+08:00",
       "author": "Micraow",
-      "url": "",
-      "html": "<p>用grub引导的机子，要用以下命令重新安装grub</p><p>/usr/share/grub/sbat.csv在启用模块的情况下重新安装 GRUB TPM并签名：</p><pre><code>grub-install --target=x86_64-efi --efi-directory=esp --modules=\"tpm\" --sbat /usr/share/grub/sbat.csv\nsbsign --key MOK.key --cert MOK.crt --output esp/EFI/GRUB/grubx64.efi esp/EFI/GRUB/grubx64.efi\ncp esp/GRUB/grubx64.efi esp/boot/grubx64.efi</code></pre><p>esp是引导器分区，通常是/boot</p>",
       "text": "用grub引导的机子，要用以下命令重新安装grub\n\n/usr/share/grub/sbat.csv在启用模块的情况下重新安装 GRUB TPM并签名：\n\n```bash\ngrub-install --target=x86_64-efi --efi-directory=esp --modules=\"tpm\" --sbat /usr/share/grub/sbat.csv\nsbsign --key MOK.key --cert MOK.crt --output esp/EFI/GRUB/grubx64.efi esp/EFI/GRUB/grubx64.efi\ncp esp/GRUB/grubx64.efi esp/boot/grubx64.efi\n```\n\nesp是引导器分区，通常是/boot",
-      "parent": 0,
-      "reply_to": ""
-    },
-    {
-      "id": 13,
-      "date": "2022-01-30T12:02:47+08:00",
-      "author": "Micraow",
-      "url": "",
-      "html": "<p>参考archwiki：</p><p><a href=\"https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot\">https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot</a></p>",
-      "text": "参考archwiki:\n\nhttps://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot",
-      "parent": 12,
-      "reply_to": "Micraow"
+      "replies": [
+        {
+          "date": "2022-01-30T12:02:47+08:00",
+          "author": "Micraow",
+          "text": "参考archwiki：\n\nhttps://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot"
+        }
+      ]
     }
   ],
   "self-criticism-about-nixos": [
     {
-      "id": 14,
       "date": "2022-01-19T16:20:27+08:00",
       "author": "竹林里有冰",
       "url": "https://blog.zhullyb.top/",
-      "html": "<p><img src=\"https://s2.loli.net/2022/01/19/dubIBz7jLPQi8Wy.png\" alt=\"评论配图\" loading=\"lazy\" decoding=\"async\"></p>",
-      "text": "![](https://s2.loli.net/2022/01/19/dubIBz7jLPQi8Wy.png)",
-      "parent": 0,
-      "reply_to": ""
-    },
-    {
-      "id": 15,
-      "date": "2022-08-22T18:30:21+08:00",
-      "author": "puzzle9",
-      "url": "https://puzzle9.github.io/",
-      "text": "啊 这",
-      "parent": 14,
-      "reply_to": "竹林里有冰"
+      "text": "![评论配图](https://s2.loli.net/2022/01/19/dubIBz7jLPQi8Wy.png)",
+      "replies": [
+        {
+          "date": "2022-08-22T18:30:21+08:00",
+          "author": "puzzle9",
+          "url": "https://puzzle9.github.io/",
+          "text": "啊 这"
+        }
+      ]
     }
   ],
   "api": [
     {
-      "id": 16,
       "date": "2022-02-09T06:04:49+08:00",
       "author": "すメン澄みわたる朝色",
       "url": "http://blog.zhaose.cyou",
-      "text": "好耶，很有用的api们",
-      "parent": 0,
-      "reply_to": ""
+      "text": "好耶，很有用的api们"
     },
     {
-      "id": 17,
       "date": "2022-04-01T00:55:58+08:00",
       "author": "potuo",
-      "url": "",
-      "text": "好耶",
-      "parent": 0,
-      "reply_to": ""
+      "text": "好耶"
     }
   ],
   "gpg-agent-forward": [
     {
-      "id": 18,
       "date": "2022-02-10T02:23:59+08:00",
       "author": "竹林里有冰",
       "url": "https://blog.zhullyb.top/",
-      "text": "整挺好",
-      "parent": 0,
-      "reply_to": ""
+      "text": "整挺好"
     }
   ],
   "clean-arch": [
     {
-      "id": 19,
       "date": "2025-05-01T02:05:49+08:00",
       "author": "puzzle9",
       "url": "https://puzzle9.github.io/",
-      "text": "学到了",
-      "parent": 0,
-      "reply_to": ""
+      "text": "学到了"
     }
   ]
 }
