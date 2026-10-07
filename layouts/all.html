@@ -1,0 +1,75 @@
+{{ define "comment" }}
+  <article>
+    <header>
+      <time>{{ dateFormat "2006-01-02" .date }}</time>
+      用户
+      {{ with .url }}
+        <a href="{{ . }}" rel="nofollow" target="_blank"><b>{{ $.author }}</b></a>
+      {{ else }}
+        <b>{{ .author }}</b>
+      {{ end }}
+      {{ with .parent }}
+        {{ if eq .author $.author }}
+          追评：
+        {{ else }}
+          回复 <b>{{ .author }}</b> 说：
+        {{ end }}
+      {{ else }}
+        说：
+      {{ end }}
+    </header>
+    <div class="typo">
+      {{ .text | .page.RenderString (dict "display" "block") }}
+    </div>
+    {{ with .replies }}
+      {{ range sort . "date" }}
+        {{ template "comment" (merge . (dict "parent" $ "page" $.page)) }}
+      {{ end }}
+    {{ end }}
+  </article>
+{{ end }}
+
+{{ define "main" }}
+  {{ if .IsHome }}
+    <header>
+      <p>PAGE</p>
+      <h1>Posts</h1>
+    </header>
+
+    <ul>
+      {{ range (where site.RegularPages "Section" "posts").ByDate.Reverse }}
+        <li>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <time>{{ .Date.Format "2006-01-02" }}</time>
+        </li>
+      {{ end }}
+    </ul>
+  {{ else }}
+    <article>
+      <header>
+        <p>{{ .Section | default "page" | upper }}</p>
+        <h1>{{ .Title }}</h1>
+        <div>
+          <time>{{ .Date.Format "2006-01-02" }}</time>
+          {{ with .ReadingTime }}
+            <span>{{ . }} min read</span>
+          {{ end }}
+        </div>
+      </header>
+
+      <div class="typo">
+        {{ .Content }}
+      </div>
+
+      {{ $slug := .Params.slug | default .File.ContentBaseName }}
+      {{ with index (hugo.Data.comments | default dict) $slug }}
+        <section class="comments">
+          <h2>历史评论</h2>
+          {{ range sort . "date" "desc" }}
+            {{ template "comment" (merge . (dict "page" $)) }}
+          {{ end }}
+        </section>
+      {{ end }}
+    </article>
+  {{ end }}
+{{ end }}
