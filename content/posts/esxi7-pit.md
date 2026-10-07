@@ -32,7 +32,7 @@ slug = "esxi7-pit"
 
 - USB 存储设备：我随便整了个 U盘来存放 Clover （一个引导程序，用于加载 NVMe 驱动并引导至 NVMe 盘内的系统。）
 
-Clover 配置教程：请参阅 [Arch Wiki](https://wiki.archlinux.org/title/Clover) 来安装 Clover，并参阅我下面的配置文件来定制您的 Clover。
+Clover 配置教程：请参阅 [Arch Wiki](https://wiki.archlinux.org/title/Clover) 来安装 Clover，并参阅我下面的配置文件来定制你的 Clover。
 
 **`config.plist`**
 
@@ -116,7 +116,7 @@ systemMediaSize 的可选参数：
 
 例如：`kernelopt=runweasel systemMediaSize=min`
 
-如果您认为我写的很乱，可以直接看 VMware 官方文章（英文）：[用于配置 ESXi 系统分区大小的引导选项](https://kb.vmware.com/s/article/81166)
+如果你认为我写的很乱，可以直接看 VMware 官方文章（英文）：[用于配置 ESXi 系统分区大小的引导选项](https://kb.vmware.com/s/article/81166)
 
 ## 无法直通硬件
 

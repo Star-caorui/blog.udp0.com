@@ -6,6 +6,9 @@ lastmod = 2024-12-29T09:49:57+08:00
 slug = "get-qcloud-secret"
 +++
 
+> [!WARNING] 过期提醒
+> 腾讯云后来已经支持 Google Authenticator 等第三方验证器，不需要再像本文这样抓包了。本文留作当年折腾的记录。
+
 *通过抓包获取腾讯云 MFA 的密钥。*
 
 

@@ -22,7 +22,7 @@ SmartDNS 就是用来解决上述问题的，它可以搭配一套名叫 ChinaLi
 
 ## 阅读提醒
 > [!NOTE] 阅读提醒
-> - 本文基于 Arch Linux 编写，如果您使用其他发行版，部分操作可能不一致。
+> - 本文基于 Arch Linux 编写，如果你使用其他发行版，部分操作可能不一致。
 > - 本文对其他同样使用 systemd 的发行版也可能有参考价值。
 > - 使用 SmartDNS 后，部分域名的解析速度仍可能下降，因为它们未必会命中 ChinaList。
 
@@ -34,7 +34,7 @@ SmartDNS 就是用来解决上述问题的，它可以搭配一套名叫 ChinaLi
 pacman -S smartdns
 pacman -S smartdns-china-list-git
 ```
-（其他非 Arch，及其衍生发行版的用户请自行使用您所使用的包管理器安装）
+（其他非 Arch，及其衍生发行版的用户请自行使用你所使用的包管理器安装）
 
 ## 配置
 ### 配置解析顺序

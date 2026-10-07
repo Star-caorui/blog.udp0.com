@@ -4,6 +4,9 @@ description = "汇总一份 Windows 常用软件清单，并附上简短使用�
 date = 2022-01-20T16:44:00+08:00
 lastmod = 2022-06-16T01:04:16+08:00
 slug = "windows-common-software-recommendations"
+[build]
+list = 'never'
+render = 'always'
 +++
 
 > [!WARNING] 过期提醒
@@ -15,11 +18,11 @@ slug = "windows-common-software-recommendations"
 ## 常用软件推荐
 ### 安全
 - [火绒 (官方)](https://www.huorong.cn/)
-- [腾讯电脑管家 (官方)](https://guanjia.qq.com/)：腾讯系软件不推荐使用。
-- [360安全卫士 (官方)](http://weishi.360.cn/)：有广告，且360是做流氓软件起家的（早期3721）
+- [腾讯电脑管家 (官方)](https://guanjia.qq.com/)：不推荐使用。
+- [360安全卫士 (官方)](http://weishi.360.cn/)：有广告，且其创始人早年做过被很多人称为流氓软件的 3721。
 
 ### 办公
-- [Microsoft  Office 365][1]
+- [Office Tool Plus][1]：用来下载和部署 Microsoft Office 的第三方工具。
 - [WPS Office (官方)](https://www.wps.cn/)：不推荐，弹广告。
 
 ### 效率工具
@@ -28,8 +31,8 @@ slug = "windows-common-software-recommendations"
 
 ### 聊天
 - [QQ (官方)](https://im.qq.com/pcqq/)：原版QQ：其实用商店版也不是不可以。
-- [Tim (官方)](https://tim.qq.com/download.html)：办公用：多了一些实用的办公工具。
-- [微信 (官方)](https://pc.weixin.qq.com/)：官网版功能比商店版多的多。。
+- [TIM (官方)](https://tim.qq.com/download.html)：办公用：多了一些实用的办公工具。
+- [微信 (官方)](https://pc.weixin.qq.com/)：官网版功能比商店版多的多。
 - [钉钉 (官方)](https://page.dingtalk.com/wow/z/dingtalk/default/dddownload-index)
 
 ### 网页浏览器
@@ -41,7 +44,7 @@ slug = "windows-common-software-recommendations"
 
 ### 文本编辑器/代码编辑器
 - [Notepad++  (官网)](https://notepad-plus-plus.org/downloads/)：该程序开发者有反华倾向
-- [Dev C++ (官网)](https://devcpp.gitee.io/)
+- [小熊猫 Dev-C++ (GitHub)](https://github.com/royqh1979/Dev-Cpp)：Dev-C++ 的一个分支版本。
 - [Visual Studio Code (官网)](https://code.visualstudio.com/Download)：宇宙第一编辑器！
 
 ### 云音乐
@@ -50,8 +53,8 @@ slug = "windows-common-software-recommendations"
 - [酷狗音乐 (官方)](http://download.kugou.com/)
 
 ### 视频播放器
-- [PopPlayer (官方)](https://daumpotplayer.com/download/)
-- [QQ 影音 (官方)](https://player.qq.com/)
+- [PotPlayer (官方)](https://potplayer.tv/)
+- QQ 影音：官方页面已经失效。
 
 ### 网盘
 - [天翼云盘][2]
@@ -77,7 +80,7 @@ slug = "windows-common-software-recommendations"
 - [balenaEtcher (官方)](https://www.balena.io/etcher/)
 
 ### Linux 运维
-- [Putty (官方)](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+- [PuTTY (官方)](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 - [WinSCP (官方)](https://winscp.net/eng/download.php)
 
 ### 运行环境

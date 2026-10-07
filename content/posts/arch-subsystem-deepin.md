@@ -28,7 +28,7 @@ render = 'always'
 # 其中，deepin-x86_64 可以被随意更改。
 sudo btrfs subvolume create /var/lib/machines/deepin-x86_64
 
-# 请按需创建您需要的子系统，下面提供了创建 Arch, Deepin 子系统的方法。
+# 请按需创建你需要的子系统，下面提供了创建 Arch, Deepin 子系统的方法。
 # 你可以根据创建 Deepin 子系统的脚本，修改软件源，软件仓库，使用的安装脚本来安装其他 Debian 系发行版作为子系统。
 
 # 创建 Arch Linux 子系统
@@ -53,7 +53,7 @@ echo 'deb https://com-store-packages.uniontech.com/appstore deepin appstore' > /
 apt update
 apt --fix-broken -y install
 apt --no-install-recommends -y install deepin-keyring
-# 您可以根据需要选择性安装下列软件。
+# 你可以根据需要选择性安装下列软件。
 apt --no-install-recommends -y install x11-utils
 apt --no-install-recommends -y install com.qq.office.deepin
 apt --no-install-recommends -y install com.qq.weixin.deepin
