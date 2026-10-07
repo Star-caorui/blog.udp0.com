@@ -26,6 +26,9 @@ cascade:
   - build:
       publishResources: false
 
+minify:
+  minifyOutput: true
+
 markup:
   highlight:
     codeFences: false
