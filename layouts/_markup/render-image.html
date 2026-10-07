@@ -1,11 +1,8 @@
 {{- $src := .Destination -}}
-{{- $resource := "" -}}
-{{- if not (findRE `^(https?:/)?/` $src 1) -}}
-  {{- $resource = .Page.Resources.GetMatch $src -}}
-{{- end -}}
+{{- $resource := .Page.Resources.Get $src -}}
 {{- with $resource -}}
   {{- $name := printf "%s.%s%s" (path.BaseName .Name) (substr (sha256 .Content) 0 8) (path.Ext .Name) -}}
-  {{- $target := path.Join (strings.TrimPrefix "/" $.Page.RelPermalink) (path.Dir .Name) $name -}}
+  {{- $target := path.Join $.Page.RelPermalink (path.Dir .Name) $name -}}
   {{- $src = (resources.Copy $target .).RelPermalink -}}
 {{- end -}}
 <img src="{{ $src | safeURL }}" alt="{{ .PlainText }}"
