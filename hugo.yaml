@@ -2,7 +2,6 @@ baseURL: "https://blog.udp0.com/"
 disableHugoGeneratorInject: true
 defaultContentLanguage: zh-cn
 hasCJKLanguage: true
-locale: zh-cn
 title: iNetech Blog
 summaryLength: 28
 enableRobotsTXT: true
@@ -10,17 +9,6 @@ disableKinds:
   - taxonomy
   - term
   - section
-
-permalinks:
-  posts: "/posts/:slugorcontentbasename/"
-
-outputs:
-  home:
-    - HTML
-    - RSS
-
-build:
-  noJSConfigInAssets: true
 
 cascade:
   - build:
