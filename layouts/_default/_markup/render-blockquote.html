@@ -1,14 +1,14 @@
 {{ if eq .Type "alert" }}
-  {{ $title := .AlertTitle | default (or (i18n .AlertType) (title .AlertType)) }}
+  {{ $title := .AlertTitle | default (title .AlertType) }}
   {{ if .AlertSign }}
-    <details class="callout" data-type="{{ .AlertType }}"{{ if eq .AlertSign "+" }} open{{ end }}>
+    <details class="callout"{{ if eq .AlertSign "+" }} open{{ end }}>
       <summary>{{ $title }}</summary>
       <div class="typo">
         {{ .Text }}
       </div>
     </details>
   {{ else }}
-    <aside class="callout typo" data-type="{{ .AlertType }}">
+    <aside class="callout typo">
       <strong>{{ $title }}</strong>
       {{ .Text }}
     </aside>

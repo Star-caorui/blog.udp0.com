@@ -1,26 +1,22 @@
 {{ define "comments.item" }}
   {{ $comment := .comment }}
   {{ $comments := .comments }}
-  {{ $children := sort (where $comments "parent" $comment.id) "date" "asc" }}
-  {{ $isFollowUp := and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
   <article id="comment-{{ $comment.id }}">
     <header>
-      <time datetime="{{ dateFormat "2006-01-02" $comment.date }}">{{ dateFormat "2006-01-02" $comment.date }}</time>
+      <time>{{ dateFormat "2006-01-02" $comment.date }}</time>
       <p>
         用户
-        {{ if $comment.url }}
-          <a href="{{ $comment.url }}" rel="nofollow noopener" target="_blank"><strong>{{ $comment.author }}</strong></a>
+        {{ with $comment.url }}
+          <a href="{{ . }}" rel="nofollow noopener" target="_blank"><strong>{{ $comment.author }}</strong></a>
         {{ else }}
           <strong>{{ $comment.author }}</strong>
         {{ end }}
-        {{ if $isFollowUp }}
+        {{ if and (ne $comment.parent 0) (eq $comment.reply_to $comment.author) }}
           追评：
+        {{ else if $comment.reply_to }}
+          回复 <a href="#comment-{{ $comment.parent }}"><strong>{{ $comment.reply_to }}</strong></a> 说：
         {{ else }}
-          {{ with $comment.reply_to }}
-            回复 <a href="#comment-{{ $comment.parent }}"><strong>{{ . }}</strong></a> 说：
-          {{ else }}
-            说：
-          {{ end }}
+          说：
         {{ end }}
       </p>
     </header>
@@ -31,9 +27,9 @@
         <p>{{ $comment.text }}</p>
       {{ end }}
     </div>
-    {{ if $children }}
+    {{ with sort (where $comments "parent" $comment.id) "date" }}
       <section>
-        {{ range $children }}
+        {{ range . }}
           {{ template "comments.item" (dict "comment" . "comments" $comments) }}
         {{ end }}
       </section>
@@ -47,7 +43,7 @@
       <p>{{ .Section | default "Page" | humanize }}</p>
       <h1>{{ .Title }}</h1>
       <div>
-        <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format `2006-01-02` }}</time>
+        <time>{{ .Date.Format "2006-01-02" }}</time>
         {{ with .ReadingTime }}
           <span>{{ . }} min read</span>
         {{ end }}
@@ -60,12 +56,10 @@
   </article>
 
   {{ $slug := .Params.slug | default .File.ContentBaseName }}
-  {{ $commentsData := site.Data.comments | default dict }}
-  {{ $comments := index $commentsData $slug }}
-  {{ if $comments }}
+  {{ with $comments := index (site.Data.comments | default dict) $slug }}
     <section class="comments">
       <h2>历史评论</h2>
-      {{ range sort (where $comments "parent" 0) "date" "desc" }}
+      {{ range sort (where . "parent" 0) "date" "desc" }}
         {{ template "comments.item" (dict "comment" . "comments" $comments) }}
       {{ end }}
     </section>
