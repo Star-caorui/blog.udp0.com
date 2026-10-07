@@ -2,115 +2,40 @@
 
 [blog.udp0.com](https://blog.udp0.com/) 的源码。一个不依赖第三方主题、不含任何前端脚本的极简 Hugo 博客。
 
-## 本地开发
+## 这份文档只写代码说不了的事
 
-先安装 Hugo（不低于 v0.144，配置里用到了 `:slugorcontentbasename`），然后运行：
+站点怎么配、页面怎么渲染，以代码为准，这里不复述。想知道具体行为，从这几处看起：
 
-```bash
-hugo server -D
-```
+- 提示块的写法和输出：`layouts/_default/_markup/render-blockquote.html`。
+- 图片怎么处理：`layouts/_default/_markup/render-image.html`。
+- 历史评论的字段和展示：`data/comments.json` 和 `layouts/_default/single.html`。
+- 各种 Markdown 元素渲染出来的样子：隐藏的测试页 `content/posts/markdown-syntax-test.md`，线上地址是 `/posts/markdown-syntax-test/`。
 
-默认访问地址：
+## 线上构建
 
-```text
-http://localhost:1313/
-```
+- 推送到 `main` 后线上会自动重新构建，一分钟左右生效。构建配置不在这个仓库里。
+- 线上用的 Hugo 比较旧。模板和配置只用老版本就有的写法。用新版 Hugo 构建时那条 `.Site.Data` 的弃用警告是有意留着的，不要改成 `hugo.Data`。
+- 旧版本没法在本机跑。改了模板、配置或样式，推送后要看一眼线上实际产出的页面和 CSS。
 
-构建静态文件到 `public/`：
+## 样式表的两条禁令
 
-```bash
-hugo --minify
-```
+线上的旧压缩器不认识 CSS 嵌套，`assets/css/styles.css` 里的嵌套块在线上基本是原样输出的。它还会把一部分嵌套选择器当成“属性: 值”来处理，删掉冒号两边的空格。下面两条是对比线上产出总结出来的：
 
-## 目录结构
+- 每个带嵌套的块，第一条嵌套规则的选择器里不要有冒号。`.callout` 里先写 `>strong`、后写 `>:is(strong, summary)`，就是这个原因。
+- 不要写 `& :is(...)` 这种“空格加伪类”的选择器。线上可能被改成 `&:is(...)`，意思就变了。
 
-```text
-hugo.yaml                 站点配置、菜单、备案号
-assets/css/styles.css     全站唯一的样式表
-layouts/                  模板与 Markdown 渲染钩子
-content/posts/            文章
-content/*.md              独立页面（关于我、朋友、留言、服务等）
-data/comments.json        从 Typecho 迁移来的历史评论
-```
+新版 Hugo 的压缩器正好相反：嵌套规则以 `:` 开头时，那一块剩下的部分不会被压缩。所以选择器列表逐行写，行内代码用 `code:not(pre *)`。
 
-## 新建文章
+## 写文章时的约定
 
-```bash
-hugo new posts/my-first-post.md
-```
-
-文章统一使用 TOML front matter，并显式写上 `slug`：
-
-```toml
-+++
-title = "文章标题"
-description = "一句话摘要，会用作页面的 meta description。"
-date = 2026-01-01T12:00:00+08:00
-draft = false
-slug = "my-first-post"
-+++
-```
-
-- `slug` 决定文章地址 `/posts/<slug>/`，不写时退回文件名，所以中文文件名一定要补上。
-- 带图片的文章用目录形式：`content/posts/<slug>/index.md`，图片放在同目录的 `images/` 下并用相对路径引用，构建时会自动加上内容哈希、宽高和懒加载。
-- 不想出现在首页和 RSS 里的页面，在 front matter 加上：
-
-  ```toml
-  [build]
-  list = 'never'
-  render = 'always'
-  ```
-
-## 提示块语法
-
-提示块使用 Markdown 的 Callout 写法，支持 `NOTE`、`TIP`、`IMPORTANT`、`WARNING`、`CAUTION`：
-
-```md
-> [!TIP] 一个小技巧
-> 这里可以写建议、捷径或经验。
-
-> [!NOTE]
-> 不写标题时，会用类型名作为默认标题。
-```
-
-类型后面加 `+` 或 `-` 会变成可折叠的提示块：
-
-```md
-> [!TIP]+ 默认展开
-> 任意 Markdown 内容都可以放进来。
-
-> [!WARNING]- 默认折叠
-> 这里适合放可能踩坑的提醒。
-```
-
-完整的渲染效果见隐藏的测试页 [`/posts/markdown-syntax-test/`](content/posts/markdown-syntax-test.md)。
+- 发布前给文章写上 `slug`。文章地址和历史评论都靠它对应，改了 `slug`，旧地址和这篇的评论都会断。
+- 本地图片放在文章自己的目录里，用 Markdown 图片语法引用。`hugo.yaml` 关掉了页面资源的默认发布，只有经过图片渲染钩子的文件才会出现在线上。放在文章目录里、只用普通链接指向的附件不会被发布。
 
 ## 历史评论
 
-站点没有在线评论功能，`data/comments.json` 里的评论只读展示在对应页面底部。数据以页面的 `slug` 为键：
+站点没有在线评论功能。`data/comments.json` 是从 Typecho 迁移来的旧评论，只读展示。
 
-```json
-{
-  "my-first-post": [
-    {
-      "id": 1,
-      "date": "2020-04-11T18:07:58+08:00",
-      "author": "昵称",
-      "url": "https://example.com",
-      "text": "纯文本内容",
-      "parent": 0,
-      "reply_to": ""
-    }
-  ]
-}
-```
+## 还没验证的事
 
-- `parent` 为 `0` 表示顶层评论，否则填被回复评论的 `id`，`reply_to` 填被回复者的昵称。
-- 需要保留格式时可以额外提供 `html` 字段，它会优先于 `text` 原样输出。
-
-## 常改的地方
-
-- `hugo.yaml` 里的 `title`、`baseURL`、`params.description`
-- `hugo.yaml` 里的 `menus.main`（顶部导航）
-- `hugo.yaml` 里的 `params.records`（`icp` 为 ICP 备案号，`police` 为公安备案号，留空则不显示）
-- `layouts/_default/baseof.html` 页脚里的版权年份
+- 线上 Hugo 的具体版本。
+- 线上 RSS 里留言页那条摘要少一个结尾的 `</blockquote>`，本机构建没有这个问题。推测是旧版本截摘要的位置不同，没有证实。
