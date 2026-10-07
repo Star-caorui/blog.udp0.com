@@ -35,12 +35,8 @@
       {{ with $rss }}
         <a href="{{ .RelPermalink }}" target="_blank">RSS</a><br>
       {{ end }}
-      © 2020–{{ now.Year }} Betterr
-      {{ with site.Params.records }}
-        {{ with .icp }}
-          <br><a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow">{{ . }}</a>
-        {{ end }}
-      {{ end }}
+      © 2020–{{ now.Year }} Betterr<br>
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow">蒙 ICP 备 2022000209 号-2</a>
     </footer>
   </body>
 </html>

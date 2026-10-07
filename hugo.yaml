@@ -26,8 +26,6 @@ markup:
 
 params:
   description: "Betterr 的个人博客，记录 Arch Linux、系统运维、网络服务、安全加固与一些随手思考。"
-  records:
-    icp: 蒙 ICP 备 2022000209 号-2
 
 menus:
   main:
