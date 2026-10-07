@@ -4,15 +4,15 @@
       <time>{{ dateFormat "2006-01-02" .date }}</time>
       用户
       {{ with .url }}
-        <a href="{{ . }}" rel="nofollow" target="_blank"><strong>{{ $.author }}</strong></a>
+        <a href="{{ . }}" rel="nofollow" target="_blank"><b>{{ $.author }}</b></a>
       {{ else }}
-        <strong>{{ .author }}</strong>
+        <b>{{ .author }}</b>
       {{ end }}
       {{ with .parent }}
         {{ if eq .author $.author }}
           追评：
         {{ else }}
-          回复 <strong>{{ .author }}</strong> 说：
+          回复 <b>{{ .author }}</b> 说：
         {{ end }}
       {{ else }}
         说：
@@ -22,11 +22,9 @@
       {{ .text | .page.RenderString (dict "display" "block") }}
     </div>
     {{ with .replies }}
-      <section>
-        {{ range sort . "date" }}
-          {{ template "comment" (merge . (dict "parent" $ "page" $.page)) }}
-        {{ end }}
-      </section>
+      {{ range sort . "date" }}
+        {{ template "comment" (merge . (dict "parent" $ "page" $.page)) }}
+      {{ end }}
     {{ end }}
   </article>
 {{ end }}
@@ -34,7 +32,7 @@
 {{ define "main" }}
   <article>
     <header>
-      <p>{{ .Section | default "Page" | humanize }}</p>
+      <p>{{ .Section | default "page" | upper }}</p>
       <h1>{{ .Title }}</h1>
       <div>
         <time>{{ .Date.Format "2006-01-02" }}</time>
@@ -44,18 +42,18 @@
       </div>
     </header>
 
-    <section class="typo">
+    <div class="typo">
       {{ .Content }}
-    </section>
-  </article>
+    </div>
 
-  {{ $slug := .Params.slug | default .File.ContentBaseName }}
-  {{ with index (site.Data.comments | default dict) $slug }}
-    <section class="comments">
-      <h2>历史评论</h2>
-      {{ range sort . "date" "desc" }}
-        {{ template "comment" (merge . (dict "page" $)) }}
-      {{ end }}
-    </section>
-  {{ end }}
+    {{ $slug := .Params.slug | default .File.ContentBaseName }}
+    {{ with index (site.Data.comments | default dict) $slug }}
+      <section class="comments">
+        <h2>历史评论</h2>
+        {{ range sort . "date" "desc" }}
+          {{ template "comment" (merge . (dict "page" $)) }}
+        {{ end }}
+      </section>
+    {{ end }}
+  </article>
 {{ end }}

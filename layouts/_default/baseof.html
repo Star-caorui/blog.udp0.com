@@ -16,22 +16,21 @@
       {{ $path := printf "favicon.%s.webp" (substr (sha256 .Content) 0 8) }}
       <link rel="icon" href="{{ (resources.Copy $path .).RelPermalink }}">
     {{ end }}
-    {{ with resources.Get "css/styles.css" | minify }}
-      {{ $path := printf "css/styles.%s.css" (substr (sha256 .Content) 0 8) }}
-      <link rel="stylesheet" href="{{ (resources.Copy $path .).RelPermalink }}">
+    {{ with resources.Get "css/styles.css" }}
+      {{ $css := .Content | replaceRE `\s+` " " | replaceRE ` ?([{};]) ?` "$1" | replaceRE `([:,]) ` "$1" | replaceRE `;}` "}" }}
+      {{ $path := printf "css/styles.%s.css" (substr (sha256 $css) 0 8) }}
+      <link rel="stylesheet" href="{{ (resources.FromString $path $css).RelPermalink }}">
     {{ end }}
   </head>
   <body>
-    <header>
-      {{ $current := cond (eq .Section "posts") "/" .RelPermalink }}
-      {{ with site.Menus.main }}
-        <nav>
-          {{ range . }}
-            <a{{ if eq .URL $current }} class="is-active"{{ end }} href="{{ .URL }}">{{ .Name }}</a>
-          {{ end }}
-        </nav>
-      {{ end }}
-    </header>
+    {{ $current := cond (eq .Section "posts") "/" .RelPermalink }}
+    {{ with site.Menus.main }}
+      <nav>
+        {{ range . }}
+          <a{{ if eq .URL $current }} class="is-active"{{ end }} href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+      </nav>
+    {{ end }}
     <main>
       {{ block "main" . }}{{ end }}
     </main>

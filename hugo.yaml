@@ -18,6 +18,9 @@ minify:
   minifyOutput: true
 
 markup:
+  goldmark:
+    parser:
+      autoHeadingID: false
   highlight:
     codeFences: false
 

@@ -9,5 +9,5 @@
   {{- $src = (resources.Copy $target .).RelPermalink -}}
 {{- end -}}
 <img src="{{ $src | safeURL }}" alt="{{ .PlainText }}"
-  {{- with $resource }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} loading="lazy" decoding="async"
+  {{- with $resource }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} loading="lazy"
   {{- with .Title }} title="{{ . }}"{{ end }}>
