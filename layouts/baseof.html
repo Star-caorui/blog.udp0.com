@@ -13,6 +13,8 @@
     {{ with resources.Get "favicon.webp" }}
       {{ $path := printf "favicon.%s.webp" (substr (sha256 .Content) 0 8) }}
       <link rel="icon" href="{{ (resources.Copy $path .).RelPermalink }}">
+      {{/* 给别的站引用的图标：地址固定，不带哈希 */}}
+      {{ (resources.Copy "favicon.webp" .).Publish }}
     {{ end }}
     {{ with resources.Get "css/styles.css" | css.Build (dict "minify" true) }}
       {{ $path := printf "css/styles.%s.css" (substr (sha256 .Content) 0 8) }}

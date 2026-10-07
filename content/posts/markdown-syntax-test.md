@@ -103,7 +103,7 @@ greet("Betterr");
 
 ## 图片
 
-![站点图标测试](https://src.inetech.fun/favicon.webp "远程图片标题")
+![站点图标测试](https://blog.udp0.com/favicon.webp "远程图片标题")
 
 ## 脚注
 
