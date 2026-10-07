@@ -4,9 +4,7 @@ description = "iNetech API 的接口说明、调用方式、公共参数与使�
 date = 2021-01-27T14:46:00+08:00
 lastmod = 2024-12-29T09:15:48+08:00
 slug = "api"
-[build]
-list = 'never'
-render = 'always'
+draft = true
 +++
 
 ## iNetech API
