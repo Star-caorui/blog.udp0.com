@@ -2,7 +2,7 @@
 title = "朋友"
 description = "朋友页面，收录常看的博客友链与当前友链说明。"
 date = 2020-04-11T18:56:00+08:00
-lastmod = 2026-01-22T01:39:40+08:00
+lastmod = 2026-10-08T17:34:56+08:00
 slug = "links"
 +++
 
@@ -15,6 +15,7 @@ slug = "links"
 [陈陈菌博客](https://blog.glumi.cn)  
 [OTAKU's Lair](http://log.nmgshirun.com/)  
 [26ywzm](https://blog.ywzm.eu.org/)  
+[CircuitX's Blog](https://blog.mcark.cn/)  
 
 
 ## 最新状况
