@@ -1,5 +1,5 @@
 +++
-title = "API"
+title = "iNetech API"
 description = "iNetech API 的接口说明、调用方式、公共参数与使用限制。"
 date = 2021-01-27T14:46:00+08:00
 lastmod = 2024-12-29T09:15:48+08:00
@@ -7,41 +7,35 @@ slug = "api"
 draft = true
 +++
 
-## iNetech API
+## 简介
 
-### 前言
+iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读并同意[《iNetech 服务协议》][1]后再使用本服务。如不同意，本站可能将无法对您提供服务。
 
-您可以从这里查看 [iNetech 在线服务状态][1]。
-
-### 简介
-
-iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读并同意[《iNetech 服务协议》][2]后再使用本服务。如不同意，本站可能将无法对您提供服务。
-
-### 概览
+## 概览
 
 |               名称               |    状态    |
 | :------------------------------: | :--------: |
-|           查询IP (ip)            |   运行中   |
+|           查询IP (ip)            | **维护中** |
 |          剪切板 (clip)           | **维护中** |
-|         随机动漫图 (acg)         |   运行中   |
+|         随机动漫图 (acg)         | **维护中** |
 |       Bing 每日壁纸 (bing)       | **维护中** |
-|    MC 服务器基本信息 (mcping)    |   运行中   |
-|   MC JE 服务器基本信息 (mcje)    |   运行中   |
-| MC BE 服务器基本信息 (mcbe/mcpe) |   运行中   |
+|    MC 服务器基本信息 (mcping)    | **维护中** |
+|   MC JE 服务器基本信息 (mcje)    | **维护中** |
+| MC BE 服务器基本信息 (mcbe/mcpe) | **维护中** |
 
 注：mcpe 仅作为名称兼容性保留，和 mcbe 表现一致，无特殊行为。
 
 ---
 
-### 调用
+## 调用
 
-#### 基本调用信息
+### 基本调用信息
 
 | 请求方式 |   协议   |      地址       |                  参数                  |
 | :------: | :------: | :-------------: | :------------------------------------: |
-| GET/POST | https:// | api.inetech.fun | /API名称?参数1=xxx&参数2=xxx&参数3=xxx |
+| GET/POST | https:// | api.udp0.com | /API名称?参数1=xxx&参数2=xxx&参数3=xxx |
 
-#### 公共参数：全局通用参数
+### 公共参数：全局通用参数
 
 |  名称   |                              值                              |                           备注                           |
 | :-----: | :----------------------------------------------------------: | :------------------------------------------------------: |
@@ -52,26 +46,26 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-##### 查询 IP
+#### 查询 IP
 
 调用方法 (命令行工具)：
 
 | 查询 IP 类型 |                  命令                  |
 | :----------: | :------------------------------------: |
-|     IPv4     | `curl 'https://api.inetech.fun/ip' -4` |
-|     IPv6     | `curl 'https://api.inetech.fun/ip' -6` |
+|     IPv4     | `curl 'https://api.udp0.com/ip' -4` |
+|     IPv6     | `curl 'https://api.udp0.com/ip' -6` |
 
 调用方法 (网页)：
 
 |              请直接访问查询               |
 | :---------------------------------------: |
-| [https://api.inetech.fun/ip?return=ip][3] |
+| [https://api.udp0.com/ip?return=ip][2] |
 
 注：目前仅提供查询访客 IP 地址，不支持查询 IP 信息。
 
 ---
 
-##### 剪切板
+#### 剪切板
 
 附加服务协议：
 
@@ -83,7 +77,7 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 |     介绍     |                             命令                             |
 | :----------: | :----------------------------------------------------------: |
-|   缩短命令   | `alias clip='curl -F "c=@-" "https://api.inetech.fun/clip?return=preview"'` |
+|   缩短命令   | `alias clip='curl -F "c=@-" "https://api.udp0.com/clip?return=preview"'` |
 | 上传标准输出 |               echo 'hello world' &verbar; clip               |
 | 上传文本文件 |                  cat xxx.txt &verbar; clip                  |
 | 上传媒体文件 |                  cat xxx.png &verbar; clip                  |
@@ -111,9 +105,9 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-##### 随机动漫图
+#### 随机动漫图
 
-调用方法：https://api.inetech.fun/acg?&orientation=horizontal&return=redirect
+调用方法：https://api.udp0.com/acg?&orientation=horizontal&return=redirect
 
 |    名称     |          值          |                             备注                             |
 | :---------: | :------------------: | :----------------------------------------------------------: |
@@ -122,17 +116,17 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-##### Bing 每日壁纸
+#### Bing 每日壁纸
 
-调用方法：https://api.inetech.fun/bing
+调用方法：https://api.udp0.com/bing
 
 此 API 正在维护阶段，文档可能更新不及时！
 
 ---
 
-##### MC 服务器基本信息
+#### MC 服务器基本信息
 
-调用方法：https://api.inetech.fun/mcping?type=je&address=a.nikiss.top&port=25565
+调用方法：https://api.udp0.com/mcping?type=je&address=a.nikiss.top&port=25565
 
 |  名称   |              值              |                    备注                     |
 | :-----: | :--------------------------: | :-----------------------------------------: |
@@ -142,9 +136,9 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-##### MC JE 服务器基本信息
+#### MC JE 服务器基本信息
 
-调用方法：https://api.inetech.fun/mcje?address=a.nikiss.top&port=25565
+调用方法：https://api.udp0.com/mcje?address=a.nikiss.top&port=25565
 
 |  名称   |           值            |          备注          |
 | :-----: | :---------------------: | :--------------------: |
@@ -153,9 +147,9 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 
 ---
 
-##### MC BE 服务器基本信息
+#### MC BE 服务器基本信息
 
-调用方法：https://api.inetech.fun/mcbe?address=a.nikiss.top&port=19132
+调用方法：https://api.udp0.com/mcbe?address=a.nikiss.top&port=19132
 
 |  名称   |           值            |          备注          |
 | :-----: | :---------------------: | :--------------------: |
@@ -165,6 +159,5 @@ iNetech API 是 iNetech 站点 对外提供的有限接口服务。请先阅读�
 注：mcpe 仅作为名称兼容性提供，本质和 mcbe 表现一致。
 
 
-[1]: https://status.inetech.fun/
-[2]: /tos/
-[3]: https://api.inetech.fun/ip?return=ip
+[1]: /tos/
+[2]: https://api.udp0.com/ip?return=ip
