@@ -1,6 +1,7 @@
 :root {
   color-scheme: light dark;
   scrollbar-gutter: stable both-edges;
+  background: Canvas;
   --accent: light-dark(#508fff, #7aa7ff);
   --sans: ui-sans-serif, sans-serif;
   --mono: ui-monospace, monospace;
@@ -26,7 +27,6 @@ body {
   margin: 0 auto;
   padding: 0 1rem;
   color: light-dark(#1f1f1c, #fff);
-  background: light-dark(#f5f5f5, Canvas);
   font: 18px/1.8 var(--sans);
 }
 
