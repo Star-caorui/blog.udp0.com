@@ -1,18 +1,9 @@
 {{ if eq .Type "alert" }}
   {{ $title := .AlertTitle | default (title .AlertType) }}
-  {{ if .AlertSign }}
-    <details class="callout"{{ if eq .AlertSign "+" }} open{{ end }}>
-      <summary>{{ $title }}</summary>
-      <div class="typo">
-        {{ .Text }}
-      </div>
-    </details>
-  {{ else }}
-    <aside class="callout typo">
-      <strong>{{ $title }}</strong>
-      {{ .Text }}
-    </aside>
-  {{ end }}
+  <aside class="callout typo">
+    <strong>{{ $title }}</strong>
+    {{ .Text }}
+  </aside>
 {{ else }}
   <blockquote>
     {{ .Text }}

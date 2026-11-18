@@ -113,6 +113,9 @@ greet("Betterr");
 
 ## 提示块：note
 
+> - note item 1
+> - note item 2
+
 > [!NOTE] Note 标题
 > 这是 `note` 提示块，包含 **加粗**、链接 [Example](https://example.com) 和列表：
 >
@@ -148,13 +151,5 @@ greet("Betterr");
 
 > [!NOTE]
 > 这是没有传入 `title` 的 note，用来检查默认标题。
-
-## 可折叠提示块
-
-> [!TIP]+ 默认展开
-> 这是默认展开的提示块。
-
-> [!WARNING]- 默认折叠
-> 这是默认折叠的提示块。
 
 [hugo]: https://gohugo.io/

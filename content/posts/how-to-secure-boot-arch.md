@@ -151,5 +151,25 @@ Depends = grep
 [Unified Extensible Firmware Interface/Secure Boot][2]
 
 
+---
+
+**Micraow 评论：**
+
+用grub引导的机子，要用以下命令重新安装grub
+
+/usr/share/grub/sbat.csv在启用模块的情况下重新安装 GRUB TPM并签名：
+
+```bash
+grub-install --target=x86_64-efi --efi-directory=esp --modules="tpm" --sbat /usr/share/grub/sbat.csv
+sbsign --key MOK.key --cert MOK.crt --output esp/EFI/GRUB/grubx64.efi esp/EFI/GRUB/grubx64.efi
+cp esp/GRUB/grubx64.efi esp/boot/grubx64.efi
+```
+
+esp是引导器分区，通常是/boot
+
+参考archwiki：
+
+https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot
+
 [1]: https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys
 [2]: https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot
