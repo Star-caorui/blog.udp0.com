@@ -1,8 +1,6 @@
 {{ define "main" }}
   {{ if .IsHome }}
-    <header>
-      <h1>Posts</h1>
-    </header>
+    <h1>Posts</h1>
 
     <ul>
       {{ range (where site.RegularPages "Section" "posts").ByDate.Reverse }}
@@ -13,17 +11,14 @@
       {{ end }}
     </ul>
   {{ else }}
-    <article>
-      <header>
-        <h1>{{ .Title }}</h1>
-        {{ if eq .Section "posts" }}
-          <time>{{ .Date.Format "2006-01-02" }}</time>
-        {{ end }}
-      </header>
+    <h1>{{ .Title }}</h1>
 
-      <div class="typo">
-        {{ .Content }}
-      </div>
-    </article>
+    {{ if eq .Section "posts" }}
+      <time>{{ .Date.Format "2006-01-02" }}</time>
+    {{ end }}
+
+    <div class="typo">
+      {{ .Content }}
+    </div>
   {{ end }}
 {{ end }}

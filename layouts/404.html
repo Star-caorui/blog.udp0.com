@@ -2,9 +2,6 @@
 {{ define "description" }}你访问的页面不存在，可以返回首页继续浏览 Betterr 的文章与页面。{{ end }}
 
 {{ define "main" }}
-  <header>
-    <h1>页面不存在</h1>
-  </header>
-
+  <h1>页面不存在</h1>
   <p>你可以回到 <a href="{{ "/" | relURL }}">首页</a> 继续浏览。</p>
 {{ end }}
