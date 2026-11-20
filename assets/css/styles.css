@@ -26,8 +26,6 @@ header {
   >div {
     display: flex;
     gap: .8rem;
-    opacity: .65;
-    font-size: .88rem;
   }
 }
 
@@ -42,14 +40,8 @@ main > ul {
     padding: .44rem 0;
   }
 
-  a {
-    font-size: 1.05rem;
-    line-height: 1.5;
-  }
-
   time {
-    opacity: .65;
-    font: .88rem var(--mono);
+    font-variant-numeric: tabular-nums;
     text-align: end;
   }
 }
@@ -84,10 +76,15 @@ nav {
   }
 }
 
+header > div,
+main > ul time,
+footer {
+  opacity: .65;
+  font-size: .85em;
+}
+
 footer {
   padding: 2rem 0;
-  opacity: .65;
-  font-size: .875rem;
   text-align: center;
 }
 
