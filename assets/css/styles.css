@@ -3,10 +3,8 @@
   scrollbar-gutter: stable both-edges;
   background: Canvas;
   color: CanvasText;
-  font: 18px/1.6 var(--sans);
+  font: 18px/1.6 system-ui;
   --accent: light-dark(#508fff, #7aa7ff);
-  --sans: ui-sans-serif, sans-serif;
-  --mono: ui-monospace, monospace;
   --content-width: 42rem;
   --layout-gap: 1.5rem;
   --block-inset: .8rem;
@@ -19,8 +17,8 @@
 }
 
 .typo {
-  font-family: Charter, Cambria, serif;
-  line-height: 1.6;
+  font-family: cursive;
+  line-height: 1.5;
   overflow-wrap: break-word;
 
   h2,
@@ -28,8 +26,7 @@
   h4,
   h5,
   h6 {
-    margin: 1.4em 0 .45em;
-    font: 700 1em/1.3 var(--sans);
+    font: 700 1em/1.3 system-ui;
   }
 
   h2 {
@@ -119,12 +116,12 @@
   }
 
   code:not(pre *) {
-    font: .88em var(--mono);
+    font: .88em monospace;
     padding: var(--inline-code-padding);
   }
 
   pre {
-    font: .88em/1.6 var(--mono);
+    font: .88em/1.6 monospace;
     padding: var(--code-block-padding);
     overflow-x: auto;
   }
@@ -143,7 +140,7 @@
   }
 
   th {
-    font-family: var(--sans);
+    font-family: system-ui;
     text-align: left;
   }
 
@@ -159,7 +156,7 @@
     padding: var(--block-inset) var(--layout-gap);
 
     >strong {
-      font: 700 .88rem/1.4 var(--sans);
+      font: 700 .88rem/1.4 system-ui;
     }
   }
 }
