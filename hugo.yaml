@@ -35,12 +35,9 @@ menus:
     - name: 服务
       pageRef: /service
       weight: 20
-    - name: 留言
-      pageRef: /messages
-      weight: 30
     - name: 朋友
       pageRef: /links
-      weight: 40
+      weight: 30
     - name: 关于我
       pageRef: /about
-      weight: 50
+      weight: 40

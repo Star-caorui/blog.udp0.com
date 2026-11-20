@@ -1,6 +1,6 @@
 +++
-title = "iNetech 隐私政策"
-description = "iNetech 站点的隐私政策，说明日志收集、第三方服务与数据保留期限。"
+title = "隐私政策"
+description = "本站的隐私政策，说明日志收集、第三方服务与数据保留期限。"
 date = 2021-05-05T01:42:00+08:00
 lastmod = 2026-10-08T04:20:00+08:00
 slug = "privacy"

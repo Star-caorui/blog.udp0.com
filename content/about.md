@@ -6,20 +6,20 @@ lastmod = 2026-05-14T22:31:50+08:00
 slug = "about"
 +++
 
-## 欢迎来到这里 |  Hi there 👋  
+欢迎来到这里 |  Hi there 👋
 
-### 关于我 | About me  
-  - Nickname: Betterr ~~Star_caorui, 今夕何夕, 小曹, 星星~~  
-  - Blog: https://blog.udp0.com  
-  - GitHub: https://github.com/Star-caorui/  
+关于我 | About me
+  - Nickname: Betterr ~~Star_caorui, 今夕何夕, 小曹, 星星~~
+  - Blog: https://blog.udp0.com
+  - GitHub: https://github.com/Star-caorui/
 
-### 技术栈 | Tech Stack  
-  - 操作系统: Arch Linux, Windows Server.  
-  - 编程语言: Python  
-  - 数据库: SQLite.  
-  - 开发协作: Git, GitHub, Markdown.  
+技术栈 | Tech Stack
+  - OS: Linux, Windows, MacOS
+  - Language: Go, Python, Java
+  - Database: Postgres, MySQL, SQLite.
+  - Team: Git, GitHub, Markdown.
 
-### 联系我 | Contact me  
-  - ✉️ Email: i@udp0.com  
+联系我 | Contact me
+  - Email: i@udp0.com
 
-Premature optimization is the root of all evil.  
+Premature optimization is the root of all evil.

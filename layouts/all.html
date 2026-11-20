@@ -16,12 +16,9 @@
     <article>
       <header>
         <h1>{{ .Title }}</h1>
-        <div>
+        {{ if eq .Section "posts" }}
           <time>{{ .Date.Format "2006-01-02" }}</time>
-          {{ with .ReadingTime }}
-            <span>{{ . }} min read</span>
-          {{ end }}
-        </div>
+        {{ end }}
       </header>
 
       <div class="typo">
